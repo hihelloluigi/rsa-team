@@ -1,1 +1,12 @@
-{ "name": "RSA TEAM", "founded": 2024, "ground": "City Stadium", "tagline": "t", "about": "a", "staff": [] }
+{
+  "name": "RSA TEAM",
+  "founded": 2024,
+  "ground": "City Stadium",
+  "tagline": "Built on pace, pressure and a bit of attitude.",
+  "about": "RSA TEAM is a club that plays on the front foot. Formed in 2024, we built a young, fearless squad around quick transitions and relentless pressing. Every match is an opportunity to show what we are made of — a tight-knit group of players who believe in each other and never stop running. This is our season, told in full.",
+  "staff": [
+    { "name": "Antonio De Luca", "role": "Head Coach" },
+    { "name": "Sara Greco", "role": "Assistant Coach" },
+    { "name": "Paolo Ferrari", "role": "Goalkeeping Coach" }
+  ]
+}
