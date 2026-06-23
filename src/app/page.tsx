@@ -25,7 +25,7 @@ export default function Home() {
             </h3>
             <p className="mx-auto mt-5 max-w-md text-muted">
               Le partite della stagione {season.label} verranno sorteggiate in settembre.
-              Nel frattempo puoi rivederti la scorsa stagione: spoiler, andò bene.
+              Nel frattempo puoi rivederti la scorsa stagione: spoiler, non siamo arrivati ultimi.
             </p>
             <Link
               href="/matches?season=2025-2026"
