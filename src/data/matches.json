@@ -4,7 +4,7 @@
     "opponent": "Falcons FC",
     "home": true,
     "date": "2025-09-06T15:00:00+00:00",
-    "competition": "League",
+    "competition": "Campionato",
     "status": "played",
     "score": { "rsa": 3, "opponent": 1 }
   },
@@ -13,7 +13,7 @@
     "opponent": "Tigers CF",
     "home": false,
     "date": "2025-09-20T14:00:00+00:00",
-    "competition": "League",
+    "competition": "Campionato",
     "status": "played",
     "score": { "rsa": 2, "opponent": 0 }
   },
@@ -22,7 +22,7 @@
     "opponent": "Lions United",
     "home": true,
     "date": "2025-10-04T15:00:00+00:00",
-    "competition": "League",
+    "competition": "Campionato",
     "status": "played",
     "score": { "rsa": 1, "opponent": 1 }
   },
@@ -31,7 +31,7 @@
     "opponent": "Eagles SC",
     "home": false,
     "date": "2025-10-18T14:00:00+00:00",
-    "competition": "League",
+    "competition": "Campionato",
     "status": "played",
     "score": { "rsa": 0, "opponent": 2 }
   },
@@ -40,7 +40,7 @@
     "opponent": "Wolves FC",
     "home": true,
     "date": "2025-11-01T15:00:00+00:00",
-    "competition": "League",
+    "competition": "Campionato",
     "status": "played",
     "score": { "rsa": 4, "opponent": 0 }
   },
@@ -49,7 +49,7 @@
     "opponent": "Panthers FC",
     "home": false,
     "date": "2025-11-15T14:00:00+00:00",
-    "competition": "League",
+    "competition": "Campionato",
     "status": "played",
     "score": { "rsa": 2, "opponent": 2 }
   },
@@ -58,7 +58,7 @@
     "opponent": "Sharks United",
     "home": true,
     "date": "2025-11-29T15:00:00+00:00",
-    "competition": "League",
+    "competition": "Campionato",
     "status": "played",
     "score": { "rsa": 3, "opponent": 0 }
   },
@@ -67,7 +67,7 @@
     "opponent": "Falcons FC",
     "home": false,
     "date": "2025-12-13T14:00:00+00:00",
-    "competition": "League",
+    "competition": "Campionato",
     "status": "played",
     "score": { "rsa": 1, "opponent": 0 }
   },
@@ -76,7 +76,7 @@
     "opponent": "Tigers CF",
     "home": true,
     "date": "2026-01-10T15:00:00+00:00",
-    "competition": "League",
+    "competition": "Campionato",
     "status": "played",
     "score": { "rsa": 5, "opponent": 1 }
   },
@@ -85,7 +85,7 @@
     "opponent": "Lions United",
     "home": false,
     "date": "2026-01-24T14:00:00+00:00",
-    "competition": "League",
+    "competition": "Campionato",
     "status": "played",
     "score": { "rsa": 2, "opponent": 1 }
   },
@@ -94,7 +94,7 @@
     "opponent": "Eagles SC",
     "home": true,
     "date": "2026-02-07T15:00:00+00:00",
-    "competition": "League",
+    "competition": "Campionato",
     "status": "played",
     "score": { "rsa": 0, "opponent": 1 }
   },
@@ -103,7 +103,7 @@
     "opponent": "Wolves FC",
     "home": false,
     "date": "2026-02-21T14:00:00+00:00",
-    "competition": "League",
+    "competition": "Campionato",
     "status": "played",
     "score": { "rsa": 3, "opponent": 2 }
   },
@@ -112,7 +112,7 @@
     "opponent": "Panthers FC",
     "home": true,
     "date": "2026-03-07T15:00:00+00:00",
-    "competition": "League",
+    "competition": "Campionato",
     "status": "played",
     "score": { "rsa": 2, "opponent": 1 }
   },
@@ -121,7 +121,7 @@
     "opponent": "Sharks United",
     "home": false,
     "date": "2026-03-21T14:00:00+00:00",
-    "competition": "League",
+    "competition": "Campionato",
     "status": "played",
     "score": { "rsa": 1, "opponent": 0 }
   },
@@ -130,7 +130,7 @@
     "opponent": "Falcons FC",
     "home": true,
     "date": "2026-07-04T15:00:00+00:00",
-    "competition": "League",
+    "competition": "Campionato",
     "status": "upcoming"
   },
   {
@@ -138,7 +138,7 @@
     "opponent": "Eagles SC",
     "home": false,
     "date": "2026-07-18T14:00:00+00:00",
-    "competition": "League",
+    "competition": "Campionato",
     "status": "upcoming"
   },
   {
@@ -146,7 +146,7 @@
     "opponent": "Panthers FC",
     "home": true,
     "date": "2026-08-01T15:00:00+00:00",
-    "competition": "League",
+    "competition": "Campionato",
     "status": "upcoming"
   },
   {
@@ -154,7 +154,7 @@
     "opponent": "Wolves FC",
     "home": false,
     "date": "2026-08-15T14:00:00+00:00",
-    "competition": "League",
+    "competition": "Campionato",
     "status": "upcoming"
   }
 ]
