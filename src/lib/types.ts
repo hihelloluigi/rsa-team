@@ -14,6 +14,7 @@ export const PlayerStatsSchema = z.object({
 export const PlayerSchema = z.object({
   slug: z.string().regex(/^[a-z0-9-]+$/, "slug must be url-safe kebab-case"),
   name: z.string().min(1),
+  nickname: z.string().min(1).optional(),
   number: z.number().int().min(1).max(99),
   position: PositionSchema,
   nationality: z.string().min(1),

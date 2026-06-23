@@ -1,11 +1,19 @@
 import {
   PlayersSchema, SeasonsSchema, ClubSchema,
-  type Player, type Match, type StandingRow, type Season, type Club, type MatchResult,
+  type Player, type Match, type StandingRow, type Season, type Club, type MatchResult, type Position,
 } from "./types";
 
 import playersJson from "@/data/players.json";
 import seasonsJson from "@/data/seasons.json";
 import clubJson from "@/data/club.json";
+
+// Italian abbreviations shown on player badges (data keeps the GK/DEF/MID/FWD codes).
+export const positionLabels: Record<Position, string> = {
+  GK: "POR",
+  DEF: "DIF",
+  MID: "CEN",
+  FWD: "ATT",
+};
 
 // Validate once at module load — throws at build time on bad data.
 const players: Player[] = PlayersSchema.parse(playersJson);
