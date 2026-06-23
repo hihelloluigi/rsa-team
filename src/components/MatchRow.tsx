@@ -14,6 +14,9 @@ export default function MatchRow({ match, href }: { match: Match; href?: string 
   const result = matchResult(match);
   const home = match.home ? "RSA TEAM" : match.opponent;
   const away = match.home ? match.opponent : "RSA TEAM";
+  // Pair each side with its own goals (home goals : away goals), not RSA-first.
+  const homeScore = match.home ? match.score?.rsa : match.score?.opponent;
+  const awayScore = match.home ? match.score?.opponent : match.score?.rsa;
   const d = new Date(match.date);
   const dateStr = d.toLocaleDateString("it-IT", { day: "2-digit", month: "short", year: "numeric" });
   const timeStr = d.toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" });
@@ -37,11 +40,11 @@ export default function MatchRow({ match, href }: { match: Match; href?: string 
         <div className="space-y-1 font-bold">
           <div className="flex items-center justify-between gap-3">
             <span className={match.home ? "text-accent" : ""}>{home}</span>
-            {match.score && <span className="font-display text-lg leading-none">{match.score.rsa}</span>}
+            {match.score && <span className="font-display text-lg leading-none">{homeScore}</span>}
           </div>
           <div className="flex items-center justify-between gap-3">
             <span className={!match.home ? "text-accent" : ""}>{away}</span>
-            {match.score && <span className="font-display text-lg leading-none">{match.score.opponent}</span>}
+            {match.score && <span className="font-display text-lg leading-none">{awayScore}</span>}
           </div>
         </div>
       </div>
@@ -52,7 +55,7 @@ export default function MatchRow({ match, href }: { match: Match; href?: string 
         <div className="flex-1 flex items-center gap-4 font-bold">
           <span className={`flex-1 text-right ${match.home ? "text-accent" : ""}`}>{home}</span>
           {match.score ? (
-            <span className="font-display text-xl w-20 shrink-0 text-center">{match.score.rsa} : {match.score.opponent}</span>
+            <span className="font-display text-xl w-20 shrink-0 text-center">{homeScore} : {awayScore}</span>
           ) : (
             <span className="w-20 shrink-0 text-center text-muted">vs</span>
           )}

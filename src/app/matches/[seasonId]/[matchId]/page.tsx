@@ -32,6 +32,8 @@ export default async function MatchDetailPage({ params }: { params: Params }) {
   const won = result === "W";
   const home = match.home ? "RSA TEAM" : match.opponent;
   const away = match.home ? match.opponent : "RSA TEAM";
+  const homeScore = match.home ? match.score?.rsa : match.score?.opponent;
+  const awayScore = match.home ? match.score?.opponent : match.score?.rsa;
   const dateStr = new Date(match.date).toLocaleDateString("it-IT", {
     weekday: "long", day: "2-digit", month: "long", year: "numeric",
   });
@@ -60,7 +62,7 @@ export default async function MatchDetailPage({ params }: { params: Params }) {
             {home}
           </span>
           <span className="font-display text-5xl sm:text-7xl leading-none">
-            {match.score ? `${match.score.rsa} : ${match.score.opponent}` : "vs"}
+            {match.score ? `${homeScore} : ${awayScore}` : "vs"}
           </span>
           <span className={`font-display italic uppercase text-xl sm:text-3xl text-left ${!match.home ? "text-accent" : ""}`}>
             {away}
