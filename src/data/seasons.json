@@ -10,6 +10,8 @@
     "id": "2025-2026",
     "label": "2025/26",
     "current": false,
+    "league": "Bergamo Tornei · Serie D · Girone A",
+    "leagueUrl": "https://www.bergamotornei.com/it/tournament/141/campionato-nazionale-asi-bergamo-tornei-calcio-a-7/stream/",
     "matches": [
       { "id": "m01", "opponent": "Falcons FC", "home": true, "date": "2025-09-06T15:00:00+00:00", "competition": "Campionato", "status": "played", "score": { "rsa": 3, "opponent": 1 } },
       { "id": "m02", "opponent": "Tigers CF", "home": false, "date": "2025-09-20T14:00:00+00:00", "competition": "Campionato", "status": "played", "score": { "rsa": 2, "opponent": 0 } },

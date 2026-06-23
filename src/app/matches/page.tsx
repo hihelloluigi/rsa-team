@@ -23,11 +23,29 @@ export default async function MatchesPage({
   return (
     <main className="mx-auto max-w-6xl px-5 py-16">
       {/* Season selector */}
-      <div className="mb-8">
+      <div className="mb-8 space-y-3">
         <SeasonSelect
           seasons={seasons.map((s) => ({ id: s.id, label: s.label }))}
           selected={selected.id}
         />
+        {selected.league && (
+          <p className="text-sm text-muted">
+            <span className="font-extrabold uppercase tracking-widest text-xs text-accent">Campionato</span>
+            {" — "}
+            {selected.leagueUrl ? (
+              <a
+                href={selected.leagueUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline decoration-white/20 underline-offset-4 transition hover:text-accent hover:decoration-accent"
+              >
+                {selected.league} ↗
+              </a>
+            ) : (
+              selected.league
+            )}
+          </p>
+        )}
       </div>
 
       {!hasMatches ? (
