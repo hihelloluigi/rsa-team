@@ -4,7 +4,7 @@ import { GiSoccerBall } from "react-icons/gi";
 export default function Hero({ tagline }: { tagline: string }) {
   return (
     <section className="relative overflow-hidden border-b border-white/10">
-      <div className="absolute -top-24 -right-32 w-[28rem] h-[28rem] bg-accent rotate-45 opacity-90" />
+      <div className="absolute -top-16 -right-20 w-52 h-52 sm:-top-24 sm:-right-32 sm:w-[28rem] sm:h-[28rem] bg-accent rotate-45 opacity-90" />
       {/* Football watermark */}
       <div
         className="absolute bottom-8 left-[-2rem] text-white/5 pointer-events-none select-none"
@@ -16,13 +16,11 @@ export default function Hero({ tagline }: { tagline: string }) {
         <p className="text-xs font-extrabold uppercase tracking-[0.3em] text-accent mb-4">
           Dal 2025
         </p>
-        <div className="inline-block">
-          <h1 className="font-display italic uppercase leading-[0.8] text-7xl sm:text-9xl">
-            <span className="block">RSA</span>
-            <span className="block text-accent">TEAM</span>
-          </h1>
-          <p className="mt-6 text-right text-fg">{tagline}</p>
-        </div>
+        <h1 className="font-display italic uppercase leading-[0.8] text-7xl sm:text-9xl">
+          <span className="block">RSA</span>
+          <span className="block text-accent">TEAM</span>
+        </h1>
+        <p className="mt-6 max-w-md text-lg sm:text-xl text-fg">{tagline}</p>
         <div className="mt-8 flex flex-wrap gap-3">
           <Link href="/squad" className="bg-accent px-6 py-3 text-sm font-extrabold uppercase tracking-widest hover:opacity-90">
             Conosci la rosa
