@@ -33,7 +33,6 @@ export default function PlayerCard({ player }: { player: Player }) {
         {player.nickname && (
           <div className="text-xs text-muted mt-0.5 truncate">{player.name}</div>
         )}
-        <div className="text-xs text-muted mt-0.5">{player.nationality}</div>
       </div>
     </Link>
   );
