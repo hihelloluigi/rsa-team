@@ -35,7 +35,7 @@ export default function Hero({ tagline }: { tagline: string }) {
         <div className="marquee__track flex whitespace-nowrap">
           {/* Duplicate content for seamless loop */}
           {[0, 1].map((i) => (
-            <span key={i} className="marquee__content flex shrink-0 items-center">
+            <span key={i} className="flex shrink-0 items-center">
               {Array.from({ length: 8 }).map((_, j) => (
                 <span key={j} className="flex items-center gap-3 mx-4">
                   <span className="font-display italic font-extrabold uppercase tracking-[0.15em] text-black text-sm sm:text-base">
