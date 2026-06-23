@@ -8,7 +8,7 @@ export default function Footer() {
           <span className="font-black italic text-fg text-lg">RSA <span className="text-accent">TEAM</span></span>
           <span className="font-display italic uppercase text-white/50 tracking-widest text-xs">SIAMO MATTI</span>
         </div>
-        <span className="text-xs">© 2026 RSA TEAM · Tutti i diritti riservati</span>
+        <span className="text-xs">© {new Date().getFullYear()} RSA TEAM · Tutti i diritti riservati</span>
         <a
           href="https://www.instagram.com/rsafussball"
           target="_blank"
