@@ -6,15 +6,29 @@ import Reveal from "@/components/Reveal";
 import PositionIcon from "@/components/PositionIcon";
 import { getPlayers, getPlayerBySlug, positionLabels } from "@/lib/data";
 import { initials } from "@/lib/format";
+import JsonLd from "@/components/JsonLd";
+import { playerLd, breadcrumbLd } from "@/lib/structured-data";
 
 export function generateStaticParams() {
   return getPlayers().map((p) => ({ slug: p.slug }));
 }
 
+function playerDescription(player: NonNullable<ReturnType<typeof getPlayerBySlug>>): string {
+  if (player.bio) return player.bio.length > 160 ? `${player.bio.slice(0, 157)}…` : player.bio;
+  const role = positionLabels[player.position];
+  const nat = player.nationality ? `, ${player.nationality}` : "";
+  return `${player.name}: ${role} numero ${player.number} dell'RSA TEAM${nat}.`;
+}
+
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const player = getPlayerBySlug(slug);
-  return { title: player ? `${player.name} — RSA TEAM` : "Giocatore — RSA TEAM" };
+  if (!player) return { title: "Giocatore" };
+  return {
+    title: player.name,
+    description: playerDescription(player),
+    alternates: { canonical: `/squad/${player.slug}` },
+  };
 }
 
 export default async function PlayerPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -24,6 +38,16 @@ export default async function PlayerPage({ params }: { params: Promise<{ slug: s
 
   return (
     <main className="mx-auto max-w-6xl px-5 py-16">
+      <JsonLd
+        data={[
+          playerLd(player),
+          breadcrumbLd([
+            { name: "Home", path: "/" },
+            { name: "Squadra", path: "/squad" },
+            { name: player.nickname ?? player.name, path: `/squad/${player.slug}` },
+          ]),
+        ]}
+      />
       <Link href="/squad" className="text-xs uppercase tracking-widest text-muted hover:text-accent">← Torna alla rosa</Link>
       <div className="mt-6 grid gap-10 lg:grid-cols-2">
         <Reveal>

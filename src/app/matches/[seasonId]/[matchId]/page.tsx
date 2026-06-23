@@ -4,6 +4,8 @@ import { GiSoccerField, GiSoccerBall } from "react-icons/gi";
 import { getSeasons, getMatch, matchResult, matchSides } from "@/lib/data";
 import type { MatchResult } from "@/lib/types";
 import WinCelebration from "@/components/WinCelebration";
+import JsonLd from "@/components/JsonLd";
+import { matchLd, breadcrumbLd } from "@/lib/structured-data";
 
 type Params = Promise<{ seasonId: string; matchId: string }>;
 
@@ -14,9 +16,18 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Params }) {
   const { seasonId, matchId } = await params;
   const found = getMatch(seasonId, matchId);
-  if (!found) return { title: "Partita — RSA TEAM" };
-  const { home, away } = matchSides(found.match);
-  return { title: `${home} - ${away} — RSA TEAM` };
+  if (!found) return { title: "Partita" };
+  const { match, season } = found;
+  const { home, away, homeScore, awayScore } = matchSides(match);
+  const scoreline = match.score ? ` ${homeScore}-${awayScore}` : "";
+  const fixture = `${home} - ${away}`;
+  const description = `${fixture}${scoreline} · ${match.competition}, stagione ${season.label} dell'RSA TEAM.`;
+  return {
+    // One side is always "RSA TEAM", so the fixture already carries the brand.
+    title: { absolute: fixture },
+    description,
+    alternates: { canonical: `/matches/${season.id}/${match.id}` },
+  };
 }
 
 const resultText: Record<MatchResult, string> = { W: "Vittoria", D: "Pareggio", L: "Sconfitta" };
@@ -65,6 +76,17 @@ export default async function MatchDetailPage({ params }: { params: Params }) {
   return (
     <main className="mx-auto max-w-3xl px-5 py-16">
       {won && <WinCelebration />}
+      <h1 className="sr-only">{home} - {away} · {match.competition}, {season.label}</h1>
+      <JsonLd
+        data={[
+          matchLd(season, match),
+          breadcrumbLd([
+            { name: "Home", path: "/" },
+            { name: "Partite", path: "/matches" },
+            { name: `${home} - ${away}`, path: `/matches/${season.id}/${match.id}` },
+          ]),
+        ]}
+      />
 
       <Link
         href={`/matches?season=${season.id}`}

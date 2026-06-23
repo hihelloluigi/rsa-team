@@ -7,7 +7,14 @@ import EmptyState from "@/components/EmptyState";
 import { getSeasons, getCurrentSeason, getSeasonById, splitMatches, sortStandings } from "@/lib/data";
 import { GiWhistle, GiTrophyCup } from "react-icons/gi";
 
-export const metadata = { title: "Partite — RSA TEAM" };
+const description =
+  "Calendario, risultati e classifica dell'RSA TEAM, stagione per stagione. Tutte le partite del club amatoriale di Bergamo.";
+
+export const metadata = {
+  title: "Partite",
+  description,
+  alternates: { canonical: "/matches" },
+};
 
 export default async function MatchesPage({
   searchParams,
@@ -23,6 +30,7 @@ export default async function MatchesPage({
 
   return (
     <main className="mx-auto max-w-6xl px-5 py-16">
+      <h1 className="sr-only">Partite, risultati e classifica — RSA TEAM</h1>
       {/* Season selector */}
       <div className="mb-8 space-y-3">
         <SeasonSelect

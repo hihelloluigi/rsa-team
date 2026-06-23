@@ -2,13 +2,20 @@ import SectionHeading from "@/components/SectionHeading";
 import Reveal from "@/components/Reveal";
 import { getClub } from "@/lib/data";
 
-export const metadata = { title: "Il Club — RSA TEAM" };
+const description =
+  "Chi è l'RSA TEAM: la storia del club, lo staff e il campo di casa a Bergamo. Più cuore che tattica, da sempre.";
+
+export const metadata = {
+  title: "Il Club",
+  description,
+  alternates: { canonical: "/club" },
+};
 
 export default function ClubPage() {
   const club = getClub();
   return (
     <main className="mx-auto max-w-6xl px-5 py-16">
-      <SectionHeading label="Il Club" title="Chi siamo" />
+      <SectionHeading as="h1" label="Il Club" title="Chi siamo" />
       <div className="grid gap-12 lg:grid-cols-3">
         <div className="lg:col-span-2">
           <Reveal>

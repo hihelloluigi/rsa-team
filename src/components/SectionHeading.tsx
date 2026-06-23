@@ -4,10 +4,12 @@ export default function SectionHeading({
   label,
   title,
   icon,
+  as: Heading = "h2",
 }: {
   label?: string;
   title: string;
   icon?: ReactNode;
+  as?: "h1" | "h2";
 }) {
   return (
     <div className="mb-6">
@@ -19,7 +21,7 @@ export default function SectionHeading({
       )}
       <div className="flex items-center gap-3">
         {icon && <span className="text-accent" aria-hidden="true">{icon}</span>}
-        <h2 className="font-display italic text-4xl sm:text-5xl uppercase leading-none">{title}</h2>
+        <Heading className="font-display italic text-4xl sm:text-5xl uppercase leading-none">{title}</Heading>
       </div>
     </div>
   );
