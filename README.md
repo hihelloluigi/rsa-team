@@ -1,36 +1,52 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# RSA TEAM
 
-## Getting Started
+Website for RSA TEAM, an amateur football club. The site language is Italian.
 
-First, run the development server:
+## Tech stack
+
+- **Next.js 16** (App Router)
+- **TypeScript**
+- **Tailwind CSS v4**
+- **Framer Motion** — page animations via the `Reveal` component
+- **react-icons** — SVG icon components
+- **Zod** — runtime data validation for content JSON files
+
+## Running locally
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Editing content
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+All site content lives in `src/data/`:
 
-## Learn More
+| File | What it controls |
+|------|-----------------|
+| `src/data/players.json` | Squad roster (name, number, position, bio, …) |
+| `src/data/matches.json` | Fixtures and results |
+| `src/data/club.json` | Club info (tagline, about, founded, ground, staff) |
+| `src/data/home.json` | Homepage hero copy |
 
-To learn more about Next.js, take a look at the following resources:
+Data is validated by Zod schemas at build time — invalid JSON **will break `npm run build`**. Check the schema files in `src/lib/` if you get a validation error.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Routes
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| Path | Page |
+|------|------|
+| `/` | Homepage |
+| `/squad` | Full squad roster |
+| `/squad/[slug]` | Individual player profile |
+| `/matches` | Fixtures & results |
+| `/club` | Club information |
 
-## Deploy on Vercel
+## Other commands
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+npm run build   # Production build (validates data)
+npm run lint    # ESLint
+npm test        # Vitest unit tests
+```

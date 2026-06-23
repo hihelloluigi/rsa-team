@@ -1,14 +1,23 @@
+import { FaInstagram } from "react-icons/fa";
+
 export default function Footer() {
   return (
     <footer className="border-t border-white/10 mt-20">
       <div className="mx-auto max-w-6xl px-5 py-10 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-muted">
-        <span className="font-black italic text-fg">RSA<span className="text-accent">.</span>TEAM</span>
-        <span>© 2026 RSA TEAM. All rights reserved.</span>
-        <span className="flex gap-4 uppercase text-xs tracking-widest">
-          <a href="#" className="hover:text-accent">Instagram</a>
-          <a href="#" className="hover:text-accent">X</a>
-          <a href="#" className="hover:text-accent">YouTube</a>
-        </span>
+        <div className="flex flex-col items-center sm:items-start gap-1">
+          <span className="font-black italic text-fg text-lg">RSA<span className="text-accent">.</span>TEAM</span>
+          <span className="font-display italic uppercase text-accent tracking-widest text-xs">SIAMO MATTI</span>
+        </div>
+        <span className="text-xs">© 2026 RSA TEAM · Tutti i diritti riservati</span>
+        <a
+          href="https://www.instagram.com/rsafussball"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-2 text-muted hover:text-accent transition"
+        >
+          <FaInstagram size={18} />
+          <span className="text-xs tracking-widest uppercase">@rsafussball</span>
+        </a>
       </div>
     </footer>
   );
