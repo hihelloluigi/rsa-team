@@ -23,7 +23,7 @@ export default async function MatchesPage({
   return (
     <main className="mx-auto max-w-6xl px-5 py-16">
       {/* Season selector */}
-      <div className="mb-10">
+      <div className="mb-6">
         <SeasonSelect
           seasons={seasons.map((s) => ({ id: s.id, label: s.label }))}
           selected={selected.id}
