@@ -1,6 +1,7 @@
 import SectionHeading from "@/components/SectionHeading";
 import Reveal from "@/components/Reveal";
 import { getClub } from "@/lib/data";
+import { GiSoccerBall } from "react-icons/gi";
 
 export const metadata = { title: "The Club — RSA TEAM" };
 
@@ -8,7 +9,7 @@ export default function ClubPage() {
   const club = getClub();
   return (
     <main className="mx-auto max-w-6xl px-5 py-16">
-      <SectionHeading label="The Club" title="About RSA TEAM" />
+      <SectionHeading label="The Club" title="About RSA TEAM" icon={<GiSoccerBall size={32} />} />
       <div className="grid gap-12 lg:grid-cols-3">
         <div className="lg:col-span-2">
           <Reveal>

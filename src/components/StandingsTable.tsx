@@ -1,4 +1,5 @@
 import type { StandingRow } from "@/lib/types";
+import { GiTrophyCup } from "react-icons/gi";
 
 const cols = ["P", "W", "D", "L", "GF", "GA", "Pts"];
 
@@ -17,7 +18,12 @@ export default function StandingsTable({ rows }: { rows: StandingRow[] }) {
           {rows.map((r, i) => (
             <tr key={r.team} className={`border-b border-white/5 ${r.isRSA ? "bg-accent/15" : ""}`}>
               <td className="p-3 text-muted">{i + 1}</td>
-              <td className={`p-3 font-bold ${r.isRSA ? "text-accent" : ""}`}>{r.team}</td>
+              <td className={`p-3 font-bold ${r.isRSA ? "text-accent" : ""}`}>
+                <span className="flex items-center gap-1.5">
+                  {i === 0 && <GiTrophyCup size={14} className="text-accent shrink-0" aria-hidden="true" />}
+                  {r.team}
+                </span>
+              </td>
               <td className="p-3 text-center">{r.played}</td>
               <td className="p-3 text-center">{r.won}</td>
               <td className="p-3 text-center">{r.drawn}</td>

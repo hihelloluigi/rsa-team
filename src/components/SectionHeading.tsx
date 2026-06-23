@@ -1,4 +1,14 @@
-export default function SectionHeading({ label, title }: { label?: string; title: string }) {
+import type { ReactNode } from "react";
+
+export default function SectionHeading({
+  label,
+  title,
+  icon,
+}: {
+  label?: string;
+  title: string;
+  icon?: ReactNode;
+}) {
   return (
     <div className="mb-8">
       {label && (
@@ -7,7 +17,10 @@ export default function SectionHeading({ label, title }: { label?: string; title
           <span className="text-xs font-extrabold uppercase tracking-[0.2em] text-accent">{label}</span>
         </div>
       )}
-      <h2 className="font-display italic text-4xl sm:text-5xl uppercase leading-none">{title}</h2>
+      <div className="flex items-center gap-3">
+        {icon && <span className="text-accent" aria-hidden="true">{icon}</span>}
+        <h2 className="font-display italic text-4xl sm:text-5xl uppercase leading-none">{title}</h2>
+      </div>
     </div>
   );
 }

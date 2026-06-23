@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { Player } from "@/lib/types";
+import PositionIcon from "@/components/PositionIcon";
 
 function initials(name: string) {
   return name.split(" ").map((w) => w[0]).slice(0, 2).join("").toUpperCase();
@@ -19,7 +20,8 @@ export default function PlayerCard({ player }: { player: Player }) {
           <span className="font-display text-6xl text-white/80">{initials(player.name)}</span>
         )}
         <span className="absolute top-3 left-3 font-display text-3xl text-white drop-shadow">{player.number}</span>
-        <span className="absolute top-3 right-3 text-[10px] font-extrabold uppercase tracking-widest bg-accent px-2 py-1">
+        <span className="absolute top-3 right-3 flex items-center gap-1 text-[10px] font-extrabold uppercase tracking-widest bg-accent px-2 py-1">
+          <PositionIcon position={player.position} size={10} />
           {player.position}
         </span>
       </div>

@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import StatBadge from "@/components/StatBadge";
 import Reveal from "@/components/Reveal";
+import PositionIcon from "@/components/PositionIcon";
 import { getPlayers, getPlayerBySlug } from "@/lib/data";
 
 export function generateStaticParams() {
@@ -41,7 +42,10 @@ export default async function PlayerPage({ params }: { params: Promise<{ slug: s
 
         <Reveal delay={0.1}>
           <div>
-            <p className="text-xs font-extrabold uppercase tracking-[0.3em] text-accent">{player.position} · #{player.number}</p>
+            <p className="text-xs font-extrabold uppercase tracking-[0.3em] text-accent flex items-center gap-1.5">
+              <PositionIcon position={player.position} size={18} className="text-accent" />
+              {player.position} · #{player.number}
+            </p>
             <h1 className="font-display italic uppercase text-6xl leading-none mt-2">{player.name}</h1>
             <dl className="mt-6 grid grid-cols-2 gap-y-3 text-sm">
               <dt className="text-muted uppercase tracking-widest text-xs">Nationality</dt><dd>{player.nationality}</dd>
