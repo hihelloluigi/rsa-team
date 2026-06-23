@@ -14,11 +14,11 @@ export default function Hero({ tagline }: { tagline: string }) {
       </div>
       <div className="relative mx-auto max-w-6xl px-5 py-24 sm:py-32">
         <p className="text-xs font-extrabold uppercase tracking-[0.3em] text-accent mb-4">
-          Dal 2024 · Più cuore che tattica
+          Dal 2025
         </p>
         <h1 className="font-display italic uppercase leading-[0.8] text-7xl sm:text-9xl">
           <span className="block">RSA</span>
-          <span className="block text-transparent [-webkit-text-stroke:2px_var(--color-accent)]">TEAM</span>
+          <span className="block text-accent">TEAM</span>
         </h1>
         <p className="mt-6 max-w-md text-muted">{tagline}</p>
         <div className="mt-8 flex flex-wrap gap-3">
