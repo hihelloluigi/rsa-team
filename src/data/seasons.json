@@ -11,12 +11,12 @@
     "label": "2025/26",
     "current": false,
     "league": "Bergamo Tornei · Serie D · Girone A",
-    "leagueUrl": "https://www.bergamotornei.com/it/tournament/141/campionato-nazionale-asi-bergamo-tornei-calcio-a-7/stream/",
+    "leagueUrl": "https://www.bergamotornei.com/it/t-calendar/141/campionato-nazionale-asi-bergamo-tornei-calcio-a-7/",
     "matches": [
-      { "id": "m01", "opponent": "Karpaty", "home": true, "date": "2025-10-03T12:00:00+00:00", "competition": "Andata", "status": "played", "score": { "rsa": 2, "opponent": 2 } },
-      { "id": "m02", "opponent": "Grande Blu FC", "home": false, "date": "2025-10-08T12:00:00+00:00", "competition": "Andata", "status": "played", "score": { "rsa": 4, "opponent": 5 } },
-      { "id": "m03", "opponent": "CPB Comonte", "home": true, "date": "2025-10-17T12:00:00+00:00", "competition": "Andata", "status": "played", "score": { "rsa": 1, "opponent": 4 } },
-      { "id": "m04", "opponent": "Oratorio Loreto", "home": true, "date": "2025-10-24T12:00:00+00:00", "competition": "Andata", "status": "played", "score": { "rsa": 1, "opponent": 1 } },
+      { "id": "m01", "opponent": "Karpaty", "home": true, "date": "2025-10-03T12:00:00+00:00", "competition": "Andata", "status": "played", "score": { "rsa": 2, "opponent": 2 }, "stadium": "Centro Sportivo Presezzo · Sintetico Calcio a 7", "scorers": { "rsa": ["Foresti P.", "Scarpellini G."], "opponent": ["Litvinov Yevgeniy"] } },
+      { "id": "m02", "opponent": "Grande Blu FC", "home": false, "date": "2025-10-08T12:00:00+00:00", "competition": "Andata", "status": "played", "score": { "rsa": 4, "opponent": 5 }, "stadium": "Centro Sportivo Imiberg · Sintetico", "scorers": { "rsa": ["Colombo Giacomo", "Moleri Leonardo Maria", "Altri 2 sconosciuti"], "opponent": ["Paoletti Pasquale (2)", "Carosi Leonardo (2)", "Paoletti Luca"] } },
+      { "id": "m03", "opponent": "CPB Comonte", "home": true, "date": "2025-10-17T12:00:00+00:00", "competition": "Andata", "status": "played", "score": { "rsa": 1, "opponent": 4 }, "stadium": "Centro Sportivo Presezzo · Sintetico Calcio a 7", "scorers": { "rsa": ["Moleri Leonardo Maria"], "opponent": ["Curci Andrea", "Dedei Samuele", "Milesi Simone", "Mutti Lorenzo"] } },
+      { "id": "m04", "opponent": "Oratorio Loreto", "home": true, "date": "2025-10-24T12:00:00+00:00", "competition": "Andata", "status": "played", "score": { "rsa": 1, "opponent": 1 }, "stadium": "Centro Sportivo Presezzo · Sintetico Calcio a 7", "scorers": { "rsa": ["Colombo Giacomo"], "opponent": ["Alborghetti Davide"] } },
       { "id": "m05", "opponent": "Comonte Da Bere", "home": false, "date": "2025-10-30T12:00:00+00:00", "competition": "Andata", "status": "played", "score": { "rsa": 4, "opponent": 7 } },
       { "id": "m06", "opponent": "Jolly Roger", "home": false, "date": "2025-11-07T12:00:00+00:00", "competition": "Andata", "status": "played", "score": { "rsa": 5, "opponent": 3 } },
       { "id": "m07", "opponent": "Phoenix Futset", "home": true, "date": "2025-11-14T12:00:00+00:00", "competition": "Andata", "status": "played", "score": { "rsa": 1, "opponent": 3 } },
@@ -46,7 +46,7 @@
       { "team": "Oratorio Loreto", "played": 21, "won": 9, "drawn": 5, "lost": 7, "goalsFor": 76, "goalsAgainst": 69, "points": 32 },
       { "team": "Phoenix Futset", "played": 22, "won": 8, "drawn": 2, "lost": 12, "goalsFor": 66, "goalsAgainst": 85, "points": 26 },
       { "team": "Grande Blu FC", "played": 22, "won": 6, "drawn": 3, "lost": 13, "goalsFor": 76, "goalsAgainst": 103, "points": 21 },
-      { "team": "RSA TEAM", "played": 22, "won": 5, "drawn": 2, "lost": 15, "goalsFor": 54, "goalsAgainst": 106, "points": 17, "isRSA": true },
+      { "team": "RSA Team", "played": 22, "won": 5, "drawn": 2, "lost": 15, "goalsFor": 54, "goalsAgainst": 106, "points": 17, "isRSA": true },
       { "team": "Comonte Da Bere", "played": 20, "won": 3, "drawn": 2, "lost": 15, "goalsFor": 71, "goalsAgainst": 110, "points": 11 },
       { "team": "FC Torreland", "played": 22, "won": 2, "drawn": 1, "lost": 19, "goalsFor": 56, "goalsAgainst": 120, "points": 7 }
     ]
