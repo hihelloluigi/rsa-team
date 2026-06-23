@@ -18,7 +18,7 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+Open [http://localhost:3002](http://localhost:3002).
 
 ## Editing content
 
@@ -27,13 +27,13 @@ All site content lives in `src/data/`:
 | File | What it controls |
 |------|-----------------|
 | `src/data/players.json` | Squad roster (name, number, position, bio, …) |
-| `src/data/matches.json` | Fixtures and results |
-| `src/data/standings.json` | League standings table |
+| `src/data/seasons.json` | Seasons, each with its own fixtures **and** standings table |
 | `src/data/club.json` | Club info (tagline, about, founded, ground, staff) |
+| `src/data/sponsors.json` | Sponsor logos shown on the homepage |
 
 The homepage hero copy comes from `club.json` (`tagline`) — there is no separate home data file.
 
-`standings.json` is maintained **independently** of `matches.json`: editing a fixture's score does not recompute the league table, so update both if you want them to agree.
+Within a season, `standings` is maintained **independently** of `matches`: editing a fixture's score does not recompute the league table, so update both if you want them to agree.
 
 Data is validated by Zod schemas at build time — invalid JSON **will break `npm run build`**. Check the schema files in `src/lib/` if you get a validation error.
 
