@@ -59,6 +59,9 @@ export default async function MatchesPage({
           )}
 
           <section>
+            <p className="mb-6 border-l-2 border-accent pl-4 text-base sm:text-lg italic text-muted">
+              Poteva andare meglio, ma poteva andare anche peggio.
+            </p>
             <SectionHeading label="Risultati" title="Giocate" />
             <div>
               {played.map((m) => (
