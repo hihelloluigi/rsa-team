@@ -6,7 +6,7 @@
   { "slug": "federico-corna", "nickname": "Morla", "name": "Federico Corna", "number": 5, "position": "DEF" },
   { "slug": "vanga", "name": "Vanga", "number": 56, "position": "DEF" },
   { "slug": "nicolo-moleri", "nickname": "Scivolone", "name": "Nicolo Moleri", "number": 3, "position": "DEF" },
-  { "slug": "mattia-moleri", "nickname": "Spada", "name": "Mattia Moleri", "number": 14, "position": "DEF" },
+  { "slug": "mattia-moleri", "nickname": "Spada", "name": "Mattia Moleri", "number": 14, "position": "DEF", "photo": "/players/mattia-moleri.jpeg" },
 
   { "slug": "giacomo-colombo", "nickname": "Palu", "name": "Giacomo Colombo", "number": 11, "position": "MID" },
   { "slug": "enrico-tacchi", "nickname": "T.Error", "name": "Enrico Tacchi", "number": 82, "position": "MID" },
