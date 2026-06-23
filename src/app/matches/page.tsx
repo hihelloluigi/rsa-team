@@ -52,7 +52,6 @@ export default async function MatchesPage({
             <h2 className="font-display italic uppercase text-3xl sm:text-4xl leading-tight">
               «Squadra che non gioca, non perde»
             </h2>
-            <p className="mt-2 text-xs uppercase tracking-widest text-muted">— cit. quasi Boškov</p>
             <p className="mx-auto mt-5 max-w-md text-muted">
               Le partite della stagione {selected.label} verranno sorteggiate in settembre.
               Puoi tornare più avanti, noi intanto ci alleniamo. Forse.

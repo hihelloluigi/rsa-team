@@ -23,7 +23,6 @@ export default function Home() {
             <h3 className="font-display italic uppercase text-2xl sm:text-3xl leading-tight">
               «Squadra che non gioca, non perde»
             </h3>
-            <p className="mt-2 text-xs uppercase tracking-widest text-muted">— cit. quasi Boškov</p>
             <p className="mx-auto mt-5 max-w-md text-muted">
               Le partite della stagione {season.label} verranno sorteggiate in settembre.
               Nel frattempo puoi rivederti la scorsa stagione: spoiler, andò bene.
