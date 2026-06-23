@@ -20,5 +20,6 @@
 
   { "slug": "giuliano-feoli", "nickname": "Von Poppa", "name": "Giuliano Feoli", "number": 71, "position": "FWD" },
   { "slug": "matteo-basetti", "nickname": "Maseo", "name": "Matteo Basetti", "number": 21, "position": "FWD" },
-  { "slug": "giacomo-scarpellini", "nickname": "El Troncho", "name": "Giacomo Scarpellini", "number": 10, "position": "FWD" }
+  { "slug": "giacomo-scarpellini", "nickname": "El Troncho", "name": "Giacomo Scarpellini", "number": 10, "position": "FWD" },
+  { "slug": "ruotino", "name": "Ruotino", "number": 44, "position": "FWD" }
 ]
