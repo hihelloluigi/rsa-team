@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { Match } from "@/lib/types";
 import { matchResult } from "@/lib/data";
 
@@ -9,7 +10,7 @@ const resultLabel: Record<string, string> = {
   W: "V", D: "N", L: "P",
 };
 
-export default function MatchRow({ match }: { match: Match }) {
+export default function MatchRow({ match, href }: { match: Match; href?: string }) {
   const result = matchResult(match);
   const home = match.home ? "RSA TEAM" : match.opponent;
   const away = match.home ? match.opponent : "RSA TEAM";
@@ -25,7 +26,7 @@ export default function MatchRow({ match }: { match: Match }) {
     <span className="text-[11px] text-muted uppercase">{timeStr}</span>
   );
 
-  return (
+  const inner = (
     <div className="border-b border-white/10 py-4">
       {/* Mobile: stacked layout — date/result on top, one team per line */}
       <div className="sm:hidden">
@@ -60,5 +61,12 @@ export default function MatchRow({ match }: { match: Match }) {
         <div className="w-10 shrink-0 text-right">{resultBadge}</div>
       </div>
     </div>
+  );
+
+  if (!href) return inner;
+  return (
+    <Link href={href} className="block transition hover:bg-white/[0.03]">
+      {inner}
+    </Link>
   );
 }

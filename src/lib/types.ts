@@ -40,6 +40,13 @@ export const MatchSchema = z
     score: z
       .object({ rsa: z.number().int().nonnegative(), opponent: z.number().int().nonnegative() })
       .optional(),
+    stadium: z.string().min(1).optional(),
+    scorers: z
+      .object({
+        rsa: z.array(z.string().min(1)).optional(),
+        opponent: z.array(z.string().min(1)).optional(),
+      })
+      .optional(),
   })
   .refine((m) => m.status === "upcoming" || m.score !== undefined, {
     message: "played matches must include a score",

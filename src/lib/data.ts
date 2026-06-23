@@ -39,6 +39,13 @@ export function getSeasonById(id: string): Season | undefined {
   return seasons.find((s) => s.id === id);
 }
 
+export function getMatch(seasonId: string, matchId: string): { season: Season; match: Match } | undefined {
+  const season = getSeasonById(seasonId);
+  const match = season?.matches.find((m) => m.id === matchId);
+  if (!season || !match) return undefined;
+  return { season, match };
+}
+
 export function splitMatches(matches: Match[]): { played: Match[]; upcoming: Match[] } {
   const ms = (s: string) => new Date(s).getTime();
   const played = matches

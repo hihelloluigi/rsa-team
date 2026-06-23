@@ -72,7 +72,7 @@ export default async function MatchesPage({
               <SectionHeading label="Calendario" title="Prossime" icon={<GiWhistle size={32} />} />
               <div>
                 {upcoming.map((m) => (
-                  <MatchRow key={m.id} match={m} />
+                  <MatchRow key={m.id} match={m} href={`/matches/${selected.id}/${m.id}`} />
                 ))}
               </div>
             </section>
@@ -85,7 +85,7 @@ export default async function MatchesPage({
             <SectionHeading label="Risultati" title="Giocate" />
             <div>
               {played.map((m) => (
-                <MatchRow key={m.id} match={m} />
+                <MatchRow key={m.id} match={m} href={`/matches/${selected.id}/${m.id}`} />
               ))}
             </div>
           </section>
