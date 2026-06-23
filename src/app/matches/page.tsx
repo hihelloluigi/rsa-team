@@ -59,7 +59,7 @@ export default async function MatchesPage({
           )}
 
           <section>
-            <SectionHeading label="Risultati" title="Giocate" icon={<GiSoccerBall size={32} />} />
+            <SectionHeading label="Risultati" title="Giocate" />
             <div>
               {played.map((m) => (
                 <MatchRow key={m.id} match={m} />
@@ -69,7 +69,7 @@ export default async function MatchesPage({
 
           {standings.length > 0 && (
             <section>
-              <SectionHeading label="Classifica" title="La Classifica" icon={<GiTrophyCup size={32} />} />
+              <SectionHeading label="Classifica" title="La Classifica" icon={<GiTrophyCup size={32} className="text-white" />} />
               <Reveal>
                 <StandingsTable rows={standings} />
               </Reveal>
