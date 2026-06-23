@@ -4,6 +4,7 @@ import { GiSoccerField, GiSoccerBall } from "react-icons/gi";
 import { getSeasons, getMatch, matchResult, matchSides } from "@/lib/data";
 import type { MatchResult } from "@/lib/types";
 import WinCelebration from "@/components/WinCelebration";
+import LossReaction from "@/components/LossReaction";
 import JsonLd from "@/components/JsonLd";
 import { matchLd, breadcrumbLd } from "@/lib/structured-data";
 
@@ -59,7 +60,6 @@ export default async function MatchDetailPage({ params }: { params: Params }) {
 
   const { season, match } = found;
   const result = matchResult(match);
-  const won = result === "W";
   const { home, away, homeScore, awayScore } = matchSides(match);
   const dateStr = new Date(match.date).toLocaleDateString("it-IT", {
     weekday: "long", day: "2-digit", month: "long", year: "numeric",
@@ -75,7 +75,8 @@ export default async function MatchDetailPage({ params }: { params: Params }) {
 
   return (
     <main className="mx-auto max-w-3xl px-5 py-16">
-      {won && <WinCelebration />}
+      {result === "W" && <WinCelebration />}
+      {result === "L" && <LossReaction />}
       <h1 className="sr-only">{home} - {away} · {match.competition}, {season.label}</h1>
       <JsonLd
         data={[
