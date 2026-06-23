@@ -1,9 +1,11 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import StatBadge from "@/components/StatBadge";
 import Reveal from "@/components/Reveal";
 import PositionIcon from "@/components/PositionIcon";
 import { getPlayers, getPlayerBySlug, positionLabels } from "@/lib/data";
+import { initials } from "@/lib/format";
 
 export function generateStaticParams() {
   return getPlayers().map((p) => ({ slug: p.slug }));
@@ -13,10 +15,6 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const player = getPlayerBySlug(slug);
   return { title: player ? `${player.name} — RSA TEAM` : "Giocatore — RSA TEAM" };
-}
-
-function initials(name: string) {
-  return name.split(" ").map((w) => w[0]).slice(0, 2).join("").toUpperCase();
 }
 
 export default async function PlayerPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -31,8 +29,14 @@ export default async function PlayerPage({ params }: { params: Promise<{ slug: s
         <Reveal>
           <div className="aspect-[3/4] relative flex items-center justify-center bg-gradient-to-br from-accent/30 to-black border border-white/10">
             {player.photo ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={player.photo} alt={player.name} className="absolute inset-0 w-full h-full object-cover" />
+              <Image
+                src={player.photo}
+                alt={player.name}
+                fill
+                priority
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover"
+              />
             ) : (
               <span className="font-display text-9xl text-white/80">{initials(player.name)}</span>
             )}

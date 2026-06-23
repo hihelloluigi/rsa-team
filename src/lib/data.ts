@@ -29,6 +29,22 @@ export function matchResult(m: Match): MatchResult | null {
   return "D";
 }
 
+// Resolve a match into home/away sides so each side carries its own goals
+// (home goals : away goals), rather than always listing RSA first.
+export function matchSides(m: Match): {
+  home: string;
+  away: string;
+  homeScore?: number;
+  awayScore?: number;
+} {
+  return {
+    home: m.home ? "RSA TEAM" : m.opponent,
+    away: m.home ? m.opponent : "RSA TEAM",
+    homeScore: m.home ? m.score?.rsa : m.score?.opponent,
+    awayScore: m.home ? m.score?.opponent : m.score?.rsa,
+  };
+}
+
 export function getPlayers(): Player[] {
   return [...players].sort((a, b) => a.number - b.number);
 }

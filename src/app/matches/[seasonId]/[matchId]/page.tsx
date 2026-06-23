@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { GiSoccerField, GiSoccerBall } from "react-icons/gi";
-import { getSeasons, getMatch, matchResult } from "@/lib/data";
+import { getSeasons, getMatch, matchResult, matchSides } from "@/lib/data";
+import type { MatchResult } from "@/lib/types";
 import WinCelebration from "@/components/WinCelebration";
 
 type Params = Promise<{ seasonId: string; matchId: string }>;
@@ -14,14 +15,12 @@ export async function generateMetadata({ params }: { params: Params }) {
   const { seasonId, matchId } = await params;
   const found = getMatch(seasonId, matchId);
   if (!found) return { title: "Partita — RSA TEAM" };
-  const { match } = found;
-  const home = match.home ? "RSA TEAM" : match.opponent;
-  const away = match.home ? match.opponent : "RSA TEAM";
+  const { home, away } = matchSides(found.match);
   return { title: `${home} - ${away} — RSA TEAM` };
 }
 
-const resultText: Record<string, string> = { W: "Vittoria", D: "Pareggio", L: "Sconfitta" };
-const resultClass: Record<string, string> = { W: "text-accent", D: "text-white", L: "text-muted" };
+const resultText: Record<MatchResult, string> = { W: "Vittoria", D: "Pareggio", L: "Sconfitta" };
+const resultClass: Record<MatchResult, string> = { W: "text-accent", D: "text-white", L: "text-muted" };
 
 function ScorerList({ names, align }: { names: string[]; align: "left" | "right" }) {
   if (names.length === 0) {
@@ -50,10 +49,7 @@ export default async function MatchDetailPage({ params }: { params: Params }) {
   const { season, match } = found;
   const result = matchResult(match);
   const won = result === "W";
-  const home = match.home ? "RSA TEAM" : match.opponent;
-  const away = match.home ? match.opponent : "RSA TEAM";
-  const homeScore = match.home ? match.score?.rsa : match.score?.opponent;
-  const awayScore = match.home ? match.score?.opponent : match.score?.rsa;
+  const { home, away, homeScore, awayScore } = matchSides(match);
   const dateStr = new Date(match.date).toLocaleDateString("it-IT", {
     weekday: "long", day: "2-digit", month: "long", year: "numeric",
   });

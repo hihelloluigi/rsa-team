@@ -1,22 +1,18 @@
 import Link from "next/link";
-import type { Match } from "@/lib/types";
-import { matchResult } from "@/lib/data";
+import type { Match, MatchResult } from "@/lib/types";
+import { matchResult, matchSides } from "@/lib/data";
 
-const badge: Record<string, string> = {
+const badge: Record<MatchResult, string> = {
   W: "bg-accent text-white", D: "bg-white/20 text-white", L: "bg-white/5 text-muted",
 };
 
-const resultLabel: Record<string, string> = {
+const resultLabel: Record<MatchResult, string> = {
   W: "V", D: "N", L: "P",
 };
 
 export default function MatchRow({ match, href }: { match: Match; href?: string }) {
   const result = matchResult(match);
-  const home = match.home ? "RSA TEAM" : match.opponent;
-  const away = match.home ? match.opponent : "RSA TEAM";
-  // Pair each side with its own goals (home goals : away goals), not RSA-first.
-  const homeScore = match.home ? match.score?.rsa : match.score?.opponent;
-  const awayScore = match.home ? match.score?.opponent : match.score?.rsa;
+  const { home, away, homeScore, awayScore } = matchSides(match);
   const d = new Date(match.date);
   const dateStr = d.toLocaleDateString("it-IT", { day: "2-digit", month: "short", year: "numeric" });
   const timeStr = d.toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" });

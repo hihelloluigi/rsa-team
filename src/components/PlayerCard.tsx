@@ -1,11 +1,9 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { Player } from "@/lib/types";
 import PositionIcon from "@/components/PositionIcon";
 import { positionLabels } from "@/lib/data";
-
-function initials(name: string) {
-  return name.split(" ").map((w) => w[0]).slice(0, 2).join("").toUpperCase();
-}
+import { initials } from "@/lib/format";
 
 export default function PlayerCard({ player }: { player: Player }) {
   return (
@@ -15,8 +13,13 @@ export default function PlayerCard({ player }: { player: Player }) {
     >
       <div className="aspect-[3/4] relative flex items-center justify-center bg-gradient-to-br from-accent/30 to-black">
         {player.photo ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={player.photo} alt={player.name} className="absolute inset-0 w-full h-full object-cover" />
+          <Image
+            src={player.photo}
+            alt={player.name}
+            fill
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+            className="object-cover"
+          />
         ) : (
           <span className="font-display text-6xl text-white/80">{initials(player.name)}</span>
         )}
