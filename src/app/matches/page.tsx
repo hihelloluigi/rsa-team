@@ -1,8 +1,8 @@
-import Link from "next/link";
 import SectionHeading from "@/components/SectionHeading";
 import MatchRow from "@/components/MatchRow";
 import StandingsTable from "@/components/StandingsTable";
 import Reveal from "@/components/Reveal";
+import SeasonSelect from "@/components/SeasonSelect";
 import { getSeasons, getCurrentSeason, getSeasonById, splitMatches, sortStandings } from "@/lib/data";
 import { GiWhistle, GiSoccerBall, GiTrophyCup } from "react-icons/gi";
 
@@ -23,26 +23,10 @@ export default async function MatchesPage({
   return (
     <main className="mx-auto max-w-6xl px-5 py-16 space-y-12">
       {/* Season selector */}
-      <div className="flex flex-wrap items-center gap-2">
-        <span className="mr-1 text-xs font-extrabold uppercase tracking-widest text-muted">
-          Stagione
-        </span>
-        {seasons.map((s) => {
-          const active = s.id === selected.id;
-          return (
-            <Link
-              key={s.id}
-              href={`/matches?season=${s.id}`}
-              aria-current={active ? "page" : undefined}
-              className={`px-3 py-1.5 text-xs font-extrabold uppercase tracking-widest transition ${
-                active ? "bg-accent text-white" : "bg-surface text-muted hover:text-fg"
-              }`}
-            >
-              {s.label}
-            </Link>
-          );
-        })}
-      </div>
+      <SeasonSelect
+        seasons={seasons.map((s) => ({ id: s.id, label: s.label }))}
+        selected={selected.id}
+      />
 
       {!hasMatches ? (
         /* Funny placeholder for a season whose fixtures aren't drawn yet */
