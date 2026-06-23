@@ -13,30 +13,29 @@
     "league": "Bergamo Tornei · Serie D · Girone A",
     "leagueUrl": "https://www.bergamotornei.com/it/tournament/141/campionato-nazionale-asi-bergamo-tornei-calcio-a-7/stream/",
     "matches": [
-      { "id": "m01", "opponent": "Falcons FC", "home": true, "date": "2025-09-06T15:00:00+00:00", "competition": "Campionato", "status": "played", "score": { "rsa": 3, "opponent": 1 } },
-      { "id": "m02", "opponent": "Tigers CF", "home": false, "date": "2025-09-20T14:00:00+00:00", "competition": "Campionato", "status": "played", "score": { "rsa": 2, "opponent": 0 } },
-      { "id": "m03", "opponent": "Lions United", "home": true, "date": "2025-10-04T15:00:00+00:00", "competition": "Campionato", "status": "played", "score": { "rsa": 1, "opponent": 1 } },
-      { "id": "m04", "opponent": "Eagles SC", "home": false, "date": "2025-10-18T14:00:00+00:00", "competition": "Campionato", "status": "played", "score": { "rsa": 0, "opponent": 2 } },
-      { "id": "m05", "opponent": "Wolves FC", "home": true, "date": "2025-11-01T15:00:00+00:00", "competition": "Campionato", "status": "played", "score": { "rsa": 4, "opponent": 0 } },
-      { "id": "m06", "opponent": "Panthers FC", "home": false, "date": "2025-11-15T14:00:00+00:00", "competition": "Campionato", "status": "played", "score": { "rsa": 2, "opponent": 2 } },
-      { "id": "m07", "opponent": "Sharks United", "home": true, "date": "2025-11-29T15:00:00+00:00", "competition": "Campionato", "status": "played", "score": { "rsa": 3, "opponent": 0 } },
-      { "id": "m08", "opponent": "Falcons FC", "home": false, "date": "2025-12-13T14:00:00+00:00", "competition": "Campionato", "status": "played", "score": { "rsa": 1, "opponent": 0 } },
-      { "id": "m09", "opponent": "Tigers CF", "home": true, "date": "2026-01-10T15:00:00+00:00", "competition": "Campionato", "status": "played", "score": { "rsa": 5, "opponent": 1 } },
-      { "id": "m10", "opponent": "Lions United", "home": false, "date": "2026-01-24T14:00:00+00:00", "competition": "Campionato", "status": "played", "score": { "rsa": 2, "opponent": 1 } },
-      { "id": "m11", "opponent": "Eagles SC", "home": true, "date": "2026-02-07T15:00:00+00:00", "competition": "Campionato", "status": "played", "score": { "rsa": 0, "opponent": 1 } },
-      { "id": "m12", "opponent": "Wolves FC", "home": false, "date": "2026-02-21T14:00:00+00:00", "competition": "Campionato", "status": "played", "score": { "rsa": 3, "opponent": 2 } },
-      { "id": "m13", "opponent": "Panthers FC", "home": true, "date": "2026-03-07T15:00:00+00:00", "competition": "Campionato", "status": "played", "score": { "rsa": 2, "opponent": 1 } },
-      { "id": "m14", "opponent": "Sharks United", "home": false, "date": "2026-03-21T14:00:00+00:00", "competition": "Campionato", "status": "played", "score": { "rsa": 1, "opponent": 0 } }
+      { "id": "m01", "opponent": "Karpaty", "home": true, "date": "2025-10-03T12:00:00+00:00", "competition": "Andata", "status": "played", "score": { "rsa": 2, "opponent": 2 } },
+      { "id": "m02", "opponent": "Grande Blu FC", "home": false, "date": "2025-10-08T12:00:00+00:00", "competition": "Andata", "status": "played", "score": { "rsa": 4, "opponent": 5 } },
+      { "id": "m03", "opponent": "CPB Comonte", "home": true, "date": "2025-10-17T12:00:00+00:00", "competition": "Andata", "status": "played", "score": { "rsa": 1, "opponent": 4 } },
+      { "id": "m04", "opponent": "Oratorio Loreto", "home": true, "date": "2025-10-24T12:00:00+00:00", "competition": "Andata", "status": "played", "score": { "rsa": 1, "opponent": 1 } },
+      { "id": "m05", "opponent": "Comonte Da Bere", "home": false, "date": "2025-10-30T12:00:00+00:00", "competition": "Andata", "status": "played", "score": { "rsa": 4, "opponent": 7 } },
+      { "id": "m06", "opponent": "Jolly Roger", "home": false, "date": "2025-11-07T12:00:00+00:00", "competition": "Andata", "status": "played", "score": { "rsa": 5, "opponent": 3 } },
+      { "id": "m07", "opponent": "Phoenix Futset", "home": true, "date": "2025-11-14T12:00:00+00:00", "competition": "Andata", "status": "played", "score": { "rsa": 1, "opponent": 3 } },
+      { "id": "m08", "opponent": "Pachinko", "home": true, "date": "2025-11-21T12:00:00+00:00", "competition": "Andata", "status": "played", "score": { "rsa": 0, "opponent": 3 } },
+      { "id": "m09", "opponent": "FC San Miguel 2025", "home": true, "date": "2025-11-28T12:00:00+00:00", "competition": "Andata", "status": "played", "score": { "rsa": 2, "opponent": 9 } },
+      { "id": "m10", "opponent": "DR7", "home": false, "date": "2025-12-02T12:00:00+00:00", "competition": "Andata", "status": "played", "score": { "rsa": 1, "opponent": 4 } },
+      { "id": "m11", "opponent": "FC Torreland", "home": false, "date": "2025-12-10T12:00:00+00:00", "competition": "Andata", "status": "played", "score": { "rsa": 5, "opponent": 3 } },
+      { "id": "m12", "opponent": "Karpaty", "home": false, "date": "2026-02-06T12:00:00+00:00", "competition": "Ritorno", "status": "played", "score": { "rsa": 1, "opponent": 4 } },
+      { "id": "m13", "opponent": "Grande Blu FC", "home": true, "date": "2026-02-13T12:00:00+00:00", "competition": "Ritorno", "status": "played", "score": { "rsa": 1, "opponent": 3 } },
+      { "id": "m14", "opponent": "CPB Comonte", "home": false, "date": "2026-02-19T12:00:00+00:00", "competition": "Ritorno", "status": "played", "score": { "rsa": 3, "opponent": 12 } },
+      { "id": "m15", "opponent": "Oratorio Loreto", "home": false, "date": "2026-02-23T12:00:00+00:00", "competition": "Ritorno", "status": "played", "score": { "rsa": 2, "opponent": 3 } },
+      { "id": "m16", "opponent": "Comonte Da Bere", "home": true, "date": "2026-03-06T12:00:00+00:00", "competition": "Ritorno", "status": "played", "score": { "rsa": 4, "opponent": 3 } },
+      { "id": "m17", "opponent": "Jolly Roger", "home": true, "date": "2026-03-13T12:00:00+00:00", "competition": "Ritorno", "status": "played", "score": { "rsa": 2, "opponent": 8 } },
+      { "id": "m18", "opponent": "Phoenix Futset", "home": false, "date": "2026-03-19T12:00:00+00:00", "competition": "Ritorno", "status": "played", "score": { "rsa": 1, "opponent": 4 } },
+      { "id": "m19", "opponent": "Pachinko", "home": false, "date": "2026-03-23T12:00:00+00:00", "competition": "Ritorno", "status": "played", "score": { "rsa": 2, "opponent": 8 } },
+      { "id": "m20", "opponent": "FC San Miguel 2025", "home": false, "date": "2026-03-30T12:00:00+00:00", "competition": "Ritorno", "status": "played", "score": { "rsa": 5, "opponent": 4 } },
+      { "id": "m21", "opponent": "DR7", "home": true, "date": "2026-04-10T12:00:00+00:00", "competition": "Ritorno", "status": "played", "score": { "rsa": 4, "opponent": 13 } },
+      { "id": "m22", "opponent": "FC Torreland", "home": true, "date": "2026-04-17T12:00:00+00:00", "competition": "Ritorno", "status": "played", "score": { "rsa": 3, "opponent": 0 } }
     ],
-    "standings": [
-      { "team": "RSA TEAM", "played": 14, "won": 10, "drawn": 2, "lost": 2, "goalsFor": 29, "goalsAgainst": 12, "points": 32, "isRSA": true },
-      { "team": "Falcons FC", "played": 14, "won": 9, "drawn": 2, "lost": 3, "goalsFor": 27, "goalsAgainst": 16, "points": 29 },
-      { "team": "Eagles SC", "played": 14, "won": 8, "drawn": 2, "lost": 4, "goalsFor": 24, "goalsAgainst": 18, "points": 26 },
-      { "team": "Panthers FC", "played": 14, "won": 7, "drawn": 3, "lost": 4, "goalsFor": 22, "goalsAgainst": 19, "points": 24 },
-      { "team": "Lions United", "played": 14, "won": 6, "drawn": 3, "lost": 5, "goalsFor": 20, "goalsAgainst": 21, "points": 21 },
-      { "team": "Wolves FC", "played": 14, "won": 5, "drawn": 2, "lost": 7, "goalsFor": 18, "goalsAgainst": 24, "points": 17 },
-      { "team": "Sharks United", "played": 14, "won": 3, "drawn": 2, "lost": 9, "goalsFor": 13, "goalsAgainst": 29, "points": 11 },
-      { "team": "Tigers CF", "played": 14, "won": 1, "drawn": 2, "lost": 11, "goalsFor": 9, "goalsAgainst": 28, "points": 5 }
-    ]
+    "standings": []
   }
 ]
