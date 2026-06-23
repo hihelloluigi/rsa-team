@@ -75,4 +75,14 @@ export const PlayersSchema = z.array(PlayerSchema);
 export const MatchesSchema = z.array(MatchSchema);
 export const StandingsSchema = z.array(StandingRowSchema);
 
+export const SeasonSchema = z.object({
+  id: z.string().min(1),
+  label: z.string().min(1),
+  current: z.boolean().optional(),
+  matches: MatchesSchema,
+  standings: StandingsSchema,
+});
+export const SeasonsSchema = z.array(SeasonSchema);
+export type Season = z.infer<typeof SeasonSchema>;
+
 export type MatchResult = "W" | "D" | "L";

@@ -1,17 +1,15 @@
 import {
-  PlayersSchema, MatchesSchema, StandingsSchema, ClubSchema,
-  type Player, type Match, type StandingRow, type Club, type MatchResult,
+  PlayersSchema, SeasonsSchema, ClubSchema,
+  type Player, type Match, type StandingRow, type Season, type Club, type MatchResult,
 } from "./types";
 
 import playersJson from "@/data/players.json";
-import matchesJson from "@/data/matches.json";
-import standingsJson from "@/data/standings.json";
+import seasonsJson from "@/data/seasons.json";
 import clubJson from "@/data/club.json";
 
 // Validate once at module load — throws at build time on bad data.
 const players: Player[] = PlayersSchema.parse(playersJson);
-const matches: Match[] = MatchesSchema.parse(matchesJson);
-const standings: StandingRow[] = StandingsSchema.parse(standingsJson);
+const seasons: Season[] = SeasonsSchema.parse(seasonsJson);
 const club: Club = ClubSchema.parse(clubJson);
 
 export function matchResult(m: Match): MatchResult | null {
@@ -29,7 +27,19 @@ export function getPlayerBySlug(slug: string): Player | undefined {
   return players.find((p) => p.slug === slug);
 }
 
-export function getMatches(): { played: Match[]; upcoming: Match[] } {
+export function getSeasons(): Season[] {
+  return seasons;
+}
+
+export function getCurrentSeason(): Season {
+  return seasons.find((s) => s.current) ?? seasons[0];
+}
+
+export function getSeasonById(id: string): Season | undefined {
+  return seasons.find((s) => s.id === id);
+}
+
+export function splitMatches(matches: Match[]): { played: Match[]; upcoming: Match[] } {
   const ms = (s: string) => new Date(s).getTime();
   const played = matches
     .filter((m) => m.status === "played")
@@ -40,17 +50,9 @@ export function getMatches(): { played: Match[]; upcoming: Match[] } {
   return { played, upcoming };
 }
 
-export function getNextMatch(): Match | undefined {
-  return getMatches().upcoming[0];
-}
-
-export function getLastResult(): Match | undefined {
-  return getMatches().played[0];
-}
-
-export function getStandings(): StandingRow[] {
+export function sortStandings(rows: StandingRow[]): StandingRow[] {
   const gd = (r: StandingRow) => r.goalsFor - r.goalsAgainst;
-  return [...standings].sort((a, b) => b.points - a.points || gd(b) - gd(a));
+  return [...rows].sort((a, b) => b.points - a.points || gd(b) - gd(a));
 }
 
 export function getClub(): Club {
