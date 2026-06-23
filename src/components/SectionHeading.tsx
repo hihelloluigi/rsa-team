@@ -10,7 +10,7 @@ export default function SectionHeading({
   icon?: ReactNode;
 }) {
   return (
-    <div className="mb-8">
+    <div className="mb-6">
       {label && (
         <div className="flex items-center gap-3 mb-2">
           <span className="w-8 h-[3px] bg-accent" />
