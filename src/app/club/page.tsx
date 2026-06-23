@@ -13,8 +13,8 @@ export default function ClubPage() {
         <div className="lg:col-span-2">
           <Reveal>
             <div>
-              <p className="text-2xl font-display italic uppercase text-accent leading-tight">{club.tagline}</p>
-              <p className="mt-6 text-muted leading-relaxed whitespace-pre-line">{club.about}</p>
+              <p className="text-2xl sm:text-3xl font-display italic uppercase text-accent leading-tight">{club.tagline}</p>
+              <p className="mt-6 max-w-2xl text-muted leading-relaxed whitespace-pre-line">{club.about}</p>
             </div>
           </Reveal>
         </div>
@@ -46,9 +46,9 @@ export default function ClubPage() {
               <h3 className="text-sm font-extrabold uppercase tracking-[0.2em] text-muted mb-3">Lo staff</h3>
               <ul className="space-y-2">
                 {club.staff.map((s) => (
-                  <li key={s.name} className="flex justify-between border-b border-white/10 py-2 text-sm">
+                  <li key={s.name} className="flex items-baseline justify-between gap-4 border-b border-white/10 py-2 text-sm">
                     <span className="font-bold">{s.name}</span>
-                    <span className="text-muted">{s.role}</span>
+                    <span className="text-right text-muted">{s.role}</span>
                   </li>
                 ))}
               </ul>
