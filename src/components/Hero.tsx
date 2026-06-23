@@ -20,7 +20,7 @@ export default function Hero({ tagline }: { tagline: string }) {
           <span className="block">RSA</span>
           <span className="block text-accent">TEAM</span>
         </h1>
-        <p className="mt-6 max-w-md text-muted">{tagline}</p>
+        <p className="mt-6 max-w-md text-fg">{tagline}</p>
         <div className="mt-8 flex flex-wrap gap-3">
           <Link href="/squad" className="bg-accent px-6 py-3 text-sm font-extrabold uppercase tracking-widest hover:opacity-90">
             Conosci la rosa

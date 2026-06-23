@@ -31,9 +31,9 @@ export default function PlayerCard({ player }: { player: Player }) {
         <div className="font-extrabold uppercase tracking-wide group-hover:text-accent transition truncate">
           {player.nickname ?? player.name}
         </div>
-        {player.nickname && (
-          <div className="text-xs text-muted mt-0.5 truncate">{player.name}</div>
-        )}
+        <div className="text-xs text-muted mt-0.5 truncate">
+          {player.nickname ? player.name : " "}
+        </div>
       </div>
     </Link>
   );

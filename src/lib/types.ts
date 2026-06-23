@@ -99,4 +99,12 @@ export const SeasonSchema = z.object({
 export const SeasonsSchema = z.array(SeasonSchema);
 export type Season = z.infer<typeof SeasonSchema>;
 
+export const SponsorSchema = z.object({
+  name: z.string().min(1),
+  logo: z.string().optional(),
+  url: z.string().url().optional(),
+});
+export const SponsorsSchema = z.array(SponsorSchema);
+export type Sponsor = z.infer<typeof SponsorSchema>;
+
 export type MatchResult = "W" | "D" | "L";

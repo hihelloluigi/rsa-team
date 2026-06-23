@@ -1,11 +1,12 @@
 import {
-  PlayersSchema, SeasonsSchema, ClubSchema,
-  type Player, type Match, type StandingRow, type Season, type Club, type MatchResult, type Position,
+  PlayersSchema, SeasonsSchema, ClubSchema, SponsorsSchema,
+  type Player, type Match, type StandingRow, type Season, type Club, type MatchResult, type Position, type Sponsor,
 } from "./types";
 
 import playersJson from "@/data/players.json";
 import seasonsJson from "@/data/seasons.json";
 import clubJson from "@/data/club.json";
+import sponsorsJson from "@/data/sponsors.json";
 
 // Italian abbreviations shown on player badges (data keeps the GK/DEF/MID/FWD codes).
 export const positionLabels: Record<Position, string> = {
@@ -19,6 +20,7 @@ export const positionLabels: Record<Position, string> = {
 const players: Player[] = PlayersSchema.parse(playersJson);
 const seasons: Season[] = SeasonsSchema.parse(seasonsJson);
 const club: Club = ClubSchema.parse(clubJson);
+const sponsors: Sponsor[] = SponsorsSchema.parse(sponsorsJson);
 
 export function matchResult(m: Match): MatchResult | null {
   if (m.status !== "played" || !m.score) return null;
@@ -72,4 +74,8 @@ export function sortStandings(rows: StandingRow[]): StandingRow[] {
 
 export function getClub(): Club {
   return club;
+}
+
+export function getSponsors(): Sponsor[] {
+  return sponsors;
 }
