@@ -6,7 +6,7 @@ const cols = ["G", "V", "N", "P", "GF", "GS", "Pti"];
 export default function StandingsTable({ rows }: { rows: StandingRow[] }) {
   return (
     <div className="overflow-x-auto border border-white/10">
-      <table className="w-full text-sm">
+      <table className="w-full min-w-[34rem] text-sm">
         <thead>
           <tr className="text-muted text-xs uppercase tracking-widest border-b border-white/10">
             <th className="text-left px-2 sm:px-3 py-3 w-8">#</th>
@@ -18,7 +18,7 @@ export default function StandingsTable({ rows }: { rows: StandingRow[] }) {
           {rows.map((r, i) => (
             <tr key={r.team} className={`border-b border-white/5 ${r.isRSA ? "bg-accent/15" : ""}`}>
               <td className="px-2 sm:px-3 py-3 text-muted">{i + 1}</td>
-              <td className={`px-2 sm:px-3 py-3 font-bold ${r.isRSA ? "text-accent" : ""}`}>
+              <td className={`px-2 sm:px-3 py-3 font-bold whitespace-nowrap ${r.isRSA ? "text-accent" : ""}`}>
                 <span className="flex items-center gap-1.5">
                   {i === 0 && <GiTrophyCup size={14} className="text-accent shrink-0" aria-hidden="true" />}
                   {r.team}
