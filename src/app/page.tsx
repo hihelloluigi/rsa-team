@@ -24,7 +24,7 @@ export default function Home() {
               Il calendario sta ancora dormendo
             </h3>
             <p className="mx-auto mt-4 max-w-md text-muted">
-              Le partite della stagione {season.label} vengono sorteggiate il mese prossimo.
+              Le partite della stagione {season.label} verranno sorteggiate in settembre.
               Nel frattempo puoi rivederti la scorsa stagione: spoiler, andò bene.
             </p>
             <Link

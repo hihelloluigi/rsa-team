@@ -53,8 +53,8 @@ export default async function MatchesPage({
               Il calendario sta ancora dormendo
             </h2>
             <p className="mx-auto mt-4 max-w-md text-muted">
-              Le partite della stagione {selected.label} vengono sorteggiate il mese prossimo.
-              Torna a breve: noi intanto ci alleniamo. Forse.
+              Le partite della stagione {selected.label} verranno sorteggiate in settembre.
+              Puoi tornare più avanti, noi intanto ci alleniamo. Forse.
             </p>
             <p className="mt-4 text-xs font-extrabold uppercase tracking-widest text-accent">
               Siamo matti, non veggenti.
