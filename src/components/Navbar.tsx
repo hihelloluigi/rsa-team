@@ -15,7 +15,7 @@ export default function Navbar() {
     <header className="sticky top-0 z-50 bg-bg/90 backdrop-blur border-b border-white/10">
       <nav className="mx-auto max-w-6xl px-3 sm:px-5 h-16 flex items-center justify-between">
         <Link href="/" className="font-black italic text-lg sm:text-xl tracking-tight shrink-0">
-          RSA<span className="text-accent">.</span>TEAM
+          RSA <span className="text-accent">TEAM</span>
         </Link>
         <ul className="flex gap-1 sm:gap-2">
           {links.map((l) => {
