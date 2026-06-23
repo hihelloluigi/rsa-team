@@ -23,7 +23,7 @@ export default async function MatchesPage({
   return (
     <main className="mx-auto max-w-6xl px-5 py-16">
       {/* Season selector */}
-      <div className="mb-6">
+      <div className="mb-8">
         <SeasonSelect
           seasons={seasons.map((s) => ({ id: s.id, label: s.label }))}
           selected={selected.id}
@@ -61,7 +61,7 @@ export default async function MatchesPage({
           )}
 
           <section>
-            <p className="mb-4 border-l-2 border-accent pl-4 text-base sm:text-lg italic text-muted">
+            <p className="mb-8 border-l-2 border-accent pl-4 text-base sm:text-lg italic text-muted">
               Poteva andare meglio, ma poteva andare anche peggio.
             </p>
             <SectionHeading label="Risultati" title="Giocate" />

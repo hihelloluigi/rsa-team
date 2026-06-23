@@ -45,19 +45,19 @@ export default function MatchRow({ match }: { match: Match }) {
         </div>
       </div>
 
-      {/* Desktop: single row */}
+      {/* Desktop: single row — score is a fixed center column so it always aligns */}
       <div className="hidden sm:flex items-center gap-4">
-        <div className="w-24 text-xs text-muted uppercase tracking-widest">{dateStr}</div>
-        <div className="flex-1 flex items-center justify-center gap-4 font-bold">
-          <span className={match.home ? "text-accent" : ""}>{home}</span>
+        <div className="w-24 shrink-0 text-xs text-muted uppercase tracking-widest">{dateStr}</div>
+        <div className="flex-1 flex items-center gap-4 font-bold">
+          <span className={`flex-1 text-right ${match.home ? "text-accent" : ""}`}>{home}</span>
           {match.score ? (
-            <span className="font-display text-xl px-3">{match.score.rsa} : {match.score.opponent}</span>
+            <span className="font-display text-xl w-20 shrink-0 text-center">{match.score.rsa} : {match.score.opponent}</span>
           ) : (
-            <span className="text-muted px-3">vs</span>
+            <span className="w-20 shrink-0 text-center text-muted">vs</span>
           )}
-          <span className={!match.home ? "text-accent" : ""}>{away}</span>
+          <span className={`flex-1 text-left ${!match.home ? "text-accent" : ""}`}>{away}</span>
         </div>
-        <div className="w-16 text-right">{resultBadge}</div>
+        <div className="w-10 shrink-0 text-right">{resultBadge}</div>
       </div>
     </div>
   );
