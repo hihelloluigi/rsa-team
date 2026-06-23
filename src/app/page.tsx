@@ -21,9 +21,10 @@ export default function Home() {
           <div className="border border-white/10 bg-surface px-6 py-16 text-center">
             <GiSoccerBall className="mx-auto mb-5 text-accent" size={56} />
             <h3 className="font-display italic uppercase text-2xl sm:text-3xl leading-tight">
-              Il calendario sta ancora dormendo
+              «Squadra che non gioca, non perde»
             </h3>
-            <p className="mx-auto mt-4 max-w-md text-muted">
+            <p className="mt-2 text-xs uppercase tracking-widest text-muted">— cit. quasi Boškov</p>
+            <p className="mx-auto mt-5 max-w-md text-muted">
               Le partite della stagione {season.label} verranno sorteggiate in settembre.
               Nel frattempo puoi rivederti la scorsa stagione: spoiler, andò bene.
             </p>

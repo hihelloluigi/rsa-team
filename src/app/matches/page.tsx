@@ -50,9 +50,10 @@ export default async function MatchesPage({
           <div className="border border-white/10 bg-surface px-6 py-20 text-center">
             <GiSoccerBall className="mx-auto mb-5 text-accent" size={56} />
             <h2 className="font-display italic uppercase text-3xl sm:text-4xl leading-tight">
-              Il calendario sta ancora dormendo
+              «Squadra che non gioca, non perde»
             </h2>
-            <p className="mx-auto mt-4 max-w-md text-muted">
+            <p className="mt-2 text-xs uppercase tracking-widest text-muted">— cit. quasi Boškov</p>
+            <p className="mx-auto mt-5 max-w-md text-muted">
               Le partite della stagione {selected.label} verranno sorteggiate in settembre.
               Puoi tornare più avanti, noi intanto ci alleniamo. Forse.
             </p>
