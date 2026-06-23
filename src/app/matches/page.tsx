@@ -3,8 +3,9 @@ import MatchRow from "@/components/MatchRow";
 import StandingsTable from "@/components/StandingsTable";
 import Reveal from "@/components/Reveal";
 import SeasonSelect from "@/components/SeasonSelect";
+import EmptyState from "@/components/EmptyState";
 import { getSeasons, getCurrentSeason, getSeasonById, splitMatches, sortStandings } from "@/lib/data";
-import { GiWhistle, GiSoccerBall, GiTrophyCup } from "react-icons/gi";
+import { GiWhistle, GiTrophyCup } from "react-icons/gi";
 
 export const metadata = { title: "Partite — RSA TEAM" };
 
@@ -51,19 +52,17 @@ export default async function MatchesPage({
       {!hasMatches ? (
         /* Funny placeholder for a season whose fixtures aren't drawn yet */
         <Reveal>
-          <div className="border border-white/10 bg-surface px-6 py-20 text-center">
-            <GiSoccerBall className="mx-auto mb-5 text-accent" size={56} />
-            <h2 className="font-display italic uppercase text-3xl sm:text-4xl leading-tight">
-              «Squadra che non gioca, non perde»
-            </h2>
-            <p className="mx-auto mt-5 max-w-md text-muted">
-              Le partite della stagione {selected.label} verranno sorteggiate in settembre.
-              Puoi tornare più avanti, noi intanto ci alleniamo. Forse.
-            </p>
-            <p className="mt-4 text-xs font-extrabold uppercase tracking-widest text-accent">
-              Siamo matti, non veggenti.
-            </p>
-          </div>
+          <EmptyState
+            title="«Squadra che non gioca, non perde»"
+            footer={
+              <p className="text-xs font-extrabold uppercase tracking-widest text-accent">
+                Siamo matti, non veggenti.
+              </p>
+            }
+          >
+            Le partite della stagione {selected.label} verranno sorteggiate in settembre.
+            Puoi tornare più avanti, noi intanto ci alleniamo. Forse.
+          </EmptyState>
         </Reveal>
       ) : (
         <div className="space-y-14">

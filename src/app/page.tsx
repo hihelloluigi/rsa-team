@@ -3,8 +3,8 @@ import Hero from "@/components/Hero";
 import SectionHeading from "@/components/SectionHeading";
 import Reveal from "@/components/Reveal";
 import PlayerCard from "@/components/PlayerCard";
+import EmptyState from "@/components/EmptyState";
 import { getClub, getCurrentSeason, getPlayers, getSponsors } from "@/lib/data";
-import { GiSoccerBall } from "react-icons/gi";
 
 export default function Home() {
   const club = getClub();
@@ -19,22 +19,21 @@ export default function Home() {
       <section className="mx-auto max-w-6xl px-5 py-16">
         <SectionHeading label="La situazione" title="Come stiamo messi" />
         <Reveal>
-          <div className="border border-white/10 bg-surface px-6 py-16 text-center">
-            <GiSoccerBall className="mx-auto mb-5 text-accent" size={56} />
-            <h3 className="font-display italic uppercase text-2xl sm:text-3xl leading-tight">
-              «Squadra che non gioca, non perde»
-            </h3>
-            <p className="mx-auto mt-5 max-w-md text-muted">
-              Le partite della stagione {season.label} verranno sorteggiate in settembre.
-              Nel frattempo puoi rivederti la scorsa stagione: spoiler, non siamo arrivati ultimi.
-            </p>
-            <Link
-              href="/matches?season=2025-2026"
-              className="mt-6 inline-block bg-accent px-6 py-3 text-sm font-extrabold uppercase tracking-widest hover:opacity-90"
-            >
-              Guarda la 2025/26
-            </Link>
-          </div>
+          <EmptyState
+            as="h3"
+            title="«Squadra che non gioca, non perde»"
+            footer={
+              <Link
+                href="/matches?season=2025-2026"
+                className="inline-block bg-accent px-6 py-3 text-sm font-extrabold uppercase tracking-widest hover:opacity-90"
+              >
+                Guarda la 2025/26
+              </Link>
+            }
+          >
+            Le partite della stagione {season.label} verranno sorteggiate in settembre.
+            Nel frattempo puoi rivederti la scorsa stagione: spoiler, non siamo arrivati ultimi.
+          </EmptyState>
         </Reveal>
       </section>
 
