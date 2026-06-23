@@ -16,11 +16,13 @@ export default function Hero({ tagline }: { tagline: string }) {
         <p className="text-xs font-extrabold uppercase tracking-[0.3em] text-accent mb-4">
           Dal 2025
         </p>
-        <h1 className="font-display italic uppercase leading-[0.8] text-7xl sm:text-9xl">
-          <span className="block">RSA</span>
-          <span className="block text-accent">TEAM</span>
-        </h1>
-        <p className="mt-6 max-w-md text-fg">{tagline}</p>
+        <div className="inline-block">
+          <h1 className="font-display italic uppercase leading-[0.8] text-7xl sm:text-9xl">
+            <span className="block">RSA</span>
+            <span className="block text-accent">TEAM</span>
+          </h1>
+          <p className="mt-6 text-right text-fg">{tagline}</p>
+        </div>
         <div className="mt-8 flex flex-wrap gap-3">
           <Link href="/squad" className="bg-accent px-6 py-3 text-sm font-extrabold uppercase tracking-widest hover:opacity-90">
             Conosci la rosa
