@@ -19,12 +19,12 @@ export default function Home() {
       <Hero tagline={club.tagline} />
 
       <section className="mx-auto max-w-6xl px-5 py-16">
-        <SectionHeading label="Season at a glance" title="Where we stand" icon={<GiWhistle size={32} />} />
+        <SectionHeading label="La situazione" title="Come stiamo messi" icon={<GiWhistle size={32} />} />
         <div className="grid gap-8 lg:grid-cols-2">
           <Reveal>
             <div className="space-y-2">
-              {last && (<><p className="text-xs uppercase tracking-widest text-muted mb-1">Last result</p><MatchRow match={last} /></>)}
-              {next && (<><p className="text-xs uppercase tracking-widest text-muted mt-6 mb-1">Next match</p><MatchRow match={next} /></>)}
+              {last && (<><p className="text-xs uppercase tracking-widest text-muted mb-1">Ultimo risultato</p><MatchRow match={last} /></>)}
+              {next && (<><p className="text-xs uppercase tracking-widest text-muted mt-6 mb-1">Prossima partita</p><MatchRow match={next} /></>)}
             </div>
           </Reveal>
           <Reveal delay={0.1}><StandingsTable rows={standings} /></Reveal>
@@ -32,7 +32,7 @@ export default function Home() {
       </section>
 
       <section className="mx-auto max-w-6xl px-5 py-16">
-        <SectionHeading label="The Squad" title="Star players" icon={<GiSoccerBall size={32} />} />
+        <SectionHeading label="La rosa" title="I fenomeni" icon={<GiSoccerBall size={32} />} />
         <div className="grid gap-5 grid-cols-2 sm:grid-cols-3">
           {featured.map((p, i) => (<Reveal key={p.slug} delay={i * 0.08}><PlayerCard player={p} /></Reveal>))}
         </div>

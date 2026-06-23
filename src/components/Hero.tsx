@@ -14,7 +14,7 @@ export default function Hero({ tagline }: { tagline: string }) {
       </div>
       <div className="relative mx-auto max-w-6xl px-5 py-24 sm:py-32">
         <p className="text-xs font-extrabold uppercase tracking-[0.3em] text-accent mb-4">
-          Est. 2024 · Football Club
+          Dal 2024 · Più cuore che tattica
         </p>
         <h1 className="font-display italic uppercase leading-[0.8] text-7xl sm:text-9xl">
           <span className="block">RSA</span>
@@ -23,10 +23,10 @@ export default function Hero({ tagline }: { tagline: string }) {
         <p className="mt-6 max-w-md text-muted">{tagline}</p>
         <div className="mt-8 flex gap-3">
           <Link href="/squad" className="bg-accent px-6 py-3 text-sm font-extrabold uppercase tracking-widest hover:opacity-90">
-            Meet the Squad
+            Conosci la rosa
           </Link>
           <Link href="/matches" className="border border-white/20 px-6 py-3 text-sm font-extrabold uppercase tracking-widest hover:border-accent">
-            Fixtures
+            Le partite
           </Link>
         </div>
       </div>

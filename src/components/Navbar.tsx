@@ -3,10 +3,10 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const links = [
-  { href: "/", label: "Home" },
-  { href: "/squad", label: "Squad" },
-  { href: "/matches", label: "Matches" },
-  { href: "/club", label: "Club" },
+  { href: "/", label: "Casa" },
+  { href: "/squad", label: "Squadra" },
+  { href: "/matches", label: "Partite" },
+  { href: "/club", label: "Il Club" },
 ];
 
 export default function Navbar() {

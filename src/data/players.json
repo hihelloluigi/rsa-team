@@ -4,11 +4,11 @@
     "name": "Marco Bianchi",
     "number": 1,
     "position": "GK",
-    "nationality": "Italy",
+    "nationality": "Italia",
     "nationalityCode": "it",
     "age": 29,
     "stats": { "appearances": 18, "goals": 0, "assists": 0, "cleanSheets": 7, "motm": 2 },
-    "bio": "Commanding presence between the posts and a calm distributor under pressure. Marco reads the game superbly and organises his defence with authority.",
+    "bio": "Para l'impossibile e si fa gol da solo sul facile. Comanda la difesa a urli, anche quando non serve.",
     "joined": "2024"
   },
   {
@@ -16,11 +16,11 @@
     "name": "David Silva",
     "number": 13,
     "position": "GK",
-    "nationality": "Spain",
+    "nationality": "Spagna",
     "nationalityCode": "es",
     "age": 24,
     "stats": { "appearances": 4, "goals": 0, "assists": 0, "cleanSheets": 1, "motm": 0 },
-    "bio": "Young backup goalkeeper with excellent reflexes and composure on the ball. David is developing fast and pushing for a starting berth.",
+    "bio": "Riserva di lusso che si allena come se fosse titolare e gioca come se stesse ancora imparando. Ma ci vuole bene.",
     "joined": "2024"
   },
   {
@@ -28,11 +28,11 @@
     "name": "Antonio Greco",
     "number": 2,
     "position": "DEF",
-    "nationality": "Italy",
+    "nationality": "Italia",
     "nationalityCode": "it",
     "age": 26,
     "stats": { "appearances": 17, "goals": 1, "assists": 2, "cleanSheets": 0, "motm": 1 },
-    "bio": "Tenacious right back who loves to bomb forward and whip in dangerous crosses. Rarely beaten in one-on-one situations.",
+    "bio": "Terzino d'attacco che va su e giù per la fascia come se avesse il benzene nelle vene. Difende? A volte.",
     "joined": "2024"
   },
   {
@@ -40,11 +40,11 @@
     "name": "Leon Müller",
     "number": 5,
     "position": "DEF",
-    "nationality": "Germany",
+    "nationality": "Germania",
     "nationalityCode": "de",
     "age": 28,
     "stats": { "appearances": 18, "goals": 2, "assists": 1, "cleanSheets": 0, "motm": 3 },
-    "bio": "A dominant centre-back who wins everything in the air and is lethal from set pieces. Leon marshals the backline with composure and experience.",
+    "bio": "Vince ogni duello aereo e segna sui calci piazzati con l'aria di chi lo fa da decenni. Ogni fallo fischiato contro è un affronto personale.",
     "joined": "2024"
   },
   {
@@ -52,11 +52,11 @@
     "name": "Raffaele Esposito",
     "number": 6,
     "position": "DEF",
-    "nationality": "Italy",
+    "nationality": "Italia",
     "nationalityCode": "it",
     "age": 25,
     "stats": { "appearances": 16, "goals": 0, "assists": 3, "cleanSheets": 0, "motm": 1 },
-    "bio": "Solid centre-back with excellent positioning and a great passing range from the back. Raffaele is the quiet organiser of the RSA defence.",
+    "bio": "Difensore silenzioso che non urla, non protesta, non sbaglia. Sospettiamo sia un robot. Tre assist però sono suoi.",
     "joined": "2024"
   },
   {
@@ -64,11 +64,11 @@
     "name": "José Fernández",
     "number": 3,
     "position": "DEF",
-    "nationality": "Spain",
+    "nationality": "Spagna",
     "nationalityCode": "es",
     "age": 27,
     "stats": { "appearances": 15, "goals": 0, "assists": 4, "cleanSheets": 0, "motm": 0 },
-    "bio": "Attack-minded left back who delivers quality balls into the box and works tirelessly up and down the flank.",
+    "bio": "Terzino sinistro con quattro assist e zero gol, convinto però di essere un trequartista mancato. I cross li mette sempre dentro, ma con il broncio.",
     "joined": "2024"
   },
   {
@@ -76,11 +76,11 @@
     "name": "Thomas Richter",
     "number": 4,
     "position": "DEF",
-    "nationality": "Germany",
+    "nationality": "Germania",
     "nationalityCode": "de",
     "age": 31,
     "stats": { "appearances": 14, "goals": 1, "assists": 0, "cleanSheets": 0, "motm": 0 },
-    "bio": "Experienced veteran who reads the game like a chess grandmaster. Thomas brings calm and leadership to the back line when it matters most.",
+    "bio": "Il veterano della retroguardia: legge il gioco come un libro e sbuffa ogni volta che qualcuno corre troppo. Un gol in carriera, e se lo porta dietro come un Oscar.",
     "joined": "2024"
   },
   {
@@ -88,11 +88,11 @@
     "name": "Matteo Conti",
     "number": 8,
     "position": "MID",
-    "nationality": "Italy",
+    "nationality": "Italia",
     "nationalityCode": "it",
     "age": 23,
     "stats": { "appearances": 18, "goals": 4, "assists": 7, "cleanSheets": 0, "motm": 4 },
-    "bio": "The engine of the RSA midfield — Matteo covers every blade of grass, wins the ball and then creates with intelligent passes. A fans' favourite.",
+    "bio": "Corre per tutti, segna e serve assist come se stesse distribuendo volantini. A fine partita respira ancora, il che è inquietante.",
     "joined": "2024"
   },
   {
@@ -100,11 +100,11 @@
     "name": "Pierre Dubois",
     "number": 7,
     "position": "MID",
-    "nationality": "France",
+    "nationality": "Francia",
     "nationalityCode": "fr",
     "age": 26,
     "stats": { "appearances": 17, "goals": 6, "assists": 5, "cleanSheets": 0, "motm": 3 },
-    "bio": "A dynamic box-to-box midfielder with an eye for goal. Pierre brings flair and directness to the RSA midfield and loves to shoot from range.",
+    "bio": "Centrocampista con licenza di tirare da ovunque. Se il tiro non va dentro, dice che era un assist mancato e cambia discorso.",
     "joined": "2024"
   },
   {
@@ -112,11 +112,11 @@
     "name": "Carlos Santos",
     "number": 14,
     "position": "MID",
-    "nationality": "Portugal",
+    "nationality": "Portogallo",
     "nationalityCode": "pt",
     "age": 22,
     "stats": { "appearances": 13, "goals": 2, "assists": 3, "cleanSheets": 0, "motm": 1 },
-    "bio": "Energetic young midfielder who presses relentlessly and is never afraid to take on a man. Carlos is one of the brightest prospects in the squad.",
+    "bio": "Pressante come un'app di notifiche: non smette mai. Il pressing alto è il suo linguaggio d'amore.",
     "joined": "2024"
   },
   {
@@ -124,11 +124,11 @@
     "name": "Niklas Weber",
     "number": 16,
     "position": "MID",
-    "nationality": "Germany",
+    "nationality": "Germania",
     "nationalityCode": "de",
     "age": 30,
     "stats": { "appearances": 16, "goals": 1, "assists": 6, "cleanSheets": 0, "motm": 2 },
-    "bio": "Deep-lying playmaker who dictates tempo and finds passes others cannot see. Niklas is the metronome that keeps RSA ticking.",
+    "bio": "Regista silenzioso che trova passaggi dove gli altri vedono solo caos. Non urla, non esulta, non sbaglia. Un po' inquietante, onestamente.",
     "joined": "2024"
   },
   {
@@ -136,11 +136,11 @@
     "name": "Federico Romano",
     "number": 11,
     "position": "MID",
-    "nationality": "Italy",
+    "nationality": "Italia",
     "nationalityCode": "it",
     "age": 24,
     "stats": { "appearances": 15, "goals": 3, "assists": 4, "cleanSheets": 0, "motm": 1 },
-    "bio": "Wide midfielder who combines technical skill with pace. Federico is always willing to run in behind and cause problems for opposing defences.",
+    "bio": "Ala tecnica che rientra sul destro, va sul sinistro, poi decide di crossare. Gli avversari si siedono per terra dalla confusione.",
     "joined": "2024"
   },
   {
@@ -148,11 +148,11 @@
     "name": "Luca Rossi",
     "number": 10,
     "position": "FWD",
-    "nationality": "Italy",
+    "nationality": "Italia",
     "nationalityCode": "it",
     "age": 24,
     "stats": { "appearances": 18, "goals": 12, "assists": 5, "cleanSheets": 0, "motm": 5 },
-    "bio": "A tireless forward who stretches every back line and finishes with either foot. Luca is the goal-getter who makes RSA TEAM tick in the final third.",
+    "bio": "Segna gol pesanti e poi esulta come se avesse vinto la Champions. In allenamento, però, è un mistero.",
     "joined": "2024"
   },
   {
@@ -160,11 +160,11 @@
     "name": "Emre Yılmaz",
     "number": 9,
     "position": "FWD",
-    "nationality": "Turkey",
+    "nationality": "Turchia",
     "nationalityCode": "tr",
     "age": 27,
     "stats": { "appearances": 16, "goals": 8, "assists": 3, "cleanSheets": 0, "motm": 2 },
-    "bio": "Powerful centre-forward who holds the ball up brilliantly and brings team-mates into play. Emre is a constant threat in the opposition box.",
+    "bio": "Centravanti che protegge palla come fosse la sua prima pizza. Otto gol stagionali e un'espressione perennemente insoddisfatta — che vuoi di più?",
     "joined": "2024"
   },
   {
@@ -172,11 +172,11 @@
     "name": "Alex Martin",
     "number": 17,
     "position": "FWD",
-    "nationality": "France",
+    "nationality": "Francia",
     "nationalityCode": "fr",
     "age": 21,
     "stats": { "appearances": 11, "goals": 5, "assists": 2, "cleanSheets": 0, "motm": 1 },
-    "bio": "Pacy wide forward who loves to run at defenders and cut inside. Alex has been a revelation since breaking into the first team this season.",
+    "bio": "Giovane ala che dribbla chiunque e poi perde il controllo quando si avvicina al gol. Ma ha 21 anni, dai, diamogli tempo.",
     "joined": "2024"
   }
 ]

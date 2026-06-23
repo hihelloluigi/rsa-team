@@ -5,11 +5,15 @@ const badge: Record<string, string> = {
   W: "bg-accent text-white", D: "bg-white/20 text-white", L: "bg-white/5 text-muted",
 };
 
+const resultLabel: Record<string, string> = {
+  W: "V", D: "N", L: "P",
+};
+
 export default function MatchRow({ match }: { match: Match }) {
   const result = matchResult(match);
   const home = match.home ? "RSA TEAM" : match.opponent;
   const away = match.home ? match.opponent : "RSA TEAM";
-  const date = new Date(match.date).toLocaleDateString("en-GB", {
+  const date = new Date(match.date).toLocaleDateString("it-IT", {
     day: "2-digit", month: "short", year: "numeric",
   });
   return (
@@ -26,10 +30,10 @@ export default function MatchRow({ match }: { match: Match }) {
       </div>
       <div className="w-16 text-right">
         {result ? (
-          <span className={`inline-block w-7 text-center text-xs font-extrabold py-1 ${badge[result]}`}>{result}</span>
+          <span className={`inline-block w-7 text-center text-xs font-extrabold py-1 ${badge[result]}`}>{resultLabel[result]}</span>
         ) : (
           <span className="text-[11px] text-muted uppercase">
-            {new Date(match.date).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" })}
+            {new Date(match.date).toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" })}
           </span>
         )}
       </div>

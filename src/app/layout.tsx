@@ -8,13 +8,13 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const anton = Anton({ weight: "400", subsets: ["latin"], variable: "--font-anton" });
 
 export const metadata: Metadata = {
-  title: "RSA TEAM — Football Club",
-  description: "RSA TEAM: the squad, the season, the matches.",
+  title: "RSA TEAM — Siamo Matti",
+  description: "La squadra che gioca all'attacco perché difendere è troppa fatica. Rosa, partite e classifica dell'RSA TEAM.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${inter.variable} ${anton.variable}`}>
+    <html lang="it" className={`${inter.variable} ${anton.variable}`}>
       <body className="bg-bg text-fg font-sans min-h-screen flex flex-col">
         <Navbar />
         <div className="flex-1">{children}</div>
