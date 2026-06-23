@@ -40,6 +40,7 @@ export const MatchSchema = z
     score: z
       .object({ rsa: z.number().int().nonnegative(), opponent: z.number().int().nonnegative() })
       .optional(),
+    kickoff: z.string().min(1).optional(),
     stadium: z.string().min(1).optional(),
     scorers: z
       .object({

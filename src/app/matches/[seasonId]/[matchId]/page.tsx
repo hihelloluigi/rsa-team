@@ -73,7 +73,10 @@ export default async function MatchDetailPage({ params }: { params: Params }) {
             {resultText[result]}
           </p>
         )}
-        <p className="mt-2 text-sm text-muted capitalize">{dateStr}</p>
+        <p className="mt-2 text-sm text-muted">
+          <span className="capitalize">{dateStr}</span>
+          {match.kickoff && <span> · ore {match.kickoff}</span>}
+        </p>
       </div>
 
       {/* Details */}
