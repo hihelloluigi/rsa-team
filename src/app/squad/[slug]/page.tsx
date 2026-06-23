@@ -36,7 +36,8 @@ export default async function PlayerPage({ params }: { params: Promise<{ slug: s
             ) : (
               <span className="font-display text-9xl text-white/80">{initials(player.name)}</span>
             )}
-            <span className="absolute bottom-4 left-4 font-display text-7xl text-accent">{player.number}</span>
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/80 to-transparent" />
+            <span className="absolute bottom-4 left-4 font-display text-7xl text-accent drop-shadow-lg">{player.number}</span>
           </div>
         </Reveal>
 
