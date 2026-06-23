@@ -50,21 +50,25 @@ export default async function PlayerPage({ params }: { params: Promise<{ slug: s
             {player.nickname && (
               <p className="mt-2 text-sm uppercase tracking-widest text-muted">{player.name}</p>
             )}
-            <dl className="mt-6 grid grid-cols-2 gap-y-3 text-sm">
-              <dt className="text-muted uppercase tracking-widest text-xs">Nazionalità</dt><dd>{player.nationality}</dd>
-              <dt className="text-muted uppercase tracking-widest text-xs">Età</dt><dd>{player.age}</dd>
-              <dt className="text-muted uppercase tracking-widest text-xs">Dal</dt><dd>{player.joined}</dd>
-            </dl>
-            <p className="mt-6 text-muted leading-relaxed">{player.bio}</p>
+            {(player.nationality || player.age || player.joined) && (
+              <dl className="mt-6 grid grid-cols-2 gap-y-3 text-sm">
+                {player.nationality && (<><dt className="text-muted uppercase tracking-widest text-xs">Nazionalità</dt><dd>{player.nationality}</dd></>)}
+                {player.age && (<><dt className="text-muted uppercase tracking-widest text-xs">Età</dt><dd>{player.age}</dd></>)}
+                {player.joined && (<><dt className="text-muted uppercase tracking-widest text-xs">Dal</dt><dd>{player.joined}</dd></>)}
+              </dl>
+            )}
+            {player.bio && <p className="mt-6 text-muted leading-relaxed">{player.bio}</p>}
 
-            <div className="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-3">
-              <StatBadge label="Presenze" value={player.stats.appearances} />
-              <StatBadge label="Gol" value={player.stats.goals} />
-              <StatBadge label="Assist" value={player.stats.assists} />
-              {player.position === "GK"
-                ? <StatBadge label="Porte inviolate" value={player.stats.cleanSheets} />
-                : <StatBadge label="Migliore in campo" value={player.stats.motm} />}
-            </div>
+            {player.stats && (
+              <div className="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-3">
+                <StatBadge label="Presenze" value={player.stats.appearances} />
+                <StatBadge label="Gol" value={player.stats.goals} />
+                <StatBadge label="Assist" value={player.stats.assists} />
+                {player.position === "GK"
+                  ? <StatBadge label="Porte inviolate" value={player.stats.cleanSheets} />
+                  : <StatBadge label="Migliore in campo" value={player.stats.motm} />}
+              </div>
+            )}
           </div>
         </Reveal>
       </div>

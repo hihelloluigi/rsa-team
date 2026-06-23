@@ -1,15 +1,12 @@
 [
   {
-    "slug": "marco-bianchi",
-    "name": "Marco Bianchi",
+    "slug": "luigi-aiello",
+    "nickname": "Lemon",
+    "name": "Luigi Aiello",
     "number": 1,
     "position": "GK",
     "nationality": "Italia",
-    "nationalityCode": "it",
-    "age": 29,
-    "stats": { "appearances": 18, "goals": 0, "assists": 0, "cleanSheets": 7, "motm": 2 },
-    "bio": "Para l'impossibile e si fa gol da solo sul facile. Comanda la difesa a urli, anche quando non serve.",
-    "joined": "2024"
+    "nationalityCode": "it"
   },
   {
     "slug": "david-silva",

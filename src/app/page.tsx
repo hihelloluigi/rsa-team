@@ -37,12 +37,14 @@ export default function Home() {
         </Reveal>
       </section>
 
-      <section className="mx-auto max-w-6xl px-5 py-16">
-        <SectionHeading label="La rosa" title="I fenomeni" icon={<GiSoccerBall size={32} />} />
-        <div className="grid gap-5 grid-cols-2 sm:grid-cols-3">
-          {featured.map((p, i) => (<Reveal key={p.slug} delay={i * 0.08}><PlayerCard player={p} /></Reveal>))}
-        </div>
-      </section>
+      {featured.length > 0 && (
+        <section className="mx-auto max-w-6xl px-5 py-16">
+          <SectionHeading label="La rosa" title="I fenomeni" icon={<GiSoccerBall size={32} />} />
+          <div className="grid gap-5 grid-cols-2 sm:grid-cols-3">
+            {featured.map((p, i) => (<Reveal key={p.slug} delay={i * 0.08}><PlayerCard player={p} /></Reveal>))}
+          </div>
+        </section>
+      )}
     </main>
   );
 }

@@ -17,13 +17,15 @@ export const PlayerSchema = z.object({
   nickname: z.string().min(1).optional(),
   number: z.number().int().min(1).max(99),
   position: PositionSchema,
-  nationality: z.string().min(1),
-  nationalityCode: z.string().length(2),
-  age: z.number().int().min(14).max(50),
+  // Everything below is optional so players can be added with minimal info
+  // and fleshed out later.
+  nationality: z.string().min(1).optional(),
+  nationalityCode: z.string().length(2).optional(),
+  age: z.number().int().min(14).max(50).optional(),
   photo: z.string().optional(),
-  stats: PlayerStatsSchema,
-  bio: z.string().min(1),
-  joined: z.string().min(1),
+  stats: PlayerStatsSchema.optional(),
+  bio: z.string().min(1).optional(),
+  joined: z.string().min(1).optional(),
 });
 export type Player = z.infer<typeof PlayerSchema>;
 
