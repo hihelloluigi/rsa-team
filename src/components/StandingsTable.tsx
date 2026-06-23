@@ -1,12 +1,17 @@
 import type { StandingRow } from "@/lib/types";
 import { GiTrophyCup } from "react-icons/gi";
 
-const cols = ["G", "V", "N", "P", "GF", "GS", "Pti"];
+const cols = ["Pti", "G", "V", "N", "P", "GF", "GS", "DR"];
+
+function goalDiff(r: StandingRow): string {
+  const d = r.goalsFor - r.goalsAgainst;
+  return d > 0 ? `+${d}` : `${d}`;
+}
 
 export default function StandingsTable({ rows }: { rows: StandingRow[] }) {
   return (
     <div className="overflow-x-auto border border-white/10">
-      <table className="w-full min-w-[28rem] text-sm">
+      <table className="w-full min-w-[32rem] text-sm">
         <thead>
           <tr className="text-muted text-xs uppercase tracking-widest border-b border-white/10">
             <th className="text-left px-2 sm:px-3 py-3 w-8">#</th>
@@ -24,13 +29,14 @@ export default function StandingsTable({ rows }: { rows: StandingRow[] }) {
                   {r.team}
                 </span>
               </td>
+              <td className="px-2 sm:px-3 py-3 text-center font-extrabold">{r.points}</td>
               <td className="px-2 sm:px-3 py-3 text-center">{r.played}</td>
               <td className="px-2 sm:px-3 py-3 text-center">{r.won}</td>
               <td className="px-2 sm:px-3 py-3 text-center">{r.drawn}</td>
               <td className="px-2 sm:px-3 py-3 text-center">{r.lost}</td>
               <td className="px-2 sm:px-3 py-3 text-center">{r.goalsFor}</td>
               <td className="px-2 sm:px-3 py-3 text-center">{r.goalsAgainst}</td>
-              <td className="px-2 sm:px-3 py-3 text-center font-extrabold">{r.points}</td>
+              <td className="px-2 sm:px-3 py-3 text-center text-muted whitespace-nowrap">{goalDiff(r)}</td>
             </tr>
           ))}
         </tbody>
