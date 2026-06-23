@@ -1,12 +1,14 @@
 {
   "name": "RSA TEAM",
-  "founded": 2024,
-  "ground": "Il Catino",
+  "founded": 2025,
+  "ground": "Monterosso",
+  "groundAddress": "Via S. Gregorio Barbarigo, 4, 24123 Bergamo BG",
+  "groundMapUrl": "https://www.google.com/maps/search/?api=1&query=Via%20S.%20Gregorio%20Barbarigo%2C%204%2C%2024123%20Bergamo%20BG",
   "tagline": "Più cuore che tattica, da sempre.",
-  "about": "L'RSA TEAM nasce nel 2024 da un gruppo di amici convinti di essere più forti di quanto dica la classifica. Il nostro motto è uno solo: siamo matti. Giochiamo all'attacco perché difendere è noioso e ci stanca. A volte funziona, a volte no, ma divertirsi è obbligatorio.",
+  "about": "L'RSA TEAM nasce nel 2025 da un gruppo di amici convinti di essere più forti di quanto dica la classifica. Il nostro motto è uno solo: siamo matti. Giochiamo all'attacco perché difendere è noioso e ci stanca. A volte funziona, a volte no, ma divertirsi è obbligatorio.",
   "staff": [
-    { "name": "Antonio De Luca", "role": "Allenatore" },
-    { "name": "Sara Greco", "role": "Vice Allenatore" },
-    { "name": "Paolo Ferrari", "role": "Preparatore dei portieri" }
+    { "name": "Giuliano Feoli", "role": "Allenatore" },
+    { "name": "Jacopo Panseri", "role": "Assistente Allenatore" },
+    { "name": "Mattia Moleri", "role": "Presidente" }
   ]
 }
