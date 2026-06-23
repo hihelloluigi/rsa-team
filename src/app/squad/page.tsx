@@ -3,7 +3,6 @@ import PlayerCard from "@/components/PlayerCard";
 import Reveal from "@/components/Reveal";
 import { getPlayers } from "@/lib/data";
 import type { Position } from "@/lib/types";
-import { GiSoccerField } from "react-icons/gi";
 
 export const metadata = { title: "Squadra — RSA TEAM" };
 
@@ -18,7 +17,7 @@ export default function SquadPage() {
   const players = getPlayers();
   return (
     <main className="mx-auto max-w-6xl px-5 py-16">
-      <SectionHeading label="2026/27" title="La Rosa" icon={<GiSoccerField size={32} />} />
+      <SectionHeading label="2026/27" title="La Rosa" />
       {groups.map((g) => {
         const list = players.filter((p) => p.position === g.key);
         if (list.length === 0) return null;
