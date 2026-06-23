@@ -46,7 +46,7 @@ export default async function PlayerPage({ params }: { params: Promise<{ slug: s
               <PositionIcon position={player.position} size={18} className="text-accent" />
               {player.position} · #{player.number}
             </p>
-            <h1 className="font-display italic uppercase text-6xl leading-none mt-2">{player.name}</h1>
+            <h1 className="font-display italic uppercase text-5xl sm:text-6xl leading-none mt-2 break-words">{player.name}</h1>
             <dl className="mt-6 grid grid-cols-2 gap-y-3 text-sm">
               <dt className="text-muted uppercase tracking-widest text-xs">Nazionalità</dt><dd>{player.nationality}</dd>
               <dt className="text-muted uppercase tracking-widest text-xs">Età</dt><dd>{player.age}</dd>
@@ -54,7 +54,7 @@ export default async function PlayerPage({ params }: { params: Promise<{ slug: s
             </dl>
             <p className="mt-6 text-muted leading-relaxed">{player.bio}</p>
 
-            <div className="mt-8 grid grid-cols-3 gap-3">
+            <div className="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-3">
               <StatBadge label="Presenze" value={player.stats.appearances} />
               <StatBadge label="Gol" value={player.stats.goals} />
               <StatBadge label="Assist" value={player.stats.assists} />

@@ -21,7 +21,7 @@ export default function Hero({ tagline }: { tagline: string }) {
           <span className="block text-transparent [-webkit-text-stroke:2px_var(--color-accent)]">TEAM</span>
         </h1>
         <p className="mt-6 max-w-md text-muted">{tagline}</p>
-        <div className="mt-8 flex gap-3">
+        <div className="mt-8 flex flex-wrap gap-3">
           <Link href="/squad" className="bg-accent px-6 py-3 text-sm font-extrabold uppercase tracking-widest hover:opacity-90">
             Conosci la rosa
           </Link>
