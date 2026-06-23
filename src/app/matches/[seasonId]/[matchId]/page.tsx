@@ -102,6 +102,11 @@ export default async function MatchDetailPage({ params }: { params: Params }) {
           <span className="capitalize">{dateStr}</span>
           {match.kickoff && <span> · ore {match.kickoff}</span>}
         </p>
+        {match.note && (
+          <p className="mx-auto mt-4 max-w-md border border-accent/40 bg-accent/10 px-4 py-2 text-xs font-extrabold uppercase tracking-widest text-accent">
+            {match.note}
+          </p>
+        )}
       </div>
 
       {hasDetails ? (

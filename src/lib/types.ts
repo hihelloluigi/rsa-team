@@ -42,6 +42,7 @@ export const MatchSchema = z
       .optional(),
     kickoff: z.string().min(1).optional(),
     stadium: z.string().min(1).optional(),
+    note: z.string().min(1).optional(),
     scorers: z
       .object({
         rsa: z.array(z.string().min(1)).optional(),
