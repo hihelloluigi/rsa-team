@@ -21,12 +21,14 @@ export default async function MatchesPage({
   const hasMatches = selected.matches.length > 0;
 
   return (
-    <main className="mx-auto max-w-6xl px-5 py-16 space-y-12">
+    <main className="mx-auto max-w-6xl px-5 py-16">
       {/* Season selector */}
-      <SeasonSelect
-        seasons={seasons.map((s) => ({ id: s.id, label: s.label }))}
-        selected={selected.id}
-      />
+      <div className="mb-10">
+        <SeasonSelect
+          seasons={seasons.map((s) => ({ id: s.id, label: s.label }))}
+          selected={selected.id}
+        />
+      </div>
 
       {!hasMatches ? (
         /* Funny placeholder for a season whose fixtures aren't drawn yet */
@@ -46,7 +48,7 @@ export default async function MatchesPage({
           </div>
         </Reveal>
       ) : (
-        <>
+        <div className="space-y-14">
           {upcoming.length > 0 && (
             <section>
               <SectionHeading label="Calendario" title="Prossime" icon={<GiWhistle size={32} />} />
@@ -59,7 +61,7 @@ export default async function MatchesPage({
           )}
 
           <section>
-            <p className="mb-6 border-l-2 border-accent pl-4 text-base sm:text-lg italic text-muted">
+            <p className="mb-4 border-l-2 border-accent pl-4 text-base sm:text-lg italic text-muted">
               Poteva andare meglio, ma poteva andare anche peggio.
             </p>
             <SectionHeading label="Risultati" title="Giocate" />
@@ -78,7 +80,7 @@ export default async function MatchesPage({
               </Reveal>
             </section>
           )}
-        </>
+        </div>
       )}
     </main>
   );
