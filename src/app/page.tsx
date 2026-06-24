@@ -5,6 +5,7 @@ import Reveal from "@/components/Reveal";
 import PlayerCard from "@/components/PlayerCard";
 import EmptyState from "@/components/EmptyState";
 import { getClub, getCurrentSeason, getPlayers, getSponsors } from "@/lib/data";
+import { FaInstagram } from "react-icons/fa";
 
 export default function Home() {
   const club = getClub();
@@ -78,6 +79,36 @@ export default function Home() {
           </div>
         </section>
       )}
+
+      <section className="border-t border-white/10">
+        <div className="mx-auto max-w-6xl px-5 py-16">
+          <SectionHeading label="Dietro le quinte" title="Seguici su Instagram" />
+          <Reveal>
+            <div className="flex flex-col items-center gap-8 border border-white/10 bg-surface px-6 py-12 text-center sm:flex-row sm:justify-between sm:gap-6 sm:text-left">
+              <div className="flex flex-col items-center gap-5 sm:flex-row">
+                <FaInstagram className="shrink-0 text-accent" size={56} aria-hidden="true" />
+                <div>
+                  <h3 className="font-display italic uppercase text-2xl sm:text-3xl leading-tight">
+                    Non perderti un attimo della nostra «preparazione»
+                  </h3>
+                  <p className="mx-auto mt-3 max-w-xl text-muted sm:mx-0">
+                    Allenamenti (quando ci andiamo), terzi tempi (quelli mai saltati) e dietro le quinte
+                    che nessuno ci ha chiesto. C&apos;è più aperitivo che tattica: è l&apos;unico modo per vederci correre.
+                  </p>
+                </div>
+              </div>
+              <a
+                href="https://www.instagram.com/rsafussball"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex shrink-0 items-center gap-2 bg-accent px-6 py-3 text-sm font-extrabold uppercase tracking-widest hover:opacity-90"
+              >
+                <FaInstagram size={18} aria-hidden="true" /> Seguici @rsafussball
+              </a>
+            </div>
+          </Reveal>
+        </div>
+      </section>
     </main>
   );
 }
