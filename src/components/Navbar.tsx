@@ -24,7 +24,7 @@ export default function Navbar() {
         <Link href="/" onClick={() => setOpen(false)} className="shrink-0">
           {/* SVG crest — served as-is (vectors need no next/image optimization). */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo.svg" alt="RSA TEAM" className="h-11 w-11" />
+          <img src="/logo.svg" alt="RSA TEAM" className="h-14 w-14" />
         </Link>
 
         {/* Desktop links */}
