@@ -72,10 +72,12 @@ export default function Home() {
       </section>
 
       {featured.length > 0 && (
-        <section className="mx-auto max-w-6xl px-5 py-16">
-          <SectionHeading label="La rosa" title="Hot Players"/>
-          <div className="grid gap-5 grid-cols-2 sm:grid-cols-3">
-            {featured.map((p, i) => (<Reveal key={p.slug} delay={i * 0.08}><PlayerCard player={p} /></Reveal>))}
+        <section className="border-t border-white/10">
+          <div className="mx-auto max-w-6xl px-5 py-16">
+            <SectionHeading label="La rosa" title="Hot Players"/>
+            <div className="grid gap-5 grid-cols-2 sm:grid-cols-3">
+              {featured.map((p, i) => (<Reveal key={p.slug} delay={i * 0.08}><PlayerCard player={p} /></Reveal>))}
+            </div>
           </div>
         </section>
       )}
