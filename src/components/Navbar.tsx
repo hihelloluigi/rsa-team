@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { FaBars, FaXmark } from "react-icons/fa6";
@@ -21,12 +22,15 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 bg-bg/90 backdrop-blur border-b border-white/10">
       <nav className="mx-auto max-w-6xl px-4 sm:px-5 h-16 flex items-center justify-between">
-        <Link
-          href="/"
-          onClick={() => setOpen(false)}
-          className="font-black italic text-lg sm:text-xl tracking-tight shrink-0"
-        >
-          RSA <span className="text-accent">TEAM</span>
+        <Link href="/" onClick={() => setOpen(false)} className="shrink-0">
+          <Image
+            src="/logo.png"
+            alt="RSA TEAM"
+            width={44}
+            height={44}
+            priority
+            className="h-11 w-11"
+          />
         </Link>
 
         {/* Desktop links */}
