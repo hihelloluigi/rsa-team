@@ -4,13 +4,21 @@ import { GiSoccerBall } from "react-icons/gi";
 export default function Hero({ tagline }: { tagline: string }) {
   return (
     <section className="relative overflow-hidden border-b border-white/10">
-      <div className="absolute -top-16 -right-20 w-52 h-52 sm:-top-24 sm:-right-32 sm:w-[28rem] sm:h-[28rem] bg-accent rotate-45 opacity-90" />
-      {/* Football watermark */}
+      {/* Pink ball accent — replaces the old rotated square */}
       <div
-        className="absolute bottom-8 left-[-2rem] text-white/5 pointer-events-none select-none"
+        className="absolute -top-14 -right-14 sm:-top-24 sm:-right-24 text-accent opacity-95 pointer-events-none select-none drop-shadow-[0_10px_40px_rgba(255,32,119,0.35)]"
         aria-hidden="true"
       >
-        <GiSoccerBall size={280} />
+        <GiSoccerBall className="h-52 w-52 sm:h-104 sm:w-104 rotate-12" />
+      </div>
+      {/* Madonna watermark */}
+      <div
+        className="absolute bottom-0 -left-8 sm:-left-4 pointer-events-none select-none"
+        aria-hidden="true"
+      >
+        {/* SVG madonna — served as-is, faded to a watermark via opacity. */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src="/madonna.svg" alt="" className="h-[26rem] w-auto opacity-[0.12] sm:h-[36rem] sm:opacity-[0.1]" />
       </div>
       <div className="relative mx-auto max-w-6xl px-5 py-24 sm:py-32">
         <p className="text-xs font-extrabold uppercase tracking-[0.3em] text-accent mb-4">
