@@ -4,7 +4,7 @@
 import type { Club, Match, Player, Season } from "./types";
 import { getClub } from "./data";
 import { matchSides } from "./matches";
-import { positionLabels } from "./format";
+import { positionNames } from "./format";
 import { siteUrl } from "./site";
 
 const teamId = () => `${siteUrl()}/#team`;
@@ -59,7 +59,7 @@ export function playerLd(player: Player) {
     url: `${base}/squad/${player.slug}`,
     ...(player.photo && { image: `${base}${player.photo}` }),
     ...(player.nationality && { nationality: player.nationality }),
-    jobTitle: positionLabels[player.position],
+    jobTitle: positionNames[player.position],
     memberOf: { "@type": "SportsTeam", "@id": teamId(), name: getClub().name },
     ...(player.bio && { description: player.bio }),
   };

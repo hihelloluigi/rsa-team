@@ -1,14 +1,10 @@
 import Link from "next/link";
 import type { Match, MatchResult } from "@/lib/types";
 import { matchResult, matchSides } from "@/lib/matches";
-import { matchDateShort } from "@/lib/format";
+import { matchDateShort, resultLabels, resultNames } from "@/lib/format";
 
 const badge: Record<MatchResult, string> = {
   W: "bg-accent text-white", D: "bg-white/20 text-white", L: "bg-white/5 text-muted",
-};
-
-const resultLabel: Record<MatchResult, string> = {
-  W: "V", D: "N", L: "P",
 };
 
 export default function MatchRow({ match, href }: { match: Match; href?: string }) {
@@ -21,7 +17,9 @@ export default function MatchRow({ match, href }: { match: Match; href?: string 
   // placeholder), so the hour has to come from `kickoff`.
   const resultBadge = result ? (
     <span className={`inline-block w-7 text-center text-xs font-extrabold py-1 ${badge[result]}`}>
-      {resultLabel[result]}
+      {/* The letter alone is meaningless read aloud, so the word goes with it. */}
+      <span aria-hidden="true">{resultLabels[result]}</span>
+      <span className="sr-only">{resultNames[result]}</span>
     </span>
   ) : match.status === "postponed" ? (
     <span className="text-[11px] uppercase tracking-widest text-accent">Rinviata</span>

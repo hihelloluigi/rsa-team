@@ -1,4 +1,4 @@
-import type { Position } from "./types";
+import type { MatchResult, Position } from "./types";
 
 // Up-to-two-letter initials for a name, used as a photo fallback.
 export function initials(name: string): string {
@@ -51,3 +51,24 @@ export const positionLabels: Record<Position, string> = {
 export function instagramHandle(url: string): string {
   return url.replace(/\/+$/, "").split("/").pop() ?? "";
 }
+
+// Full Italian role names. The badge abbreviations above are for the UI; these
+// are for anywhere a word is wanted — notably schema.org, where "POR" means
+// nothing to a search engine.
+export const positionNames: Record<Position, string> = {
+  GK: "Portiere",
+  DEF: "Difensore",
+  MID: "Centrocampista",
+  FWD: "Attaccante",
+};
+
+// Vittoria / Nullo / Perso, as shown on a result badge.
+export const resultLabels: Record<MatchResult, string> = { W: "V", D: "N", L: "P" };
+
+// The same three spelled out — read aloud by screen readers in place of the
+// bare letter, and used wherever the result is stated in full.
+export const resultNames: Record<MatchResult, string> = {
+  W: "Vittoria",
+  D: "Pareggio",
+  L: "Sconfitta",
+};

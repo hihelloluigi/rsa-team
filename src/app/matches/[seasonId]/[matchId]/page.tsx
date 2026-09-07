@@ -8,7 +8,7 @@ import WinCelebration from "@/components/WinCelebration";
 import LossReaction from "@/components/LossReaction";
 import JsonLd from "@/components/JsonLd";
 import { matchLd, breadcrumbLd } from "@/lib/structured-data";
-import { matchDateLong } from "@/lib/format";
+import { matchDateLong, resultNames } from "@/lib/format";
 import Scoreline from "@/components/Scoreline";
 import Eyebrow from "@/components/Eyebrow";
 
@@ -35,7 +35,6 @@ export async function generateMetadata({ params }: { params: Params }) {
   };
 }
 
-const resultText: Record<MatchResult, string> = { W: "Vittoria", D: "Pareggio", L: "Sconfitta" };
 const resultClass: Record<MatchResult, string> = { W: "text-accent", D: "text-white", L: "text-muted" };
 
 function ScorerList({ names, align }: { names: string[]; align: "left" | "right" }) {
@@ -108,7 +107,7 @@ export default async function MatchDetailPage({ params }: { params: Params }) {
         </div>
         {result && (
           <p className={`mt-6 font-display italic uppercase text-2xl sm:text-3xl ${resultClass[result]}`}>
-            {resultText[result]}
+            {resultNames[result]}
           </p>
         )}
         {match.status === "postponed" && (
