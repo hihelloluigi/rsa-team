@@ -111,8 +111,14 @@ export default async function MatchDetailPage({ params }: { params: Params }) {
             {resultText[result]}
           </p>
         )}
+        {match.status === "postponed" && (
+          <p className="mt-6 font-display italic uppercase text-2xl sm:text-3xl text-accent">
+            Rinviata
+          </p>
+        )}
         <p className="mt-2 text-sm text-muted">
-          <span className="capitalize">{dateStr}</span>
+          {match.status === "postponed" && <span>Era in programma </span>}
+          <span className={match.status === "postponed" ? "" : "capitalize"}>{dateStr}</span>
           {match.kickoff && <span> · ore {match.kickoff}</span>}
         </p>
         {match.note && (
@@ -179,7 +185,9 @@ export default async function MatchDetailPage({ params }: { params: Params }) {
                 </div>
                 <div className="border-t border-white/10 px-5 py-4 text-center">
                   <p className="font-bold">{match.stadium}</p>
-                  {match.kickoff && (
+                  {/* A postponed fixture has no kick-off to announce; the venue
+                      is still worth showing for when it is replayed. */}
+                  {match.kickoff && match.status !== "postponed" && (
                     <p className="mt-0.5 text-sm text-muted">Calcio d&apos;inizio · ore {match.kickoff}</p>
                   )}
                 </div>

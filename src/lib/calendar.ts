@@ -17,6 +17,32 @@ const REFRESH = "PT12H";
 // subscribed from one would collect duplicates of every match from the other.
 const UID_NAMESPACE = "rsa-team.calendario";
 
+// Europe/Rome under the EU rules: CET (+01) with CEST (+02) from the last
+// Sunday in March to the last Sunday in October. Shipping this and referencing
+// it by TZID — rather than emitting absolute UTC — means a client resolves each
+// kickoff with its own current tz database. If the EU ever does drop seasonal
+// clock changes, subscribers stay correct without waiting for a redeploy.
+const VTIMEZONE = [
+  "BEGIN:VTIMEZONE",
+  `TZID:${TIME_ZONE}`,
+  "X-LIC-LOCATION:Europe/Rome",
+  "BEGIN:DAYLIGHT",
+  "TZOFFSETFROM:+0100",
+  "TZOFFSETTO:+0200",
+  "TZNAME:CEST",
+  "DTSTART:19700329T020000",
+  "RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=-1SU",
+  "END:DAYLIGHT",
+  "BEGIN:STANDARD",
+  "TZOFFSETFROM:+0200",
+  "TZOFFSETTO:+0100",
+  "TZNAME:CET",
+  "DTSTART:19701025T030000",
+  "RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=-1SU",
+  "END:STANDARD",
+  "END:VTIMEZONE",
+];
+
 // Offset of `tz` from UTC at a given instant, in milliseconds.
 function zoneOffset(at: Date, tz: string): number {
   const parts = new Intl.DateTimeFormat("en-US", {
@@ -64,9 +90,31 @@ export function matchStart(match: Match): Date | null {
   return match.kickoff ? fromZonedTime(match.date, match.kickoff, TIME_ZONE) : null;
 }
 
-// 20260925T180000Z
+// 20260925T180000Z — used for DTSTAMP, which is genuinely an absolute instant.
 function utcStamp(d: Date): string {
   return `${d.toISOString().replace(/[-:]/g, "").slice(0, 15)}Z`;
+}
+
+// 20260925T200000 — an instant rendered as wall-clock time in `tz`, to be
+// paired with TZID.
+function localStamp(at: Date, tz: string): string {
+  const p = new Intl.DateTimeFormat("en-CA", {
+    timeZone: tz,
+    hour12: false,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  })
+    .formatToParts(at)
+    .reduce<Record<string, string>>((acc, x) => {
+      acc[x.type] = x.value;
+      return acc;
+    }, {});
+  const hour = String(Number(p.hour) % 24).padStart(2, "0");
+  return `${p.year}${p.month}${p.day}T${hour}${p.minute}${p.second}`;
 }
 
 // 20260925
@@ -119,8 +167,10 @@ function event(season: Season, match: Match, base: string, stamp: string): strin
 
   const when = start
     ? [
-        `DTSTART:${utcStamp(start)}`,
-        `DTEND:${utcStamp(new Date(start.getTime() + DURATION_MINUTES * 60_000))}`,
+        `DTSTART;TZID=${TIME_ZONE}:${localStamp(start, TIME_ZONE)}`,
+        // The end is computed as an instant then rendered back to wall time, so
+        // a fixture that spanned a clock change would still last 90 minutes.
+        `DTEND;TZID=${TIME_ZONE}:${localStamp(new Date(start.getTime() + DURATION_MINUTES * 60_000), TIME_ZONE)}`,
       ]
     : // Hour unknown: an all-day event is honest, a guessed time is not.
       [`DTSTART;VALUE=DATE:${dateStamp(match.date)}`];
@@ -138,6 +188,9 @@ function event(season: Season, match: Match, base: string, stamp: string): strin
     `SUMMARY:${escapeText(summary(match))}`,
     ...(match.stadium ? [`LOCATION:${escapeText(match.stadium)}`] : []),
     `DESCRIPTION:${escapeText(`${details}\n${url}`)}`,
+    // Struck through in the subscriber's calendar rather than vanishing, which
+    // is what deleting the fixture outright would do.
+    ...(match.status === "postponed" ? ["STATUS:CANCELLED"] : []),
     `URL:${url}`,
     "END:VEVENT",
   ];
@@ -151,11 +204,14 @@ export function seasonCalendar(season: Season, base: string, now = new Date()): 
     "PRODID:-//RSA TEAM//Calendario//IT",
     "CALSCALE:GREGORIAN",
     "METHOD:PUBLISH",
-    `X-WR-CALNAME:${escapeText(`RSA TEAM ${season.label}`)}`,
+    // Deliberately season-less: the feed URL is permanent, and several clients
+    // snapshot this name at subscribe time and never refresh it.
+    "X-WR-CALNAME:RSA TEAM",
     `X-WR-CALDESC:${escapeText(`Calendario e risultati dell'RSA TEAM, stagione ${season.label}.`)}`,
     `X-WR-TIMEZONE:${TIME_ZONE}`,
     `REFRESH-INTERVAL;VALUE=DURATION:${REFRESH}`,
     `X-PUBLISHED-TTL:${REFRESH}`,
+    ...VTIMEZONE,
     ...season.matches.flatMap((m) => event(season, m, base, stamp)),
     "END:VCALENDAR",
   ];

@@ -29,7 +29,10 @@ export const PlayerSchema = z.object({
 });
 export type Player = z.infer<typeof PlayerSchema>;
 
-export const MatchStatusSchema = z.enum(["played", "upcoming"]);
+// "postponed" is a fixture that was scheduled and did not happen — common in
+// an amateur league. It keeps its original date so the calendar can still
+// show when it should have been played.
+export const MatchStatusSchema = z.enum(["played", "upcoming", "postponed"]);
 export type MatchStatus = z.infer<typeof MatchStatusSchema>;
 
 export const MatchSchema = z
@@ -61,7 +64,7 @@ export const MatchSchema = z
       })
       .optional(),
   })
-  .refine((m) => m.status === "upcoming" || m.score !== undefined, {
+  .refine((m) => m.status !== "played" || m.score !== undefined, {
     message: "played matches must include a score",
   });
 export type Match = z.infer<typeof MatchSchema>;

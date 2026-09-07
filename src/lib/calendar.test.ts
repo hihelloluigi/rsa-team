@@ -43,10 +43,36 @@ describe("seasonCalendar", () => {
     expect(build().endsWith("\r\n")).toBe(true);
   });
 
-  it("emits the kickoff as a UTC instant with a 90 minute duration", () => {
+  it("ships a VTIMEZONE so clients resolve kickoffs with their own rules", () => {
     const ls = lines(build());
-    expect(ls).toContain("DTSTART:20260925T180000Z");
-    expect(ls).toContain("DTEND:20260925T193000Z");
+    expect(ls).toContain("BEGIN:VTIMEZONE");
+    expect(ls).toContain("TZID:Europe/Rome");
+    expect(ls).toContain("RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=-1SU");
+  });
+
+  it("emits the kickoff as Rome wall time with a 90 minute duration", () => {
+    const ls = lines(build());
+    expect(ls).toContain("DTSTART;TZID=Europe/Rome:20260925T200000");
+    expect(ls).toContain("DTEND;TZID=Europe/Rome:20260925T213000");
+  });
+
+  it("keeps wall time intact for a winter fixture too", () => {
+    const m = match({ date: "2027-02-05T12:00:00+00:00", kickoff: "21:00" });
+    const ls = lines(build([m]));
+    expect(ls).toContain("DTSTART;TZID=Europe/Rome:20270205T210000");
+    expect(ls).toContain("DTEND;TZID=Europe/Rome:20270205T223000");
+  });
+
+  it("marks a postponed fixture cancelled rather than dropping it", () => {
+    const ls = lines(build([match({ status: "postponed" })]));
+    expect(ls).toContain("STATUS:CANCELLED");
+    expect(ls.filter((l) => l === "BEGIN:VEVENT")).toHaveLength(1);
+  });
+
+  it("names the calendar without the season, since the URL is permanent", () => {
+    const ls = lines(build());
+    expect(ls).toContain("X-WR-CALNAME:RSA TEAM");
+    expect(ls.some((l) => l.startsWith("X-WR-CALDESC") && l.includes("2026/27"))).toBe(true);
   });
 
   it("falls back to an all-day event when the hour is unknown", () => {

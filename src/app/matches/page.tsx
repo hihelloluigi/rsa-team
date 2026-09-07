@@ -16,7 +16,12 @@ const description =
 export const metadata = {
   title: "Partite",
   description,
-  alternates: { canonical: "/matches" },
+  // Page-level `alternates` replaces the layout's wholesale rather than merging,
+  // so the feed link has to be repeated here — this is the page it belongs on.
+  alternates: {
+    canonical: "/matches",
+    types: { "text/calendar": "/calendario.ics" },
+  },
 };
 
 export default async function MatchesPage({

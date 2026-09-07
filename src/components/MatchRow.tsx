@@ -16,13 +16,15 @@ export default function MatchRow({ match, href }: { match: Match; href?: string 
   const { home, away, homeScore, awayScore } = matchSides(match);
   const dateStr = matchDateShort(match.date);
 
-  // Played matches show their result; upcoming ones show the kickoff time.
-  // `match.date` only carries the day (the time part is a placeholder), so the
-  // hour has to come from `kickoff`.
+  // Played matches show their result and postponed ones say so; the rest show
+  // their kickoff time. `match.date` only carries the day (the time part is a
+  // placeholder), so the hour has to come from `kickoff`.
   const resultBadge = result ? (
     <span className={`inline-block w-7 text-center text-xs font-extrabold py-1 ${badge[result]}`}>
       {resultLabel[result]}
     </span>
+  ) : match.status === "postponed" ? (
+    <span className="text-[11px] uppercase tracking-widest text-accent">Rinviata</span>
   ) : match.kickoff ? (
     <span className="text-[11px] text-muted uppercase">{match.kickoff}</span>
   ) : null;
@@ -59,7 +61,7 @@ export default function MatchRow({ match, href }: { match: Match; href?: string 
           )}
           <span className={`flex-1 text-left ${!match.home ? "text-accent" : ""}`}>{away}</span>
         </div>
-        <div className="w-10 shrink-0 text-right">{resultBadge}</div>
+        <div className="w-16 shrink-0 text-right">{resultBadge}</div>
       </div>
     </div>
   );

@@ -75,4 +75,7 @@ the same UID for a fixture or subscribers collect duplicates.
   `tracking-eyebrow` (0.3em, `text-xs` captions) and `tracking-subhead` (0.2em,
   `text-sm` group headings). Tracking widens as text shrinks — don't reach for an
   arbitrary `tracking-[…]` value.
+- **Page `metadata.alternates` replaces the layout's, it does not merge.** Adding a
+  `canonical` on a page silently drops the layout's `types` entry (the calendar feed
+  link), so repeat what that page needs.
 - Path alias: `@/*` → `src/*`.

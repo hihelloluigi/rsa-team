@@ -92,6 +92,24 @@ describe("sortStandings", () => {
   });
 });
 
+describe("splitMatches with a postponed fixture", () => {
+  // A postponed match is not a result, so it must not fall out of both lists.
+  const fixtures = [
+    match({ id: "a", status: "played", date: "2026-01-01T12:00:00+00:00" }),
+    match({ id: "b", status: "postponed", score: undefined, date: "2026-02-01T12:00:00+00:00" }),
+    match({ id: "c", status: "upcoming", score: undefined, date: "2026-03-01T12:00:00+00:00" }),
+  ];
+  it("keeps it among the upcoming fixtures", () => {
+    expect(splitMatches(fixtures).upcoming.map((m) => m.id)).toEqual(["b", "c"]);
+  });
+  it("keeps it out of the results", () => {
+    expect(splitMatches(fixtures).played.map((m) => m.id)).toEqual(["a"]);
+  });
+  it("has no result of its own", () => {
+    expect(matchResult(fixtures[1])).toBeNull();
+  });
+});
+
 describe("withRests", () => {
   const m = (round: number) => match({ id: `m${round}`, round });
   const kinds = (f: ReturnType<typeof withRests>) =>

@@ -21,7 +21,11 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl()),
   title: { default: title, template: "%s — RSA TEAM" },
   description,
-  alternates: { canonical: "/" },
+  alternates: {
+    canonical: "/",
+    // Lets tools discover the fixture feed without going through the button.
+    types: { "text/calendar": "/calendario.ics" },
+  },
   // No title/description here on purpose: Next derives og:/twitter: title and
   // description from each page's own title/description. The opengraph-image
   // file convention supplies the image site-wide.

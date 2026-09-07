@@ -38,8 +38,10 @@ export function splitMatches(matches: Match[]): { played: Match[]; upcoming: Mat
   const played = matches
     .filter((m) => m.status === "played")
     .sort((a, b) => ms(b.date) - ms(a.date));
+  // Anything not played is still ahead of us — a postponed fixture keeps its
+  // original slot in the calendar so it reads as "this was meant to be today".
   const upcoming = matches
-    .filter((m) => m.status === "upcoming")
+    .filter((m) => m.status !== "played")
     .sort((a, b) => ms(a.date) - ms(b.date));
   return { played, upcoming };
 }
