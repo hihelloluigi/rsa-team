@@ -18,11 +18,18 @@ export default function RestRow({ round }: { round: number }) {
         <p className="text-sm italic">{LINE}</p>
       </div>
 
-      {/* Desktop: single row, sharing MatchRow's fixed date column */}
+      {/* Desktop: MatchRow's three columns exactly — fixed date, flexible
+          middle, fixed trailing — so the message sits on the same centre axis
+          as the fixtures above and below it rather than starting hard left. */}
       <div className="hidden sm:flex items-center gap-4">
         <div className="w-24 shrink-0 text-xs uppercase tracking-widest">{round}ª giornata</div>
-        <GiNightSleep size={18} className="shrink-0 text-accent/50" aria-hidden="true" />
-        <p className="text-sm italic">{LINE}</p>
+        <div className="flex-1 flex items-center justify-center gap-3">
+          <GiNightSleep size={18} className="shrink-0 text-accent/50" aria-hidden="true" />
+          <p className="text-sm italic">{LINE}</p>
+        </div>
+        {/* Matches the result-badge column, so the centre lands where it does
+            on a fixture row. */}
+        <div className="w-16 shrink-0" aria-hidden="true" />
       </div>
     </div>
   );
