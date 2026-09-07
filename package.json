@@ -10,7 +10,8 @@
     "lint:check": "eslint",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "import:standings": "node scripts/import-standings.mjs"
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",

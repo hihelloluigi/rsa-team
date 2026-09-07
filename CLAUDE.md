@@ -10,6 +10,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ```bash
 npm run dev        # dev server on port 3002 (Turbopack)
+npm run import:standings [seasonId]   # refresh the classifica from bergamotornei
 npm run build      # production build — also validates all content JSON (see below)
 npm run lint       # ESLint with --fix
 npm run lint:check # ESLint, no writes — this is what CI runs
@@ -62,6 +63,11 @@ it added the way a narrowed feed would.
   only a `round`; `withRests` weaves them into the calendar by giornata, and they
   show in the upcoming list only.
 - **Within a season, `standings` is maintained independently of `matches`** — editing a fixture score does NOT recompute the league table. Update both.
+  `npm run import:standings` pulls the table from the league instead of retyping it;
+  it reads an undocumented endpoint the site's own pages call (`op=20&tid=&round=`),
+  maps columns by their header titles rather than position, refuses to write if the
+  table does not balance or a club appears under an unknown spelling, and reproduces
+  the file's one-object-per-line formatting so the diff stays readable.
 - **Content invariants the schemas can't express** (unique player slugs/numbers, unique match ids, ≤1 current season) are guarded by `src/lib/content.test.ts`, not Zod. Run the tests after editing content.
 - **Never format a match date inline.** Pages are prerendered, so `toLocaleDateString`
   without an explicit `timeZone` renders in the *build machine's* zone — UTC on
