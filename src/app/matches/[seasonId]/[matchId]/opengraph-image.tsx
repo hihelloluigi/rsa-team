@@ -16,6 +16,11 @@ export function generateStaticParams() {
 const ACCENT = "#ff2077";
 const MUTED = "#a1a1a1";
 
+// The renderer runs outside the browser, so it cannot use next/font — it needs
+// the raw bytes. This is the same Anton the pages set their headings in; see
+// public/fonts/CREDITS.md for why a second copy of it exists.
+const antonFile = () => readFile(join(process.cwd(), "public/fonts/Anton-Regular.ttf"));
+
 // The share card for one fixture. Rendered at build time, one per match, so a
 // link pasted into a chat shows the scoreline rather than the same crest every
 // time. Satori supports a subset of CSS — flexbox only, and any element with
@@ -28,8 +33,12 @@ export default async function Image({
   const { seasonId, matchId } = await params;
   const found = getMatch(seasonId, matchId);
 
-  const logo = await readFile(join(process.cwd(), "public/logo.png"));
+  const [logo, anton] = await Promise.all([
+    readFile(join(process.cwd(), "public/logo.png")),
+    antonFile(),
+  ]);
   const logoSrc = `data:image/png;base64,${logo.toString("base64")}`;
+  const fonts = [{ name: "Anton", data: anton, style: "normal" as const, weight: 400 as const }];
 
   // A match that does not exist still has to render something rather than
   // throwing the whole build.
@@ -49,7 +58,7 @@ export default async function Image({
           <img src={logoSrc} width={420} height={420} alt="" />
         </div>
       ),
-      size,
+      { ...size, fonts },
     );
   }
 
@@ -62,14 +71,12 @@ export default async function Image({
   const dateLine = `${long.charAt(0).toUpperCase()}${long.slice(1)}${
     match.kickoff ? ` · ore ${match.kickoff}` : ""
   }`;
-  // Only the regular weight is available to the renderer, so the emphasis has
-  // to come from case and scale rather than from bold.
   const teamStyle = (isUs: boolean) => ({
     flex: 1,
     display: "flex",
-    fontSize: 56,
-    lineHeight: 1.1,
-    letterSpacing: -1,
+    fontFamily: "Anton",
+    fontSize: 60,
+    lineHeight: 1.05,
     textTransform: "uppercase" as const,
     color: isUs ? ACCENT : "#ffffff",
   });
@@ -110,8 +117,8 @@ export default async function Image({
           <div
             style={{
               display: "flex",
-              fontSize: match.score ? 116 : 64,
-              letterSpacing: -2,
+              fontFamily: "Anton",
+              fontSize: match.score ? 124 : 68,
               color: match.score ? "#ffffff" : MUTED,
             }}
           >
@@ -132,12 +139,20 @@ export default async function Image({
           <div style={{ display: "flex" }}>
             {match.status === "postponed" ? "Rinviata" : dateLine}
           </div>
-          <div style={{ display: "flex", letterSpacing: 6, textTransform: "uppercase" }}>
+          <div
+            style={{
+              display: "flex",
+              fontFamily: "Anton",
+              fontSize: 30,
+              letterSpacing: 4,
+              textTransform: "uppercase",
+            }}
+          >
             Siamo Matti
           </div>
         </div>
       </div>
     ),
-    size,
+    { ...size, fonts },
   );
 }
