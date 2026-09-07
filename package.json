@@ -11,7 +11,7 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "import:standings": "node scripts/import-standings.mjs"
+    "import:standings": "node scripts/import-standings.ts"
   },
   "dependencies": {
     "@vercel/analytics": "^2.0.1",
