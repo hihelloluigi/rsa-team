@@ -52,6 +52,15 @@ production mint the same UID for a fixture instead of duplicating it.
 rather than a second subscription — an import is additive, so it cannot later remove what
 it added the way a narrowed feed would.
 
+**Admin (`/admin`):** a signed-in editor for match results that commits to
+`seasons.json` through the GitHub Contents API — so an edit made from a phone lands
+in git history, runs CI, and redeploys exactly like a hand edit. Sign-in is GitHub
+OAuth restricted to `ADMIN_GITHUB_LOGIN`, and **fails closed**: with the variable
+unset nobody can sign in. It writes via `serializeSeasons` (shared with the standings
+importer) and re-parses through `SeasonsSchema` before committing, so an invalid edit
+is rejected before it can break a build. `/admin` and `/api/` are the only dynamic
+routes and are disallowed in `robots.ts`.
+
 **SEO/PWA is wired through Next file conventions, not manual `<head>` tags:** `app/sitemap.ts`, `app/robots.ts`, `app/opengraph-image.tsx`, and the favicon/`icon`/`apple-icon`/`manifest.webmanifest` files. Metadata + Vercel Analytics/Speed Insights live in `app/layout.tsx`.
 
 ### Things that will bite you
