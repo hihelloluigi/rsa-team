@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { GiSoccerField, GiSoccerBall } from "react-icons/gi";
-import { getSeasons, getMatch, matchResult, matchSides } from "@/lib/data";
+import { getSeasons, getMatch } from "@/lib/data";
+import { matchResult, matchSides } from "@/lib/matches";
 import type { MatchResult } from "@/lib/types";
 import WinCelebration from "@/components/WinCelebration";
 import LossReaction from "@/components/LossReaction";
@@ -9,6 +10,7 @@ import JsonLd from "@/components/JsonLd";
 import { matchLd, breadcrumbLd } from "@/lib/structured-data";
 import { matchDateLong } from "@/lib/format";
 import Scoreline from "@/components/Scoreline";
+import Eyebrow from "@/components/Eyebrow";
 
 type Params = Promise<{ seasonId: string; matchId: string }>;
 
@@ -98,9 +100,9 @@ export default async function MatchDetailPage({ params }: { params: Params }) {
 
       {/* Scoreline */}
       <div className="mt-10 text-center">
-        <p className="text-xs font-extrabold uppercase tracking-[0.3em] text-accent">
+        <Eyebrow>
           {match.competition} · {season.label}
-        </p>
+        </Eyebrow>
         <div className="mt-6">
           <Scoreline match={match} size="lg" />
         </div>
@@ -125,9 +127,9 @@ export default async function MatchDetailPage({ params }: { params: Params }) {
           {/* Marcatori — head to head, mirroring the scoreline sides */}
           {hasScorers && (
             <section className="mt-12">
-              <h2 className="mb-5 flex items-center justify-center gap-2 text-xs font-extrabold uppercase tracking-[0.3em] text-accent">
+              <Eyebrow as="h2" className="mb-5 flex items-center justify-center gap-2">
                 <GiSoccerBall size={15} aria-hidden="true" /> Marcatori
-              </h2>
+              </Eyebrow>
               <div className="grid grid-cols-2 border border-white/10">
                 <div className="border-r border-white/10 p-5">
                   <p className={`mb-3 text-xs font-extrabold uppercase tracking-widest ${match.home ? "text-accent" : "text-muted"}`}>
@@ -152,9 +154,9 @@ export default async function MatchDetailPage({ params }: { params: Params }) {
           {/* Il Campo — venue with a pitch graphic */}
           {match.stadium && (
             <section className="mt-12">
-              <h2 className="mb-5 flex items-center justify-center gap-2 text-xs font-extrabold uppercase tracking-[0.3em] text-accent">
+              <Eyebrow as="h2" className="mb-5 flex items-center justify-center gap-2">
                 <GiSoccerField size={15} aria-hidden="true" /> Il Campo
-              </h2>
+              </Eyebrow>
               <div className="overflow-hidden border border-white/10 bg-surface">
                 <div className="bg-gradient-to-br from-accent/10 to-black px-6 py-6">
                   <svg

@@ -1,6 +1,6 @@
 import {
   PlayersSchema, SeasonsSchema, ClubSchema, SponsorsSchema,
-  type Player, type Match, type StandingRow, type Season, type Club, type MatchResult, type Sponsor, type Rest,
+  type Player, type Match, type Season, type Club, type Sponsor,
 } from "./types";
 
 import playersJson from "@/data/players.json";
@@ -8,34 +8,13 @@ import seasonsJson from "@/data/seasons.json";
 import clubJson from "@/data/club.json";
 import sponsorsJson from "@/data/sponsors.json";
 
-// Validate once at module load — throws at build time on bad data.
+// Content access. Every JSON file is validated once at module load, so bad
+// data throws at build time rather than rendering a broken page. Helpers that
+// compute over this content live in matches.ts.
 const players: Player[] = PlayersSchema.parse(playersJson);
 const seasons: Season[] = SeasonsSchema.parse(seasonsJson);
 const club: Club = ClubSchema.parse(clubJson);
 const sponsors: Sponsor[] = SponsorsSchema.parse(sponsorsJson);
-
-export function matchResult(m: Match): MatchResult | null {
-  if (m.status !== "played" || !m.score) return null;
-  if (m.score.rsa > m.score.opponent) return "W";
-  if (m.score.rsa < m.score.opponent) return "L";
-  return "D";
-}
-
-// Resolve a match into home/away sides so each side carries its own goals
-// (home goals : away goals), rather than always listing RSA first.
-export function matchSides(m: Match): {
-  home: string;
-  away: string;
-  homeScore?: number;
-  awayScore?: number;
-} {
-  return {
-    home: m.home ? club.name : m.opponent,
-    away: m.home ? m.opponent : club.name,
-    homeScore: m.home ? m.score?.rsa : m.score?.opponent,
-    awayScore: m.home ? m.score?.opponent : m.score?.rsa,
-  };
-}
 
 export function getPlayers(): Player[] {
   return [...players].sort((a, b) => a.number - b.number);
@@ -62,44 +41,6 @@ export function getMatch(seasonId: string, matchId: string): { season: Season; m
   const match = season?.matches.find((m) => m.id === matchId);
   if (!season || !match) return undefined;
   return { season, match };
-}
-
-export function splitMatches(matches: Match[]): { played: Match[]; upcoming: Match[] } {
-  const ms = (s: string) => new Date(s).getTime();
-  const played = matches
-    .filter((m) => m.status === "played")
-    .sort((a, b) => ms(b.date) - ms(a.date));
-  const upcoming = matches
-    .filter((m) => m.status === "upcoming")
-    .sort((a, b) => ms(a.date) - ms(b.date));
-  return { played, upcoming };
-}
-
-// One entry in a season's calendar: either a fixture or a giornata sat out.
-export type Fixture =
-  | { kind: "match"; match: Match }
-  | { kind: "rest"; round: number };
-
-// Weaves a season's turni di riposo into a chronologically ascending fixture
-// list. A bye carries no date — only the giornata it occupies — so it is placed
-// immediately before the first fixture of a later round. Rests left over (or a
-// list whose matches carry no round) land at the end rather than being dropped.
-export function withRests(matches: Match[], rests: Rest[]): Fixture[] {
-  const pending = [...rests].sort((a, b) => a.round - b.round);
-  const out: Fixture[] = [];
-  for (const match of matches) {
-    while (pending.length > 0 && match.round !== undefined && pending[0].round < match.round) {
-      out.push({ kind: "rest", round: pending.shift()!.round });
-    }
-    out.push({ kind: "match", match });
-  }
-  for (const rest of pending) out.push({ kind: "rest", round: rest.round });
-  return out;
-}
-
-export function sortStandings(rows: StandingRow[]): StandingRow[] {
-  const gd = (r: StandingRow) => r.goalsFor - r.goalsAgainst;
-  return [...rows].sort((a, b) => b.points - a.points || gd(b) - gd(a));
 }
 
 export function getClub(): Club {

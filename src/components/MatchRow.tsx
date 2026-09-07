@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { Match, MatchResult } from "@/lib/types";
-import { matchResult, matchSides } from "@/lib/data";
+import { matchResult, matchSides } from "@/lib/matches";
 import { matchDateShort } from "@/lib/format";
 
 const badge: Record<MatchResult, string> = {

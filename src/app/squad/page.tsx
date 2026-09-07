@@ -31,7 +31,7 @@ export default function SquadPage() {
         if (list.length === 0) return null;
         return (
           <section key={g.key} className="mb-14">
-            <h3 className="text-sm font-extrabold uppercase tracking-[0.2em] text-muted mb-5">{g.label}</h3>
+            <h3 className="text-sm font-extrabold uppercase tracking-subhead text-muted mb-5">{g.label}</h3>
             <div className="grid gap-5 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4">
               {list.map((p, i) => (<Reveal key={p.slug} delay={i * 0.05}><PlayerCard player={p} /></Reveal>))}
             </div>

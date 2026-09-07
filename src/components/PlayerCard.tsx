@@ -25,8 +25,11 @@ export default function PlayerCard({ player }: { player: Player }) {
         <div className="font-extrabold uppercase tracking-wide group-hover:text-accent transition truncate">
           {player.nickname ?? player.name}
         </div>
-        <div className="text-xs text-muted mt-0.5 truncate">
-          {player.nickname ? player.name : " "}
+        {/* Reserved even without a nickname so cards in a row stay the same
+            height. min-h matches the text-xs line box; the previous non-breaking
+            space did the same job but said so nowhere. */}
+        <div className="text-xs text-muted mt-0.5 min-h-4 truncate">
+          {player.nickname ? player.name : null}
         </div>
       </div>
     </Link>

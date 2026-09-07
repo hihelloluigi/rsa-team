@@ -2,15 +2,14 @@ import Link from "next/link";
 import type { Match } from "@/lib/types";
 import Scoreline from "@/components/Scoreline";
 import { matchDateLong } from "@/lib/format";
+import Eyebrow from "@/components/Eyebrow";
 
 // The season's next fixture, given hero treatment on the home page. Mirrors the
 // scoreline layout of the match detail page so the two read as the same object.
 export default function NextMatch({ match, href }: { match: Match; href: string }) {
   return (
     <Link href={href} className="block px-5 py-10 text-center transition hover:bg-white/[0.03]">
-      <p className="text-xs font-extrabold uppercase tracking-[0.3em] text-accent">
-        Prossima partita{match.round !== undefined && ` · ${match.round}ª giornata`}
-      </p>
+      <Eyebrow>Prossima partita{match.round !== undefined && ` · ${match.round}ª giornata`}</Eyebrow>
       <div className="mt-6">
         <Scoreline match={match} />
       </div>

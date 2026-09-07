@@ -34,7 +34,8 @@ A content-driven, statically-generated site (Italian-language) for an amateur fo
 
 **`src/lib/` is the data layer — go through it, never import JSON directly into components:**
 - `types.ts` — Zod schemas are the single source of truth for content shape; all TS types are `z.infer` of them.
-- `data.ts` — validates the JSON **once at module load** (`Schema.parse(...)` throws at build time on bad data) and exposes typed accessors plus pure domain helpers (`matchResult`, `matchSides`, `splitMatches`, `sortStandings`, `withRests`).
+- `data.ts` — content access only: validates every JSON file **once at module load** (`Schema.parse(...)` throws at build time on bad data) and exposes the typed accessors.
+- `matches.ts` — the pure helpers that compute over a season (`matchResult`, `matchSides`, `splitMatches`, `sortStandings`, `withRests`). Depends on `data.ts`, never the reverse.
 - `format.ts` — the display layer: date formatting, `initials`, `instagramHandle`, and `positionLabels` (GK/DEF/MID/FWD → Italian POR/DIF/CEN/ATT — data keeps the English codes).
 - `site.ts` — resolves the canonical origin for `metadataBase`/sitemap/robots (`NEXT_PUBLIC_SITE_URL` → Vercel production URL → localhost).
 
@@ -61,7 +62,11 @@ A content-driven, statically-generated site (Italian-language) for an amateur fo
 - **Club identity comes from `club.json`, never a literal.** The club name and
   Instagram URL are content: `matchSides` and the structured-data builders read
   `club.name`, and the footer and home page read `club.instagram`.
-- **Buttons, scorelines and player portraits are components, not class strings**
-  (`ButtonLink`, `Scoreline`, `PlayerPortrait`). These were copy-pasted and had
-  already drifted apart; add call sites rather than re-pasting the classes.
+- **Repeated UI is a component, not a class string** (`ButtonLink`, `Scoreline`,
+  `PlayerPortrait`, `Eyebrow`). These were copy-pasted and had already drifted
+  apart; add call sites rather than re-pasting the classes.
+- **Small-caps tracking is a named scale**, declared in `globals.css`:
+  `tracking-eyebrow` (0.3em, `text-xs` captions) and `tracking-subhead` (0.2em,
+  `text-sm` group headings). Tracking widens as text shrinks — don't reach for an
+  arbitrary `tracking-[…]` value.
 - Path alias: `@/*` → `src/*`.

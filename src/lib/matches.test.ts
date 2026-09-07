@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { matchResult, matchSides, splitMatches, sortStandings, withRests } from "./data";
+import { matchResult, matchSides, splitMatches, sortStandings, withRests } from "./matches";
 import type { Match, StandingRow } from "./types";
 
 // Builders keep each test focused on the field under test.

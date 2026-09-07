@@ -1,5 +1,6 @@
 import ButtonLink from "@/components/ButtonLink";
 import { GiSoccerBall } from "react-icons/gi";
+import Eyebrow from "@/components/Eyebrow";
 
 export default function Hero({ tagline }: { tagline: string }) {
   return (
@@ -21,9 +22,7 @@ export default function Hero({ tagline }: { tagline: string }) {
         <img src="/madonna.svg" alt="" className="h-[26rem] w-auto opacity-[0.12] sm:h-[36rem] sm:opacity-[0.1]" />
       </div>
       <div className="relative mx-auto max-w-6xl px-5 py-24 sm:py-32">
-        <p className="text-xs font-extrabold uppercase tracking-[0.3em] text-accent mb-4">
-          Dal 2025
-        </p>
+        <Eyebrow className="mb-4">Dal 2025</Eyebrow>
         <h1 className="font-display italic uppercase leading-[0.8] text-7xl sm:text-9xl">
           <span className="block">RSA</span>
           <span className="block text-accent">TEAM</span>

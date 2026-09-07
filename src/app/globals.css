@@ -8,6 +8,12 @@
   --color-surface: #161616;
   --font-display: var(--font-anton), system-ui, sans-serif;
   --font-sans: var(--font-inter), system-ui, sans-serif;
+
+  /* Letter-spacing scale for small caps labels. Tracking widens as the text
+     gets smaller, so these are named rather than written as arbitrary values
+     at each call site — that is how the two drifted apart. */
+  --tracking-eyebrow: 0.3em;  /* text-xs captions — see components/Eyebrow */
+  --tracking-subhead: 0.2em;  /* text-sm group headings */
 }
 
 html, body {

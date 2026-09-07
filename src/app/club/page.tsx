@@ -50,7 +50,7 @@ export default function ClubPage() {
               )}
             </div>
             <div>
-              <h3 className="text-sm font-extrabold uppercase tracking-[0.2em] text-muted mb-3">Lo staff</h3>
+              <h3 className="text-sm font-extrabold uppercase tracking-subhead text-muted mb-3">Lo staff</h3>
               <ul className="space-y-2">
                 {club.staff.map((s) => (
                   <li key={s.name} className="flex items-baseline justify-between gap-4 border-b border-white/10 py-2 text-sm">

@@ -2,7 +2,8 @@
 // via <JsonLd>. URLs are absolute (resolved against the canonical origin) so
 // search engines can dereference the @id graph across pages.
 import type { Club, Match, Player, Season } from "./types";
-import { matchSides, getClub } from "./data";
+import { getClub } from "./data";
+import { matchSides } from "./matches";
 import { positionLabels } from "./format";
 import { siteUrl } from "./site";
 

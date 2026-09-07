@@ -5,7 +5,8 @@ import StandingsTable from "@/components/StandingsTable";
 import Reveal from "@/components/Reveal";
 import SeasonSelect from "@/components/SeasonSelect";
 import EmptyState from "@/components/EmptyState";
-import { getSeasons, getCurrentSeason, getSeasonById, splitMatches, sortStandings, withRests } from "@/lib/data";
+import { getSeasons, getCurrentSeason, getSeasonById } from "@/lib/data";
+import { splitMatches, sortStandings, withRests } from "@/lib/matches";
 import { GiWhistle, GiTrophyCup } from "react-icons/gi";
 
 const description =

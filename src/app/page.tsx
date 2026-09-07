@@ -6,9 +6,11 @@ import PlayerCard from "@/components/PlayerCard";
 import EmptyState from "@/components/EmptyState";
 import MatchRow from "@/components/MatchRow";
 import NextMatch from "@/components/NextMatch";
-import { getClub, getCurrentSeason, getPlayers, getSponsors, splitMatches } from "@/lib/data";
+import { getClub, getCurrentSeason, getPlayers, getSponsors } from "@/lib/data";
+import { splitMatches } from "@/lib/matches";
 import { instagramHandle } from "@/lib/format";
 import { FaInstagram } from "react-icons/fa";
+import Eyebrow from "@/components/Eyebrow";
 
 export default function Home() {
   const club = getClub();
@@ -44,9 +46,7 @@ export default function Home() {
             <div className="border border-white/10 bg-surface">
               {lastResult && (
                 <div className="px-5 pt-5">
-                  <p className="text-xs font-extrabold uppercase tracking-[0.3em] text-muted">
-                    Ultimo risultato
-                  </p>
+                  <Eyebrow tone="muted">Ultimo risultato</Eyebrow>
                   <MatchRow
                     match={lastResult}
                     href={`/matches/${season.id}/${lastResult.id}`}
@@ -64,9 +64,7 @@ export default function Home() {
 
               {later.length > 0 && (
                 <div className="border-t border-white/10 px-5 pt-5">
-                  <p className="text-xs font-extrabold uppercase tracking-[0.3em] text-muted">
-                    Poi tocca a
-                  </p>
+                  <Eyebrow tone="muted">Poi tocca a</Eyebrow>
                   {later.slice(0, 2).map((m) => (
                     <MatchRow key={m.id} match={m} href={`/matches/${season.id}/${m.id}`} />
                   ))}

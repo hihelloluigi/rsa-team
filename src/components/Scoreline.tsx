@@ -1,5 +1,5 @@
 import type { Match } from "@/lib/types";
-import { matchSides } from "@/lib/data";
+import { matchSides } from "@/lib/matches";
 
 // Only the middle column differs between the two call sites.
 const CENTER = {

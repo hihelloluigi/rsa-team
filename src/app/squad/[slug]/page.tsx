@@ -8,6 +8,7 @@ import { getPlayers, getPlayerBySlug } from "@/lib/data";
 import { positionLabels } from "@/lib/format";
 import JsonLd from "@/components/JsonLd";
 import { playerLd, breadcrumbLd } from "@/lib/structured-data";
+import Eyebrow from "@/components/Eyebrow";
 
 export function generateStaticParams() {
   return getPlayers().map((p) => ({ slug: p.slug }));
@@ -64,10 +65,10 @@ export default async function PlayerPage({ params }: { params: Promise<{ slug: s
 
         <Reveal delay={0.1}>
           <div>
-            <p className="text-xs font-extrabold uppercase tracking-[0.3em] text-accent flex items-center gap-1.5">
+            <Eyebrow className="flex items-center gap-1.5">
               <PositionIcon position={player.position} size={18} className="text-accent" />
               {positionLabels[player.position]} · #{player.number}
-            </p>
+            </Eyebrow>
             <h1 className="font-display italic uppercase text-5xl sm:text-6xl leading-none mt-2 break-words">{player.nickname ?? player.name}</h1>
             {player.nickname && (
               <p className="mt-2 text-sm uppercase tracking-widest text-muted">{player.name}</p>
