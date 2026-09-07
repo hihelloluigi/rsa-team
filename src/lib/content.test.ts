@@ -61,6 +61,77 @@ describe("content data", () => {
     }
   });
 
+  // We only hold RSA's fixtures, so no other team's row can be *computed* — but
+  // the whole table still has to satisfy arithmetic that holds in any league,
+  // which catches a typo in any row without knowing anyone else's results.
+  describe("standings arithmetic", () => {
+    const tables = SeasonsSchema.parse(seasonsJson).filter((s) => s.standings.length > 0);
+    const sum = (rows: { [k: string]: unknown }[], key: string) =>
+      rows.reduce((n, r) => n + (r[key] as number), 0);
+
+    it("gives every team played = won + drawn + lost", () => {
+      for (const season of tables) {
+        for (const r of season.standings) {
+          expect(r.played, `${r.team} in ${season.id}`).toBe(r.won + r.drawn + r.lost);
+        }
+      }
+    });
+
+    it("gives every team points = 3 x won + drawn", () => {
+      for (const season of tables) {
+        for (const r of season.standings) {
+          expect(r.points, `${r.team} in ${season.id}`).toBe(r.won * 3 + r.drawn);
+        }
+      }
+    });
+
+    // Every goal is scored by one team and conceded by another, so across a
+    // whole girone the two columns must come to the same total.
+    it("balances goals scored against goals conceded", () => {
+      for (const season of tables) {
+        expect(sum(season.standings, "goalsFor"), season.id).toBe(
+          sum(season.standings, "goalsAgainst"),
+        );
+      }
+    });
+
+    // Likewise every decisive match makes one winner and one loser, and a draw
+    // is shared by two teams.
+    it("balances wins against losses, and pairs up draws and matches", () => {
+      for (const season of tables) {
+        expect(sum(season.standings, "won"), season.id).toBe(sum(season.standings, "lost"));
+        expect(sum(season.standings, "drawn") % 2, season.id).toBe(0);
+        expect(sum(season.standings, "played") % 2, season.id).toBe(0);
+      }
+    });
+  });
+
+  // RSA's own row is the one we *can* derive, and it is the one that goes stale:
+  // editing a fixture's score does not recompute the table (see CLAUDE.md).
+  it("matches RSA's standings row to RSA's own results", () => {
+    for (const season of SeasonsSchema.parse(seasonsJson)) {
+      const row = season.standings.find((r) => r.isRSA);
+      if (!row) continue;
+      const played = season.matches.filter((m) => m.status === "played" && m.score);
+      const tally = { played: played.length, won: 0, drawn: 0, lost: 0, goalsFor: 0, goalsAgainst: 0 };
+      for (const m of played) {
+        const { rsa, opponent } = m.score!;
+        tally.goalsFor += rsa;
+        tally.goalsAgainst += opponent;
+        if (rsa > opponent) tally.won += 1;
+        else if (rsa < opponent) tally.lost += 1;
+        else tally.drawn += 1;
+      }
+      expect(
+        { ...tally, points: tally.won * 3 + tally.drawn },
+        `season ${season.id}: the table disagrees with the fixtures — update both`,
+      ).toEqual({
+        played: row.played, won: row.won, drawn: row.drawn, lost: row.lost,
+        goalsFor: row.goalsFor, goalsAgainst: row.goalsAgainst, points: row.points,
+      });
+    }
+  });
+
   // The classifica is maintained by hand alongside the fixtures (see CLAUDE.md),
   // so it drifts silently unless the two are checked against each other.
   it("every opponent a season plays also appears in its standings", () => {
