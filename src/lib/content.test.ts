@@ -37,4 +37,39 @@ describe("content data", () => {
       expect(new Set(ids).size, `duplicate match id in season ${season.id}`).toBe(ids.length);
     }
   });
+
+  // A giornata is either played or sat out, never both — and never twice.
+  it("giornate are unique across a season's matches and byes", () => {
+    const seasons = SeasonsSchema.parse(seasonsJson);
+    for (const season of seasons) {
+      const rounds = season.matches.flatMap((m) => (m.round === undefined ? [] : [m.round]));
+      const rests = season.rests.map((r) => r.round);
+      const all = [...rounds, ...rests];
+      expect(new Set(all).size, `giornata listed twice in season ${season.id}`).toBe(all.length);
+    }
+  });
+
+  // Each opponent is met home and away, so a missing or duplicated fixture in a
+  // hand-entered calendar shows up here rather than as a wrong-looking table.
+  it("a season with byes is a complete double round-robin", () => {
+    const seasons = SeasonsSchema.parse(seasonsJson).filter((s) => s.rests.length > 0);
+    for (const season of seasons) {
+      for (const opponent of new Set(season.matches.map((m) => m.opponent))) {
+        const sides = season.matches.filter((m) => m.opponent === opponent).map((m) => m.home);
+        expect([...sides].sort(), `${opponent} in season ${season.id}`).toEqual([false, true]);
+      }
+    }
+  });
+
+  // The classifica is maintained by hand alongside the fixtures (see CLAUDE.md),
+  // so it drifts silently unless the two are checked against each other.
+  it("every opponent a season plays also appears in its standings", () => {
+    const seasons = SeasonsSchema.parse(seasonsJson).filter((s) => s.standings.length > 0);
+    for (const season of seasons) {
+      const table = new Set(season.standings.map((r) => r.team));
+      for (const opponent of new Set(season.matches.map((m) => m.opponent))) {
+        expect(table.has(opponent), `${opponent} missing from ${season.id} standings`).toBe(true);
+      }
+    }
+  });
 });

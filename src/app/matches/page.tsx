@@ -1,10 +1,11 @@
 import SectionHeading from "@/components/SectionHeading";
 import MatchRow from "@/components/MatchRow";
+import RestRow from "@/components/RestRow";
 import StandingsTable from "@/components/StandingsTable";
 import Reveal from "@/components/Reveal";
 import SeasonSelect from "@/components/SeasonSelect";
 import EmptyState from "@/components/EmptyState";
-import { getSeasons, getCurrentSeason, getSeasonById, splitMatches, sortStandings } from "@/lib/data";
+import { getSeasons, getCurrentSeason, getSeasonById, splitMatches, sortStandings, withRests } from "@/lib/data";
 import { GiWhistle, GiTrophyCup } from "react-icons/gi";
 
 const description =
@@ -25,6 +26,9 @@ export default async function MatchesPage({
   const seasons = getSeasons();
   const selected = (season && getSeasonById(season)) || getCurrentSeason();
   const { played, upcoming } = splitMatches(selected.matches);
+  // Byes are woven into the calendar only. Once a giornata is behind us the
+  // results list is about scores, and a turno di riposo has none.
+  const calendar = withRests(upcoming, selected.rests);
   const standings = sortStandings(selected.standings);
   const hasMatches = selected.matches.length > 0;
 
@@ -74,28 +78,40 @@ export default async function MatchesPage({
         </Reveal>
       ) : (
         <div className="space-y-14">
-          {upcoming.length > 0 && (
+          {calendar.length > 0 && (
             <section>
               <SectionHeading label="Calendario" title="Prossime" icon={<GiWhistle size={32} />} />
               <div>
-                {upcoming.map((m) => (
+                {calendar.map((f) =>
+                  f.kind === "rest" ? (
+                    <RestRow key={`rest-${f.round}`} round={f.round} />
+                  ) : (
+                    <MatchRow
+                      key={f.match.id}
+                      match={f.match}
+                      href={`/matches/${selected.id}/${f.match.id}`}
+                    />
+                  ),
+                )}
+              </div>
+            </section>
+          )}
+
+          {/* A season that has only been drawn has no results yet — showing the
+              heading over an empty list would read as a bug. */}
+          {played.length > 0 && (
+            <section>
+              <p className="mb-8 border-l-2 border-accent pl-4 text-base sm:text-lg italic text-muted">
+                Poteva andare meglio, ma poteva andare anche peggio.
+              </p>
+              <SectionHeading label="Risultati" title="Giocate" />
+              <div>
+                {played.map((m) => (
                   <MatchRow key={m.id} match={m} href={`/matches/${selected.id}/${m.id}`} />
                 ))}
               </div>
             </section>
           )}
-
-          <section>
-            <p className="mb-8 border-l-2 border-accent pl-4 text-base sm:text-lg italic text-muted">
-              Poteva andare meglio, ma poteva andare anche peggio.
-            </p>
-            <SectionHeading label="Risultati" title="Giocate" />
-            <div>
-              {played.map((m) => (
-                <MatchRow key={m.id} match={m} href={`/matches/${selected.id}/${m.id}`} />
-              ))}
-            </div>
-          </section>
 
           {standings.length > 0 && (
             <section>

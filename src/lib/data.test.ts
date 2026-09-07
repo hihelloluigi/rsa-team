@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { matchResult, matchSides, splitMatches, sortStandings } from "./data";
+import { matchResult, matchSides, splitMatches, sortStandings, withRests } from "./data";
 import type { Match, StandingRow } from "./types";
 
 // Builders keep each test focused on the field under test.
@@ -89,5 +89,28 @@ describe("sortStandings", () => {
     const input = [row({ team: "A", points: 1 }), row({ team: "B", points: 2 })];
     sortStandings(input);
     expect(input.map((r) => r.team)).toEqual(["A", "B"]);
+  });
+});
+
+describe("withRests", () => {
+  const m = (round: number) => match({ id: `m${round}`, round });
+  const kinds = (f: ReturnType<typeof withRests>) =>
+    f.map((x) => (x.kind === "match" ? x.match.round : `rest${x.round}`));
+
+  it("places a bye before the first fixture of a later giornata", () => {
+    expect(kinds(withRests([m(3), m(5)], [{ round: 4 }]))).toEqual([3, "rest4", 5]);
+  });
+  it("handles several byes, in round order, however they are listed", () => {
+    expect(kinds(withRests([m(3), m(5), m(16)], [{ round: 15 }, { round: 4 }])))
+      .toEqual([3, "rest4", 5, "rest15", 16]);
+  });
+  it("appends a trailing bye that no later fixture follows", () => {
+    expect(kinds(withRests([m(1)], [{ round: 2 }]))).toEqual([1, "rest2"]);
+  });
+  it("keeps byes rather than dropping them when matches carry no round", () => {
+    expect(kinds(withRests([match({ id: "x" })], [{ round: 4 }]))).toEqual([undefined, "rest4"]);
+  });
+  it("is a plain passthrough when a season has no byes", () => {
+    expect(kinds(withRests([m(1), m(2)], []))).toEqual([1, 2]);
   });
 });

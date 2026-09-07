@@ -45,6 +45,8 @@ export const MatchSchema = z
     score: z
       .object({ rsa: z.number().int().nonnegative(), opponent: z.number().int().nonnegative() })
       .optional(),
+    // Giornata number. Optional: older seasons were entered without it.
+    round: z.number().int().positive().optional(),
     // 24h "HH:MM" — rendered verbatim in fixture lists, so the shape matters.
     kickoff: z
       .string()
@@ -93,6 +95,16 @@ export const PlayersSchema = z.array(PlayerSchema);
 export const MatchesSchema = z.array(MatchSchema);
 export const StandingsSchema = z.array(StandingRowSchema);
 
+// A "turno di riposo": a giornata the team sits out because the girone has an
+// odd number of teams. It is deliberately NOT a Match — a match always has an
+// opponent, and weakening that would ripple through matchResult/matchSides.
+// A bye has no date of its own either, only the round it displaces.
+export const RestSchema = z.object({
+  round: z.number().int().positive(),
+});
+export type Rest = z.infer<typeof RestSchema>;
+export const RestsSchema = z.array(RestSchema);
+
 export const SeasonSchema = z.object({
   id: z.string().min(1),
   label: z.string().min(1),
@@ -100,6 +112,8 @@ export const SeasonSchema = z.object({
   league: z.string().min(1).optional(),
   leagueUrl: z.url().optional(),
   matches: MatchesSchema,
+  // Defaulted so seasons entered before byes were modelled still parse.
+  rests: RestsSchema.default([]),
   standings: StandingsSchema,
 });
 export const SeasonsSchema = z.array(SeasonSchema);

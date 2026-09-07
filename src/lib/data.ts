@@ -1,6 +1,6 @@
 import {
   PlayersSchema, SeasonsSchema, ClubSchema, SponsorsSchema,
-  type Player, type Match, type StandingRow, type Season, type Club, type MatchResult, type Position, type Sponsor,
+  type Player, type Match, type StandingRow, type Season, type Club, type MatchResult, type Position, type Sponsor, type Rest,
 } from "./types";
 
 import playersJson from "@/data/players.json";
@@ -81,6 +81,28 @@ export function splitMatches(matches: Match[]): { played: Match[]; upcoming: Mat
     .filter((m) => m.status === "upcoming")
     .sort((a, b) => ms(a.date) - ms(b.date));
   return { played, upcoming };
+}
+
+// One entry in a season's calendar: either a fixture or a giornata sat out.
+export type Fixture =
+  | { kind: "match"; match: Match }
+  | { kind: "rest"; round: number };
+
+// Weaves a season's turni di riposo into a chronologically ascending fixture
+// list. A bye carries no date — only the giornata it occupies — so it is placed
+// immediately before the first fixture of a later round. Rests left over (or a
+// list whose matches carry no round) land at the end rather than being dropped.
+export function withRests(matches: Match[], rests: Rest[]): Fixture[] {
+  const pending = [...rests].sort((a, b) => a.round - b.round);
+  const out: Fixture[] = [];
+  for (const match of matches) {
+    while (pending.length > 0 && match.round !== undefined && pending[0].round < match.round) {
+      out.push({ kind: "rest", round: pending.shift()!.round });
+    }
+    out.push({ kind: "match", match });
+  }
+  for (const rest of pending) out.push({ kind: "rest", round: rest.round });
+  return out;
 }
 
 export function sortStandings(rows: StandingRow[]): StandingRow[] {

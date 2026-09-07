@@ -9,6 +9,9 @@ function goalDiff(r: StandingRow): string {
 }
 
 export default function StandingsTable({ rows }: { rows: StandingRow[] }) {
+  // Before a ball is kicked every row is zero, so first place is just
+  // alphabetical — crowning it would be misleading.
+  const started = rows.some((r) => r.played > 0);
   return (
     <div className="overflow-x-auto border border-white/10">
       <table className="w-full min-w-[32rem] text-sm">
@@ -25,7 +28,9 @@ export default function StandingsTable({ rows }: { rows: StandingRow[] }) {
               <td className="px-2 sm:px-3 py-3 text-muted">{i + 1}</td>
               <td className={`px-2 sm:px-3 py-3 font-bold whitespace-nowrap ${r.isRSA ? "text-accent" : ""}`}>
                 <span className="flex items-center gap-1.5">
-                  {i === 0 && <GiTrophyCup size={14} className="text-accent shrink-0" aria-hidden="true" />}
+                  {started && i === 0 && (
+                    <GiTrophyCup size={14} className="text-accent shrink-0" aria-hidden="true" />
+                  )}
                   {r.team}
                 </span>
               </td>

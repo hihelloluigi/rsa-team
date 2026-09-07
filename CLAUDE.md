@@ -44,6 +44,11 @@ A content-driven, statically-generated site (Italian-language) for an amateur fo
 ### Things that will bite you
 
 - **Match data is RSA-centric** (`score.rsa` / `score.opponent`, `home: boolean`). For display, convert with `matchSides(match)` — do not re-derive home/away/score sides inline (that duplication was already removed once).
+- **A bye is not a match.** A giornata the team sits out lives in the season's
+  `rests` array, not in `matches` — a `Match` always has an opponent, and
+  weakening that would ripple through `matchResult`/`matchSides`. Rests carry
+  only a `round`; `withRests` weaves them into the calendar by giornata, and they
+  show in the upcoming list only.
 - **Within a season, `standings` is maintained independently of `matches`** — editing a fixture score does NOT recompute the league table. Update both.
 - **Content invariants the schemas can't express** (unique player slugs/numbers, unique match ids, ≤1 current season) are guarded by `src/lib/content.test.ts`, not Zod. Run the tests after editing content.
 - **Never format a match date inline.** Pages are prerendered, so `toLocaleDateString`
