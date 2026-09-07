@@ -9,14 +9,20 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Commands
 
 ```bash
-npm run dev      # dev server on port 3002 (Turbopack)
-npm run build    # production build — also validates all content JSON (see below)
-npm run lint     # ESLint (eslint-config-next)
-npm test         # Vitest, run once
+npm run dev        # dev server on port 3002 (Turbopack)
+npm run build      # production build — also validates all content JSON (see below)
+npm run lint       # ESLint with --fix
+npm run lint:check # ESLint, no writes — this is what CI runs
+npm run typecheck  # tsc --noEmit
+npm test           # Vitest, run once
 
 npx vitest run src/lib/data.test.ts          # single test file
 npx vitest run -t "sortStandings"            # single test by name
 ```
+
+CI (`.github/workflows/ci.yml`) runs `lint:check`, `typecheck`, `test` and `build`
+as four parallel jobs on every PR and push to `main`. Deploys are **not** in the
+workflow — Vercel's Git integration handles them.
 
 `npm run build` parses every content file through its Zod schema at module load, so **invalid content JSON fails the build** rather than rendering broken pages.
 
@@ -40,4 +46,10 @@ A content-driven, statically-generated site (Italian-language) for an amateur fo
 - **Match data is RSA-centric** (`score.rsa` / `score.opponent`, `home: boolean`). For display, convert with `matchSides(match)` — do not re-derive home/away/score sides inline (that duplication was already removed once).
 - **Within a season, `standings` is maintained independently of `matches`** — editing a fixture score does NOT recompute the league table. Update both.
 - **Content invariants the schemas can't express** (unique player slugs/numbers, unique match ids, ≤1 current season) are guarded by `src/lib/content.test.ts`, not Zod. Run the tests after editing content.
+- **Never format a match date inline.** Pages are prerendered, so `toLocaleDateString`
+  without an explicit `timeZone` renders in the *build machine's* zone — UTC on
+  Vercel, CET locally. Use `matchDateShort`/`matchDateLong` from `lib/format.ts`,
+  which pin `Europe/Rome`.
+- **A match's kickoff hour lives in `kickoff`, not `date`.** The time component of
+  `date` is a placeholder (`T12:00:00+00:00`); only the day is meaningful.
 - Path alias: `@/*` → `src/*`.
