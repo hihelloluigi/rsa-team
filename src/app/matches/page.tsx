@@ -5,6 +5,7 @@ import StandingsTable from "@/components/StandingsTable";
 import Reveal from "@/components/Reveal";
 import SeasonSelect from "@/components/SeasonSelect";
 import EmptyState from "@/components/EmptyState";
+import CalendarSubscribe from "@/components/CalendarSubscribe";
 import { getSeasons, getCurrentSeason, getSeasonById } from "@/lib/data";
 import { splitMatches, sortStandings, withRests } from "@/lib/matches";
 import { GiWhistle, GiTrophyCup } from "react-icons/gi";
@@ -122,6 +123,10 @@ export default async function MatchesPage({
               </Reveal>
             </section>
           )}
+
+          <Reveal>
+            <CalendarSubscribe label={`stagione ${selected.label}`} />
+          </Reveal>
         </div>
       )}
     </main>
