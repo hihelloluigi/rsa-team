@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { matchStart, seasonCalendar } from "./calendar";
+import { fixturesCalendar, matchStart } from "./calendar";
 import type { Match, Season } from "./types";
 
 const match = (over: Partial<Match> = {}): Match => ({
@@ -32,9 +32,9 @@ describe("matchStart", () => {
   });
 });
 
-describe("seasonCalendar", () => {
-  const build = (m: Match[] = [match()]) =>
-    seasonCalendar(season(m), "https://rsa.example", new Date("2026-09-01T00:00:00Z"));
+describe("fixturesCalendar", () => {
+  const build = (m: Match[] = [match()], seasons = [season(m)]) =>
+    fixturesCalendar(seasons, "https://rsa.example", new Date("2026-09-01T00:00:00Z"));
 
   it("wraps the events in a VCALENDAR", () => {
     const ls = lines(build());
@@ -69,10 +69,24 @@ describe("seasonCalendar", () => {
     expect(ls.filter((l) => l === "BEGIN:VEVENT")).toHaveLength(1);
   });
 
-  it("names the calendar without the season, since the URL is permanent", () => {
+  it("names the calendar without a season, since the URL is permanent", () => {
     const ls = lines(build());
     expect(ls).toContain("X-WR-CALNAME:RSA TEAM");
-    expect(ls.some((l) => l.startsWith("X-WR-CALDESC") && l.includes("2026/27"))).toBe(true);
+    expect(ls.some((l) => l.startsWith("X-WR-CALDESC"))).toBe(true);
+  });
+
+  // A subscription mirrors its feed, so a season that stops being listed is
+  // deleted from every subscriber's calendar rather than merely hidden.
+  it("carries every season, not just the current one", () => {
+    const past: Season = {
+      id: "2025-2026", label: "2025/26",
+      matches: [match({ id: "old", status: "played", score: { rsa: 1, opponent: 0 } })],
+      rests: [], standings: [],
+    };
+    const ls = lines(build([match()], [past, season([match()])]));
+    expect(ls.filter((l) => l === "BEGIN:VEVENT")).toHaveLength(2);
+    expect(ls).toContain("UID:2025-2026-old@rsa-team.calendario");
+    expect(ls).toContain("UID:2026-2027-m01@rsa-team.calendario");
   });
 
   it("falls back to an all-day event when the hour is unknown", () => {

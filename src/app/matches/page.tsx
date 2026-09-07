@@ -130,7 +130,7 @@ export default async function MatchesPage({
           )}
 
           <Reveal>
-            <CalendarSubscribe label={`stagione ${selected.label}`} />
+            <CalendarSubscribe />
           </Reveal>
         </div>
       )}

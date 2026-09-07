@@ -42,10 +42,11 @@ A content-driven, statically-generated site (Italian-language) for an amateur fo
 **Routes (`src/app/`, App Router):** `/`, `/squad` + `/squad/[slug]`, `/matches` + `/matches/[seasonId]/[matchId]`, `/club`. Player and match detail pages are SSG via `generateStaticParams`; `/matches` is dynamic (reads `?season=` from `searchParams`). Components are **server components by default** — only `Navbar`, `Reveal`, `SeasonSelect`, and `WinCelebration` are `"use client"`.
 
 **Calendar feed:** `app/calendario.ics/route.ts` is a `force-static` route handler that
-serves the **current** season as iCalendar, built by `lib/calendar.ts`. Subscribers keep
-one URL forever, so it must always resolve to `getCurrentSeason()`. Event UIDs are
-namespaced to a constant, never the deploy URL — a preview and production have to mint
-the same UID for a fixture or subscribers collect duplicates.
+serves **every** season as iCalendar, built by `lib/calendar.ts`. A subscription mirrors
+its feed — clients delete any event the feed stops listing — so never narrow this to the
+current season: that would erase past fixtures from subscribers' calendars. For the same
+reason event UIDs are namespaced to a constant, never the deploy URL, so a preview and
+production mint the same UID for a fixture instead of duplicating it.
 
 **SEO/PWA is wired through Next file conventions, not manual `<head>` tags:** `app/sitemap.ts`, `app/robots.ts`, `app/opengraph-image.tsx`, and the favicon/`icon`/`apple-icon`/`manifest.webmanifest` files. Metadata + Vercel Analytics/Speed Insights live in `app/layout.tsx`.
 

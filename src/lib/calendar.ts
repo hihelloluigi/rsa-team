@@ -196,7 +196,12 @@ function event(season: Season, match: Match, base: string, stamp: string): strin
   ];
 }
 
-export function seasonCalendar(season: Season, base: string, now = new Date()): string {
+// Every season, not just the current one. A subscribed calendar is a mirror of
+// its feed: a client drops any event the feed no longer lists, so serving only
+// the current season would erase a season of history from every subscriber the
+// day the next one starts. Past fixtures cost nothing — calendars show today
+// forward — and they keep the feed additive.
+export function fixturesCalendar(seasons: Season[], base: string, now = new Date()): string {
   const stamp = utcStamp(now);
   const lines = [
     "BEGIN:VCALENDAR",
@@ -207,12 +212,12 @@ export function seasonCalendar(season: Season, base: string, now = new Date()): 
     // Deliberately season-less: the feed URL is permanent, and several clients
     // snapshot this name at subscribe time and never refresh it.
     "X-WR-CALNAME:RSA TEAM",
-    `X-WR-CALDESC:${escapeText(`Calendario e risultati dell'RSA TEAM, stagione ${season.label}.`)}`,
+    `X-WR-CALDESC:${escapeText("Calendario e risultati dell'RSA TEAM, stagione per stagione.")}`,
     `X-WR-TIMEZONE:${TIME_ZONE}`,
     `REFRESH-INTERVAL;VALUE=DURATION:${REFRESH}`,
     `X-PUBLISHED-TTL:${REFRESH}`,
     ...VTIMEZONE,
-    ...season.matches.flatMap((m) => event(season, m, base, stamp)),
+    ...seasons.flatMap((s) => s.matches.map((m) => event(s, m, base, stamp))).flat(),
     "END:VCALENDAR",
   ];
   // RFC 5545 §3.1: lines are CRLF-delimited, and the file ends with one.
