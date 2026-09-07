@@ -35,6 +35,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
       : {}),
   }));
 
+  // Past seasons only: the current one is served at /matches and canonicals
+  // there, so listing it twice would offer a duplicate.
+  const seasonRoutes = seasons
+    .filter((s) => !s.current)
+    .map((s) => ({
+      url: `${base}/matches/${s.id}`,
+      ...(lastPlayed ? { lastModified: lastPlayed } : {}),
+      changeFrequency: "monthly" as const,
+      priority: 0.6,
+    }));
+
   const playerRoutes = getPlayers().map((p) => ({
     url: `${base}/squad/${p.slug}`,
     changeFrequency: "monthly" as const,
@@ -50,5 +61,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     })),
   );
 
-  return [...staticRoutes, ...playerRoutes, ...matchRoutes];
+  return [...staticRoutes, ...seasonRoutes, ...playerRoutes, ...matchRoutes];
 }

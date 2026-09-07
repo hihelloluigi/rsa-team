@@ -91,7 +91,7 @@ export default async function MatchDetailPage({ params }: { params: Params }) {
       />
 
       <Link
-        href={`/matches?season=${season.id}`}
+        href={`/matches/${season.id}`}
         className="text-xs uppercase tracking-widest text-muted hover:text-accent"
       >
         ← Torna alle partite

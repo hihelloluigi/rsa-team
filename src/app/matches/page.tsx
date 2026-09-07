@@ -1,14 +1,5 @@
-import SectionHeading from "@/components/SectionHeading";
-import MatchRow from "@/components/MatchRow";
-import RestRow from "@/components/RestRow";
-import StandingsTable from "@/components/StandingsTable";
-import Reveal from "@/components/Reveal";
-import SeasonSelect from "@/components/SeasonSelect";
-import EmptyState from "@/components/EmptyState";
-import CalendarSubscribe from "@/components/CalendarSubscribe";
-import { getSeasons, getCurrentSeason, getSeasonById } from "@/lib/data";
-import { splitMatches, sortStandings, withRests } from "@/lib/matches";
-import { GiWhistle, GiTrophyCup } from "react-icons/gi";
+import SeasonFixtures from "@/components/SeasonFixtures";
+import { getCurrentSeason, getSeasons } from "@/lib/data";
 
 const description =
   "Calendario, risultati e classifica dell'RSA TEAM, stagione per stagione. Tutte le partite del club amatoriale di Bergamo.";
@@ -24,116 +15,8 @@ export const metadata = {
   },
 };
 
-export default async function MatchesPage({
-  searchParams,
-}: {
-  searchParams: Promise<{ season?: string }>;
-}) {
-  const { season } = await searchParams;
-  const seasons = getSeasons();
-  const selected = (season && getSeasonById(season)) || getCurrentSeason();
-  const { played, upcoming } = splitMatches(selected.matches);
-  // Byes are woven into the calendar only. Once a giornata is behind us the
-  // results list is about scores, and a turno di riposo has none.
-  const calendar = withRests(upcoming, selected.rests);
-  const standings = sortStandings(selected.standings);
-  const hasMatches = selected.matches.length > 0;
-
-  return (
-    <main className="mx-auto max-w-6xl px-5 py-16">
-      <h1 className="sr-only">Partite, risultati e classifica — RSA TEAM</h1>
-      {/* Season selector */}
-      <div className="mb-8 space-y-3">
-        <SeasonSelect
-          seasons={seasons.map((s) => ({ id: s.id, label: s.label }))}
-          selected={selected.id}
-        />
-        {selected.league && (
-          <p className="text-sm text-muted">
-            <span className="font-extrabold uppercase tracking-widest text-xs text-accent">Campionato</span>
-            {" — "}
-            {selected.leagueUrl ? (
-              <a
-                href={selected.leagueUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="underline decoration-white/20 underline-offset-4 transition hover:text-accent hover:decoration-accent"
-              >
-                {selected.league} ↗
-              </a>
-            ) : (
-              selected.league
-            )}
-          </p>
-        )}
-      </div>
-
-      {!hasMatches ? (
-        /* Funny placeholder for a season whose fixtures aren't drawn yet */
-        <Reveal>
-          <EmptyState
-            title="«Squadra che non gioca, non perde»"
-            footer={
-              <p className="text-xs font-extrabold uppercase tracking-widest text-accent">
-                Siamo matti, non veggenti.
-              </p>
-            }
-          >
-            Le partite della stagione {selected.label} verranno sorteggiate in settembre.
-            Puoi tornare più avanti, noi intanto ci alleniamo. Forse.
-          </EmptyState>
-        </Reveal>
-      ) : (
-        <div className="space-y-14">
-          {calendar.length > 0 && (
-            <section>
-              <SectionHeading label="Calendario" title="Prossime" icon={<GiWhistle size={32} />} />
-              <div>
-                {calendar.map((f) =>
-                  f.kind === "rest" ? (
-                    <RestRow key={`rest-${f.round}`} round={f.round} />
-                  ) : (
-                    <MatchRow
-                      key={f.match.id}
-                      match={f.match}
-                      href={`/matches/${selected.id}/${f.match.id}`}
-                    />
-                  ),
-                )}
-              </div>
-            </section>
-          )}
-
-          {/* A season that has only been drawn has no results yet — showing the
-              heading over an empty list would read as a bug. */}
-          {played.length > 0 && (
-            <section>
-              <p className="mb-8 border-l-2 border-accent pl-4 text-base sm:text-lg italic text-muted">
-                Poteva andare meglio, ma poteva andare anche peggio.
-              </p>
-              <SectionHeading label="Risultati" title="Giocate" />
-              <div>
-                {played.map((m) => (
-                  <MatchRow key={m.id} match={m} href={`/matches/${selected.id}/${m.id}`} />
-                ))}
-              </div>
-            </section>
-          )}
-
-          {standings.length > 0 && (
-            <section>
-              <SectionHeading label="Classifica" title="La Classifica" icon={<GiTrophyCup size={32} className="text-white" />} />
-              <Reveal>
-                <StandingsTable rows={standings} />
-              </Reveal>
-            </section>
-          )}
-
-          <Reveal>
-            <CalendarSubscribe season={{ id: selected.id, label: selected.label }} />
-          </Reveal>
-        </div>
-      )}
-    </main>
-  );
+// The current season, prerendered. Past seasons live at /matches/[seasonId];
+// this route reads no search params, which is what keeps it static.
+export default function MatchesPage() {
+  return <SeasonFixtures season={getCurrentSeason()} seasons={getSeasons()} />;
 }

@@ -2,11 +2,13 @@
 import { useRouter } from "next/navigation";
 import { FaChevronDown } from "react-icons/fa";
 
+// Each season is its own prerendered URL, so the option value *is* the
+// destination — the client does not need to know which season is current.
 export default function SeasonSelect({
   seasons,
   selected,
 }: {
-  seasons: { id: string; label: string }[];
+  seasons: { label: string; href: string }[];
   selected: string;
 }) {
   const router = useRouter();
@@ -19,11 +21,11 @@ export default function SeasonSelect({
         <select
           id="season"
           value={selected}
-          onChange={(e) => router.push(`/matches?season=${e.target.value}`)}
+          onChange={(e) => router.push(e.target.value)}
           className="appearance-none cursor-pointer bg-surface border border-white/10 text-fg text-xs font-extrabold uppercase tracking-widest pl-4 pr-9 py-2.5 transition hover:border-accent focus:outline-none focus:border-accent"
         >
           {seasons.map((s) => (
-            <option key={s.id} value={s.id} className="bg-bg text-fg normal-case">
+            <option key={s.href} value={s.href} className="bg-bg text-fg normal-case">
               {s.label}
             </option>
           ))}
