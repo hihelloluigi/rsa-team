@@ -4,7 +4,9 @@ import SectionHeading from "@/components/SectionHeading";
 import Reveal from "@/components/Reveal";
 import PlayerCard from "@/components/PlayerCard";
 import EmptyState from "@/components/EmptyState";
-import { getClub, getCurrentSeason, getPlayers, getSponsors } from "@/lib/data";
+import MatchRow from "@/components/MatchRow";
+import NextMatch from "@/components/NextMatch";
+import { getClub, getCurrentSeason, getPlayers, getSponsors, splitMatches } from "@/lib/data";
 import { FaInstagram } from "react-icons/fa";
 
 export default function Home() {
@@ -12,6 +14,11 @@ export default function Home() {
   const season = getCurrentSeason();
   const featured = getPlayers().filter((p) => p.position === "FWD").slice(0, 3);
   const sponsors = getSponsors();
+  // splitMatches gives played newest-first and upcoming soonest-first, so the
+  // head of each list is exactly what this section wants.
+  const { played, upcoming } = splitMatches(season.matches);
+  const [next, ...later] = upcoming;
+  const lastResult = played[0];
 
   return (
     <main>
@@ -20,21 +27,70 @@ export default function Home() {
       <section className="mx-auto max-w-6xl px-5 py-16">
         <SectionHeading label="La situazione" title="Come stiamo messi" />
         <Reveal>
-          <EmptyState
-            as="h3"
-            title="«Squadra che non gioca, non perde»"
-            footer={
-              <Link
-                href="/matches?season=2025-2026"
-                className="inline-block bg-accent px-6 py-3 text-sm font-extrabold uppercase tracking-widest hover:opacity-90"
+          {season.matches.length === 0 ? (
+            /* A season whose fixtures haven't been drawn yet. */
+            <EmptyState
+              as="h3"
+              title="«Squadra che non gioca, non perde»"
+              footer={
+                <Link
+                  href="/matches"
+                  className="inline-block bg-accent px-6 py-3 text-sm font-extrabold uppercase tracking-widest hover:opacity-90"
+                >
+                  Guarda le stagioni passate
+                </Link>
+              }
+            >
+              Il calendario della stagione {season.label} non è ancora uscito.
+              Nel frattempo puoi rivederti la scorsa stagione: spoiler, non siamo arrivati ultimi.
+            </EmptyState>
+          ) : (
+            <div className="border border-white/10 bg-surface">
+              {lastResult && (
+                <div className="px-5 pt-5">
+                  <p className="text-xs font-extrabold uppercase tracking-[0.3em] text-muted">
+                    Ultimo risultato
+                  </p>
+                  <MatchRow
+                    match={lastResult}
+                    href={`/matches/${season.id}/${lastResult.id}`}
+                  />
+                </div>
+              )}
+
+              {next ? (
+                <NextMatch match={next} href={`/matches/${season.id}/${next.id}`} />
+              ) : (
+                <p className="px-5 py-10 text-center font-display italic uppercase text-2xl sm:text-3xl">
+                  Stagione finita. Ci vediamo al prossimo sorteggio.
+                </p>
+              )}
+
+              {later.length > 0 && (
+                <div className="border-t border-white/10 px-5 pt-5">
+                  <p className="text-xs font-extrabold uppercase tracking-[0.3em] text-muted">
+                    Poi tocca a
+                  </p>
+                  {later.slice(0, 2).map((m) => (
+                    <MatchRow key={m.id} match={m} href={`/matches/${season.id}/${m.id}`} />
+                  ))}
+                </div>
+              )}
+
+              {/* The fixture rows above already end in a border; only draw one
+                  here when nothing precedes this. */}
+              <div
+                className={`px-5 py-5 text-center ${later.length > 0 ? "" : "border-t border-white/10"}`}
               >
-                Guarda la 2025/26
-              </Link>
-            }
-          >
-            Le partite della stagione {season.label} verranno sorteggiate in settembre.
-            Nel frattempo puoi rivederti la scorsa stagione: spoiler, non siamo arrivati ultimi.
-          </EmptyState>
+                <Link
+                  href="/matches"
+                  className="inline-block bg-accent px-6 py-3 text-sm font-extrabold uppercase tracking-widest hover:opacity-90"
+                >
+                  Tutte le partite
+                </Link>
+              </div>
+            </div>
+          )}
         </Reveal>
       </section>
 
