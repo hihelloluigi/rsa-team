@@ -7,6 +7,7 @@
   { "slug": "vanga", "name": "Vanga", "number": 56, "position": "DEF" },
   { "slug": "nicolo-moleri", "nickname": "Scivolone", "name": "Nicolo Moleri", "number": 3, "position": "DEF" },
   { "slug": "mattia-moleri", "nickname": "Spada", "name": "Mattia Moleri", "number": 14, "position": "DEF", "photo": "/players/mattia-moleri.jpeg" },
+  { "slug": "giuliano-feoli", "nickname": "Von Poppa", "name": "Giuliano Feoli", "number": 71, "position": "DEF" },
 
   { "slug": "giacomo-colombo", "nickname": "Palu", "name": "Giacomo Colombo", "number": 11, "position": "MID" },
   { "slug": "enrico-tacchi", "nickname": "T.Error", "name": "Enrico Tacchi", "number": 82, "position": "MID" },
@@ -18,7 +19,6 @@
   { "slug": "paolo-foresti", "nickname": "Woods", "name": "Paolo Foresti", "number": 8, "position": "MID" },
   { "slug": "andrea-foresti", "nickname": "Pivot", "name": "Andrea Foresti", "number": 41, "position": "MID" },
 
-  { "slug": "giuliano-feoli", "nickname": "Von Poppa", "name": "Giuliano Feoli", "number": 71, "position": "FWD" },
   { "slug": "matteo-basetti", "nickname": "Maseo", "name": "Matteo Basetti", "number": 21, "position": "FWD" },
   { "slug": "giacomo-scarpellini", "nickname": "El Troncho", "name": "Giacomo Scarpellini", "number": 10, "position": "FWD" },
   { "slug": "ruotino", "name": "Ruotino", "number": 44, "position": "FWD" }
