@@ -34,7 +34,8 @@ A content-driven, statically-generated site (Italian-language) for an amateur fo
 
 **`src/lib/` is the data layer — go through it, never import JSON directly into components:**
 - `types.ts` — Zod schemas are the single source of truth for content shape; all TS types are `z.infer` of them.
-- `data.ts` — validates the JSON **once at module load** (`Schema.parse(...)` throws at build time on bad data) and exposes typed accessors plus pure display helpers (`matchResult`, `matchSides`, `splitMatches`, `sortStandings`). Also holds `positionLabels` (GK/DEF/MID/FWD → Italian POR/DIF/CEN/ATT — data keeps the English codes).
+- `data.ts` — validates the JSON **once at module load** (`Schema.parse(...)` throws at build time on bad data) and exposes typed accessors plus pure domain helpers (`matchResult`, `matchSides`, `splitMatches`, `sortStandings`, `withRests`).
+- `format.ts` — the display layer: date formatting, `initials`, `instagramHandle`, and `positionLabels` (GK/DEF/MID/FWD → Italian POR/DIF/CEN/ATT — data keeps the English codes).
 - `site.ts` — resolves the canonical origin for `metadataBase`/sitemap/robots (`NEXT_PUBLIC_SITE_URL` → Vercel production URL → localhost).
 
 **Routes (`src/app/`, App Router):** `/`, `/squad` + `/squad/[slug]`, `/matches` + `/matches/[seasonId]/[matchId]`, `/club`. Player and match detail pages are SSG via `generateStaticParams`; `/matches` is dynamic (reads `?season=` from `searchParams`). Components are **server components by default** — only `Navbar`, `Reveal`, `SeasonSelect`, and `WinCelebration` are `"use client"`.
@@ -57,4 +58,10 @@ A content-driven, statically-generated site (Italian-language) for an amateur fo
   which pin `Europe/Rome`.
 - **A match's kickoff hour lives in `kickoff`, not `date`.** The time component of
   `date` is a placeholder (`T12:00:00+00:00`); only the day is meaningful.
+- **Club identity comes from `club.json`, never a literal.** The club name and
+  Instagram URL are content: `matchSides` and the structured-data builders read
+  `club.name`, and the footer and home page read `club.instagram`.
+- **Buttons, scorelines and player portraits are components, not class strings**
+  (`ButtonLink`, `Scoreline`, `PlayerPortrait`). These were copy-pasted and had
+  already drifted apart; add call sites rather than re-pasting the classes.
 - Path alias: `@/*` → `src/*`.

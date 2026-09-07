@@ -1,3 +1,5 @@
+import type { Position } from "./types";
+
 // Up-to-two-letter initials for a name, used as a photo fallback.
 export function initials(name: string): string {
   return name
@@ -33,4 +35,19 @@ export function matchDateLong(iso: string): string {
     year: "numeric",
     timeZone: TIME_ZONE,
   });
+}
+
+// Italian abbreviations shown on player badges (data keeps the GK/DEF/MID/FWD
+// codes). A display mapping, so it lives here rather than in the data layer.
+export const positionLabels: Record<Position, string> = {
+  GK: "POR",
+  DEF: "DIF",
+  MID: "CEN",
+  FWD: "ATT",
+};
+
+// "https://www.instagram.com/rsafussball" -> "rsafussball". Keeps the handle
+// derived from the one URL in club.json rather than written out beside it.
+export function instagramHandle(url: string): string {
+  return url.replace(/\/+$/, "").split("/").pop() ?? "";
 }

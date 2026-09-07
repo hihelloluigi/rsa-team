@@ -8,6 +8,7 @@ import LossReaction from "@/components/LossReaction";
 import JsonLd from "@/components/JsonLd";
 import { matchLd, breadcrumbLd } from "@/lib/structured-data";
 import { matchDateLong } from "@/lib/format";
+import Scoreline from "@/components/Scoreline";
 
 type Params = Promise<{ seasonId: string; matchId: string }>;
 
@@ -61,7 +62,7 @@ export default async function MatchDetailPage({ params }: { params: Params }) {
 
   const { season, match } = found;
   const result = matchResult(match);
-  const { home, away, homeScore, awayScore } = matchSides(match);
+  const { home, away } = matchSides(match);
   const dateStr = matchDateLong(match.date);
 
   const rsaScorers = match.scorers?.rsa ?? [];
@@ -100,16 +101,8 @@ export default async function MatchDetailPage({ params }: { params: Params }) {
         <p className="text-xs font-extrabold uppercase tracking-[0.3em] text-accent">
           {match.competition} · {season.label}
         </p>
-        <div className="mt-6 grid grid-cols-[1fr_auto_1fr] items-center gap-3 sm:gap-6">
-          <span className={`font-display italic uppercase text-xl sm:text-3xl text-right ${match.home ? "text-accent" : ""}`}>
-            {home}
-          </span>
-          <span className="font-display text-5xl sm:text-7xl leading-none">
-            {match.score ? `${homeScore} : ${awayScore}` : "vs"}
-          </span>
-          <span className={`font-display italic uppercase text-xl sm:text-3xl text-left ${!match.home ? "text-accent" : ""}`}>
-            {away}
-          </span>
+        <div className="mt-6">
+          <Scoreline match={match} size="lg" />
         </div>
         {result && (
           <p className={`mt-6 font-display italic uppercase text-2xl sm:text-3xl ${resultClass[result]}`}>

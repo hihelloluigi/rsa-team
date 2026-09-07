@@ -1,4 +1,4 @@
-import Link from "next/link";
+import ButtonLink from "@/components/ButtonLink";
 import { GiSoccerBall } from "react-icons/gi";
 
 export default function Hero({ tagline }: { tagline: string }) {
@@ -30,12 +30,8 @@ export default function Hero({ tagline }: { tagline: string }) {
         </h1>
         <p className="mt-6 max-w-md text-lg sm:text-xl text-fg">{tagline}</p>
         <div className="mt-8 flex flex-wrap gap-3">
-          <Link href="/squad" className="bg-accent px-6 py-3 text-sm font-extrabold uppercase tracking-widest hover:opacity-90">
-            Conosci la rosa
-          </Link>
-          <Link href="/matches" className="border border-white/20 px-6 py-3 text-sm font-extrabold uppercase tracking-widest hover:border-accent">
-            Le partite
-          </Link>
+          <ButtonLink href="/squad">Conosci la rosa</ButtonLink>
+          <ButtonLink href="/matches" variant="outline">Le partite</ButtonLink>
         </div>
       </div>
       {/* SIAMO MATTI marquee band */}

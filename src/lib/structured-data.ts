@@ -2,10 +2,9 @@
 // via <JsonLd>. URLs are absolute (resolved against the canonical origin) so
 // search engines can dereference the @id graph across pages.
 import type { Club, Match, Player, Season } from "./types";
-import { matchSides, positionLabels } from "./data";
+import { matchSides, getClub } from "./data";
+import { positionLabels } from "./format";
 import { siteUrl } from "./site";
-
-const INSTAGRAM = "https://www.instagram.com/rsafussball";
 
 const teamId = () => `${siteUrl()}/#team`;
 
@@ -15,7 +14,7 @@ export function websiteLd() {
     "@context": "https://schema.org",
     "@type": "WebSite",
     "@id": `${base}/#website`,
-    name: "RSA TEAM",
+    name: getClub().name,
     url: base,
     inLanguage: "it",
   };
@@ -35,7 +34,7 @@ export function sportsTeamLd(club: Club) {
     logo: `${base}/icon.svg`,
     image: `${base}/opengraph-image`,
     slogan: club.tagline,
-    sameAs: [INSTAGRAM],
+    ...(club.instagram && { sameAs: [club.instagram] }),
     ...(club.ground && {
       location: {
         "@type": "Place",
@@ -60,7 +59,7 @@ export function playerLd(player: Player) {
     ...(player.photo && { image: `${base}${player.photo}` }),
     ...(player.nationality && { nationality: player.nationality }),
     jobTitle: positionLabels[player.position],
-    memberOf: { "@type": "SportsTeam", "@id": teamId(), name: "RSA TEAM" },
+    memberOf: { "@type": "SportsTeam", "@id": teamId(), name: getClub().name },
     ...(player.bio && { description: player.bio }),
   };
 }

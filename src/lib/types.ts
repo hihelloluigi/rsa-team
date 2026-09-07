@@ -85,6 +85,7 @@ export const ClubSchema = z.object({
   ground: z.string().min(1),
   groundAddress: z.string().min(1).optional(),
   groundMapUrl: z.url().optional(),
+  instagram: z.url().optional(),
   tagline: z.string().min(1),
   about: z.string().min(1),
   staff: z.array(z.object({ name: z.string().min(1), role: z.string().min(1) })),

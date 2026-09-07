@@ -1,4 +1,4 @@
-import Link from "next/link";
+import ButtonLink from "@/components/ButtonLink";
 import Hero from "@/components/Hero";
 import SectionHeading from "@/components/SectionHeading";
 import Reveal from "@/components/Reveal";
@@ -7,6 +7,7 @@ import EmptyState from "@/components/EmptyState";
 import MatchRow from "@/components/MatchRow";
 import NextMatch from "@/components/NextMatch";
 import { getClub, getCurrentSeason, getPlayers, getSponsors, splitMatches } from "@/lib/data";
+import { instagramHandle } from "@/lib/format";
 import { FaInstagram } from "react-icons/fa";
 
 export default function Home() {
@@ -33,12 +34,7 @@ export default function Home() {
               as="h3"
               title="«Squadra che non gioca, non perde»"
               footer={
-                <Link
-                  href="/matches"
-                  className="inline-block bg-accent px-6 py-3 text-sm font-extrabold uppercase tracking-widest hover:opacity-90"
-                >
-                  Guarda le stagioni passate
-                </Link>
+                <ButtonLink href="/matches">Guarda le stagioni passate</ButtonLink>
               }
             >
               Il calendario della stagione {season.label} non è ancora uscito.
@@ -82,12 +78,7 @@ export default function Home() {
               <div
                 className={`px-5 py-5 text-center ${later.length > 0 ? "" : "border-t border-white/10"}`}
               >
-                <Link
-                  href="/matches"
-                  className="inline-block bg-accent px-6 py-3 text-sm font-extrabold uppercase tracking-widest hover:opacity-90"
-                >
-                  Tutte le partite
-                </Link>
+                <ButtonLink href="/matches">Tutte le partite</ButtonLink>
               </div>
             </div>
           )}
@@ -138,35 +129,32 @@ export default function Home() {
         </section>
       )}
 
-      <section className="border-t border-white/10">
-        <div className="mx-auto max-w-6xl px-5 py-16">
-          <SectionHeading label="Dietro le quinte" title="Seguici su Instagram" />
-          <Reveal>
-            <div className="flex flex-col items-center gap-8 border border-white/10 bg-surface px-6 py-12 text-center sm:flex-row sm:justify-between sm:gap-6 sm:text-left">
-              <div className="flex flex-col items-center gap-5 sm:flex-row">
-                <FaInstagram className="shrink-0 text-accent" size={56} aria-hidden="true" />
-                <div>
-                  <h3 className="font-display italic uppercase text-2xl sm:text-3xl leading-tight">
-                    Non perderti un attimo della nostra «preparazione»
-                  </h3>
-                  <p className="mx-auto mt-3 max-w-xl text-muted sm:mx-0">
-                    Allenamenti (quando ci andiamo), terzi tempi (quelli mai saltati) e dietro le quinte
-                    che nessuno ci ha chiesto. C&apos;è più aperitivo che tattica: è l&apos;unico modo per vederci correre.
-                  </p>
+      {club.instagram && (
+        <section className="border-t border-white/10">
+          <div className="mx-auto max-w-6xl px-5 py-16">
+            <SectionHeading label="Dietro le quinte" title="Seguici su Instagram" />
+            <Reveal>
+              <div className="flex flex-col items-center gap-8 border border-white/10 bg-surface px-6 py-12 text-center sm:flex-row sm:justify-between sm:gap-6 sm:text-left">
+                <div className="flex flex-col items-center gap-5 sm:flex-row">
+                  <FaInstagram className="shrink-0 text-accent" size={56} aria-hidden="true" />
+                  <div>
+                    <h3 className="font-display italic uppercase text-2xl sm:text-3xl leading-tight">
+                      Non perderti un attimo della nostra «preparazione»
+                    </h3>
+                    <p className="mx-auto mt-3 max-w-xl text-muted sm:mx-0">
+                      Allenamenti (quando ci andiamo), terzi tempi (quelli mai saltati) e dietro le quinte
+                      che nessuno ci ha chiesto. C&apos;è più aperitivo che tattica: è l&apos;unico modo per vederci correre.
+                    </p>
+                  </div>
                 </div>
+                <ButtonLink href={club.instagram} external>
+                  <FaInstagram size={18} aria-hidden="true" /> Seguici @{instagramHandle(club.instagram)}
+                </ButtonLink>
               </div>
-              <a
-                href="https://www.instagram.com/rsafussball"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex shrink-0 items-center gap-2 bg-accent px-6 py-3 text-sm font-extrabold uppercase tracking-widest hover:opacity-90"
-              >
-                <FaInstagram size={18} aria-hidden="true" /> Seguici @rsafussball
-              </a>
-            </div>
-          </Reveal>
-        </div>
-      </section>
+            </Reveal>
+          </div>
+        </section>
+      )}
     </main>
   );
 }

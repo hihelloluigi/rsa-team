@@ -1,11 +1,11 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
 import StatBadge from "@/components/StatBadge";
 import Reveal from "@/components/Reveal";
 import PositionIcon from "@/components/PositionIcon";
-import { getPlayers, getPlayerBySlug, positionLabels } from "@/lib/data";
-import { initials } from "@/lib/format";
+import PlayerPortrait from "@/components/PlayerPortrait";
+import { getPlayers, getPlayerBySlug } from "@/lib/data";
+import { positionLabels } from "@/lib/format";
 import JsonLd from "@/components/JsonLd";
 import { playerLd, breadcrumbLd } from "@/lib/structured-data";
 
@@ -51,22 +51,15 @@ export default async function PlayerPage({ params }: { params: Promise<{ slug: s
       <Link href="/squad" className="text-xs uppercase tracking-widest text-muted hover:text-accent">← Torna alla rosa</Link>
       <div className="mt-6 grid gap-10 lg:grid-cols-2">
         <Reveal>
-          <div className="aspect-[3/4] relative flex items-center justify-center bg-gradient-to-br from-accent/30 to-black border border-white/10">
-            {player.photo ? (
-              <Image
-                src={player.photo}
-                alt={player.name}
-                fill
-                priority
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                className="object-cover"
-              />
-            ) : (
-              <span className="font-display text-9xl text-white/80">{initials(player.name)}</span>
-            )}
+          <PlayerPortrait
+            player={player}
+            priority
+            sizes="(max-width: 1024px) 100vw, 50vw"
+            className="border border-white/10"
+          >
             <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/80 to-transparent" />
             <span className="absolute bottom-4 left-4 font-display text-7xl text-accent drop-shadow-lg">{player.number}</span>
-          </div>
+          </PlayerPortrait>
         </Reveal>
 
         <Reveal delay={0.1}>

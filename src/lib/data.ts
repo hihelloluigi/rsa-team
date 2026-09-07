@@ -1,20 +1,12 @@
 import {
   PlayersSchema, SeasonsSchema, ClubSchema, SponsorsSchema,
-  type Player, type Match, type StandingRow, type Season, type Club, type MatchResult, type Position, type Sponsor, type Rest,
+  type Player, type Match, type StandingRow, type Season, type Club, type MatchResult, type Sponsor, type Rest,
 } from "./types";
 
 import playersJson from "@/data/players.json";
 import seasonsJson from "@/data/seasons.json";
 import clubJson from "@/data/club.json";
 import sponsorsJson from "@/data/sponsors.json";
-
-// Italian abbreviations shown on player badges (data keeps the GK/DEF/MID/FWD codes).
-export const positionLabels: Record<Position, string> = {
-  GK: "POR",
-  DEF: "DIF",
-  MID: "CEN",
-  FWD: "ATT",
-};
 
 // Validate once at module load — throws at build time on bad data.
 const players: Player[] = PlayersSchema.parse(playersJson);
@@ -38,8 +30,8 @@ export function matchSides(m: Match): {
   awayScore?: number;
 } {
   return {
-    home: m.home ? "RSA TEAM" : m.opponent,
-    away: m.home ? m.opponent : "RSA TEAM",
+    home: m.home ? club.name : m.opponent,
+    away: m.home ? m.opponent : club.name,
     homeScore: m.home ? m.score?.rsa : m.score?.opponent,
     awayScore: m.home ? m.score?.opponent : m.score?.rsa,
   };

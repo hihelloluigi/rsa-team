@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { initials, matchDateLong, matchDateShort } from "./format";
+import { initials, instagramHandle, matchDateLong, matchDateShort } from "./format";
 
 describe("initials", () => {
   it("takes the first letter of the first two words, uppercased", () => {
@@ -31,5 +31,14 @@ describe("matchDateLong", () => {
   });
   it("uses Rome time, not the host timezone", () => {
     expect(matchDateLong("2025-10-03T23:30:00+00:00")).toBe("sabato 04 ottobre 2025");
+  });
+});
+
+describe("instagramHandle", () => {
+  it("takes the handle from a profile URL", () => {
+    expect(instagramHandle("https://www.instagram.com/rsafussball")).toBe("rsafussball");
+  });
+  it("ignores a trailing slash", () => {
+    expect(instagramHandle("https://www.instagram.com/rsafussball/")).toBe("rsafussball");
   });
 });

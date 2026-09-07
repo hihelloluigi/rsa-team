@@ -1,4 +1,4 @@
-import Link from "next/link";
+import ButtonLink from "@/components/ButtonLink";
 import { GiSoccerBall } from "react-icons/gi";
 
 export default function NotFound() {
@@ -10,12 +10,9 @@ export default function NotFound() {
       <p className="text-muted max-w-md text-sm leading-relaxed">
         Questa pagina è in fuorigioco. Nemmeno il VAR può salvarla.
       </p>
-      <Link
-        href="/"
-        className="mt-4 bg-accent text-white font-extrabold uppercase tracking-widest text-xs px-6 py-3 hover:opacity-80 transition"
-      >
+      <ButtonLink href="/" className="mt-4">
         Torna a casa
-      </Link>
+      </ButtonLink>
     </main>
   );
 }
