@@ -37,13 +37,19 @@ export const MatchSchema = z
     id: z.string().min(1),
     opponent: z.string().min(1),
     home: z.boolean(),
-    date: z.string().datetime({ offset: true }).or(z.string().min(1)),
+    // ISO 8601 with an explicit offset. The time part is a placeholder —
+    // the real kickoff hour lives in `kickoff`.
+    date: z.iso.datetime({ offset: true }),
     competition: z.string().min(1),
     status: MatchStatusSchema,
     score: z
       .object({ rsa: z.number().int().nonnegative(), opponent: z.number().int().nonnegative() })
       .optional(),
-    kickoff: z.string().min(1).optional(),
+    // 24h "HH:MM" — rendered verbatim in fixture lists, so the shape matters.
+    kickoff: z
+      .string()
+      .regex(/^([01]\d|2[0-3]):[0-5]\d$/, "kickoff must be 24h HH:MM")
+      .optional(),
     stadium: z.string().min(1).optional(),
     note: z.string().min(1).optional(),
     scorers: z
@@ -76,7 +82,7 @@ export const ClubSchema = z.object({
   founded: z.number().int(),
   ground: z.string().min(1),
   groundAddress: z.string().min(1).optional(),
-  groundMapUrl: z.string().url().optional(),
+  groundMapUrl: z.url().optional(),
   tagline: z.string().min(1),
   about: z.string().min(1),
   staff: z.array(z.object({ name: z.string().min(1), role: z.string().min(1) })),
@@ -92,7 +98,7 @@ export const SeasonSchema = z.object({
   label: z.string().min(1),
   current: z.boolean().optional(),
   league: z.string().min(1).optional(),
-  leagueUrl: z.string().url().optional(),
+  leagueUrl: z.url().optional(),
   matches: MatchesSchema,
   standings: StandingsSchema,
 });
@@ -102,7 +108,7 @@ export type Season = z.infer<typeof SeasonSchema>;
 export const SponsorSchema = z.object({
   name: z.string().min(1),
   logo: z.string().optional(),
-  url: z.string().url().optional(),
+  url: z.url().optional(),
 });
 export const SponsorsSchema = z.array(SponsorSchema);
 export type Sponsor = z.infer<typeof SponsorSchema>;

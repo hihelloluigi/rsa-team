@@ -7,6 +7,7 @@ import WinCelebration from "@/components/WinCelebration";
 import LossReaction from "@/components/LossReaction";
 import JsonLd from "@/components/JsonLd";
 import { matchLd, breadcrumbLd } from "@/lib/structured-data";
+import { matchDateLong } from "@/lib/format";
 
 type Params = Promise<{ seasonId: string; matchId: string }>;
 
@@ -61,9 +62,7 @@ export default async function MatchDetailPage({ params }: { params: Params }) {
   const { season, match } = found;
   const result = matchResult(match);
   const { home, away, homeScore, awayScore } = matchSides(match);
-  const dateStr = new Date(match.date).toLocaleDateString("it-IT", {
-    weekday: "long", day: "2-digit", month: "long", year: "numeric",
-  });
+  const dateStr = matchDateLong(match.date);
 
   const rsaScorers = match.scorers?.rsa ?? [];
   const oppScorers = match.scorers?.opponent ?? [];

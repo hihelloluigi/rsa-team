@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Match, MatchResult } from "@/lib/types";
 import { matchResult, matchSides } from "@/lib/data";
+import { matchDateShort } from "@/lib/format";
 
 const badge: Record<MatchResult, string> = {
   W: "bg-accent text-white", D: "bg-white/20 text-white", L: "bg-white/5 text-muted",
@@ -13,17 +14,18 @@ const resultLabel: Record<MatchResult, string> = {
 export default function MatchRow({ match, href }: { match: Match; href?: string }) {
   const result = matchResult(match);
   const { home, away, homeScore, awayScore } = matchSides(match);
-  const d = new Date(match.date);
-  const dateStr = d.toLocaleDateString("it-IT", { day: "2-digit", month: "short", year: "numeric" });
-  const timeStr = d.toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit" });
+  const dateStr = matchDateShort(match.date);
 
+  // Played matches show their result; upcoming ones show the kickoff time.
+  // `match.date` only carries the day (the time part is a placeholder), so the
+  // hour has to come from `kickoff`.
   const resultBadge = result ? (
     <span className={`inline-block w-7 text-center text-xs font-extrabold py-1 ${badge[result]}`}>
       {resultLabel[result]}
     </span>
-  ) : (
-    <span className="text-[11px] text-muted uppercase">{timeStr}</span>
-  );
+  ) : match.kickoff ? (
+    <span className="text-[11px] text-muted uppercase">{match.kickoff}</span>
+  ) : null;
 
   const inner = (
     <div className="border-b border-white/10 py-4">
