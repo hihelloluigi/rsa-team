@@ -203,6 +203,9 @@ function event(season: Season, match: Match, base: string, stamp: string): strin
 // forward — and they keep the feed additive.
 export function fixturesCalendar(seasons: Season[], base: string, now = new Date()): string {
   const stamp = utcStamp(now);
+  // A single-season export says which one; the full feed spans all of them.
+  const scope =
+    seasons.length === 1 ? `stagione ${seasons[0].label}` : "stagione per stagione";
   const lines = [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
@@ -212,7 +215,7 @@ export function fixturesCalendar(seasons: Season[], base: string, now = new Date
     // Deliberately season-less: the feed URL is permanent, and several clients
     // snapshot this name at subscribe time and never refresh it.
     "X-WR-CALNAME:RSA TEAM",
-    `X-WR-CALDESC:${escapeText("Calendario e risultati dell'RSA TEAM, stagione per stagione.")}`,
+    `X-WR-CALDESC:${escapeText(`Calendario e risultati dell'RSA TEAM, ${scope}.`)}`,
     `X-WR-TIMEZONE:${TIME_ZONE}`,
     `REFRESH-INTERVAL;VALUE=DURATION:${REFRESH}`,
     `X-PUBLISHED-TTL:${REFRESH}`,

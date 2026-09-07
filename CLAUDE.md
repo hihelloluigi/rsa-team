@@ -47,6 +47,9 @@ its feed — clients delete any event the feed stops listing — so never narrow
 current season: that would erase past fixtures from subscribers' calendars. For the same
 reason event UIDs are namespaced to a constant, never the deploy URL, so a preview and
 production mint the same UID for a fixture instead of duplicating it.
+`matches/[seasonId]/calendario.ics` is the one-season variant, deliberately a **download**
+rather than a second subscription — an import is additive, so it cannot later remove what
+it added the way a narrowed feed would.
 
 **SEO/PWA is wired through Next file conventions, not manual `<head>` tags:** `app/sitemap.ts`, `app/robots.ts`, `app/opengraph-image.tsx`, and the favicon/`icon`/`apple-icon`/`manifest.webmanifest` files. Metadata + Vercel Analytics/Speed Insights live in `app/layout.tsx`.
 

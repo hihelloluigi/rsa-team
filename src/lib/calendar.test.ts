@@ -69,6 +69,21 @@ describe("fixturesCalendar", () => {
     expect(ls.filter((l) => l === "BEGIN:VEVENT")).toHaveLength(1);
   });
 
+  it("names a single-season export after that season", () => {
+    const desc = lines(build()).find((l) => l.startsWith("X-WR-CALDESC"));
+    expect(desc).toContain("stagione 2026/27");
+  });
+
+  it("names a multi-season feed generically", () => {
+    const past: Season = {
+      id: "2025-2026", label: "2025/26", matches: [match({ id: "old" })], rests: [], standings: [],
+    };
+    const desc = lines(build([match()], [past, season([match()])])).find((l) =>
+      l.startsWith("X-WR-CALDESC"),
+    );
+    expect(desc).toContain("stagione per stagione");
+  });
+
   it("names the calendar without a season, since the URL is permanent", () => {
     const ls = lines(build());
     expect(ls).toContain("X-WR-CALNAME:RSA TEAM");

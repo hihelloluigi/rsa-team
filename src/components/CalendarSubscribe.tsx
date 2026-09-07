@@ -7,7 +7,10 @@ import { siteUrl } from "@/lib/site";
 // Offers the season's fixtures as a subscribable feed. Both buttons point at
 // the same /calendario.ics: Google takes it through its add-by-URL screen,
 // while a webcal: link is what Apple Calendar and Outlook subscribe to directly.
-export default function CalendarSubscribe() {
+const LINK =
+  "underline decoration-white/20 underline-offset-4 transition hover:text-accent hover:decoration-accent";
+
+export default function CalendarSubscribe({ season }: { season: { id: string; label: string } }) {
   const ics = `${siteUrl()}/calendario.ics`;
   const webcal = ics.replace(/^https?:/, "webcal:");
   const google = `https://calendar.google.com/calendar/render?cid=${encodeURIComponent(webcal)}`;
@@ -32,12 +35,13 @@ export default function CalendarSubscribe() {
         </ButtonLink>
       </div>
       <p className="mt-5 text-xs text-muted">
-        Preferisci scaricarlo?{" "}
-        <a
-          href="/calendario.ics"
-          className="underline decoration-white/20 underline-offset-4 transition hover:text-accent hover:decoration-accent"
-        >
-          Scarica il file .ics
+        Preferisci un file? Scarica{" "}
+        <a href="/calendario.ics" className={LINK}>
+          tutte le stagioni
+        </a>{" "}
+        o{" "}
+        <a href={`/matches/${season.id}/calendario.ics`} className={LINK}>
+          solo la {season.label}
         </a>
         . Google ricontrolla i calendari esterni ogni tanto, non all&apos;istante.
       </p>

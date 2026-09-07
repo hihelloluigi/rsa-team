@@ -130,7 +130,7 @@ export default async function MatchesPage({
           )}
 
           <Reveal>
-            <CalendarSubscribe />
+            <CalendarSubscribe season={{ id: selected.id, label: selected.label }} />
           </Reveal>
         </div>
       )}
