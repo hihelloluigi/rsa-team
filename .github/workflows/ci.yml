@@ -65,4 +65,19 @@ jobs:
       # so invalid content fails here rather than shipping a broken page.
       - run: npm run build
 
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      # High and critical only: a moderate advisory on a transitive dev
+      # dependency is not worth blocking a fixture update over. This job can go
+      # red through no change of yours, when a new advisory lands upstream —
+      # that is the point, but read it as "look into this", not "you broke it".
+      - run: npm audit --audit-level=high
+
 # Deploys are handled by Vercel's Git integration, not this workflow.
