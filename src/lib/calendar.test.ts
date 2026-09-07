@@ -137,3 +137,21 @@ describe("fixturesCalendar", () => {
     }
   });
 });
+
+describe("calendar locations", () => {
+  const build = (m: Match) =>
+    fixturesCalendar([season([m])], "https://rsa.example", new Date("2026-09-01T00:00:00Z")).split(
+      "\r\n",
+    );
+
+  // Google and Apple only offer directions when LOCATION reads as an address.
+  it("puts the street address in LOCATION for a known ground", () => {
+    const ls = build(match({ stadium: "Centro Sportivo Comun Nuovo" }));
+    expect(ls.join("")).toContain("Via Azzurri 2006");
+  });
+
+  it("falls back to the bare name for a ground we have not looked up", () => {
+    const ls = build(match({ stadium: "Un Campo Qualsiasi" }));
+    expect(ls).toContain("LOCATION:Un Campo Qualsiasi");
+  });
+});

@@ -72,3 +72,9 @@ export const resultNames: Record<MatchResult, string> = {
   D: "Pareggio",
   L: "Sconfitta",
 };
+
+// A Google Maps search for an address, rather than a stored link per venue:
+// one fewer field to keep in step, and it opens the native maps app on a phone.
+export function mapsUrl(query: string): string {
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+}

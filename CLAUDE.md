@@ -31,7 +31,7 @@ workflow — Vercel's Git integration handles them.
 
 A content-driven, statically-generated site (Italian-language) for an amateur football club. The defining pattern is a **strict data pipeline**: JSON content → Zod validation → typed accessors → server components.
 
-**Content lives in `src/data/*.json`** (`players`, `seasons`, `club`, `sponsors`) and is the only thing that changes for routine updates — there is no CMS or database.
+**Content lives in `src/data/*.json`** (`players`, `seasons`, `club`, `sponsors`, `venues`) and is the only thing that changes for routine updates — there is no CMS or database.
 
 **`src/lib/` is the data layer — go through it, never import JSON directly into components:**
 - `types.ts` — Zod schemas are the single source of truth for content shape; all TS types are `z.infer` of them.
@@ -66,6 +66,14 @@ routes and are disallowed in `robots.ts`.
 ### Things that will bite you
 
 - **Match data is RSA-centric** (`score.rsa` / `score.opponent`, `home: boolean`). For display, convert with `matchSides(match)` — do not re-derive home/away/score sides inline (that duplication was already removed once).
+- **Venues are keyed by the `stadium` string, and are optional.** `venues.json`
+  maps a ground's exact name to its address — ten of this season's twenty
+  fixtures share one pitch, so an address per match would be the same address
+  ten times. An unlisted ground shows its name with no directions, so a fixture
+  can be added before anyone has looked the address up. A key matching no
+  fixture fails `content.test.ts`, which is the detectable half of a typo.
+  Addresses for the league's own grounds are published in its
+  [pitch list PDF](https://cdn.enjore.com/wl/bergamotornei_com/doc/tournament_doc/65-1M5V4NhBNq-lista-campi-aggiornata.pdf).
 - **A bye is not a match.** A giornata the team sits out lives in the season's
   `rests` array, not in `matches` — a `Match` always has an opponent, and
   weakening that would ripple through `matchResult`/`matchSides`. Rests carry

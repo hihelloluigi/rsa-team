@@ -123,6 +123,17 @@ export const SeasonSchema = z.object({
 export const SeasonsSchema = z.array(SeasonSchema);
 export type Season = z.infer<typeof SeasonSchema>;
 
+// Where a fixture is played. Keyed by the exact `stadium` string a match uses,
+// because ten of this season's twenty fixtures share one ground — an address on
+// each match would be the same address copied ten times. Venues are optional:
+// an unlisted ground simply shows no directions, so a fixture can be added
+// before anyone has looked its address up.
+export const VenueSchema = z.object({
+  address: z.string().min(1),
+});
+export type Venue = z.infer<typeof VenueSchema>;
+export const VenuesSchema = z.record(z.string(), VenueSchema);
+
 export const SponsorSchema = z.object({
   name: z.string().min(1),
   logo: z.string().optional(),

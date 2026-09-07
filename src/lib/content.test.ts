@@ -1,9 +1,10 @@
 import { describe, it, expect } from "vitest";
-import { PlayersSchema, SeasonsSchema, ClubSchema, SponsorsSchema } from "./types";
+import { PlayersSchema, SeasonsSchema, ClubSchema, SponsorsSchema, VenuesSchema } from "./types";
 import playersJson from "@/data/players.json";
 import seasonsJson from "@/data/seasons.json";
 import clubJson from "@/data/club.json";
 import sponsorsJson from "@/data/sponsors.json";
+import venuesJson from "@/data/venues.json";
 
 // Content is hand-edited (see README). These guard the invariants the Zod
 // schemas can't express, so a bad edit fails fast in CI rather than in prod.
@@ -13,6 +14,7 @@ describe("content data", () => {
     expect(() => SeasonsSchema.parse(seasonsJson)).not.toThrow();
     expect(() => ClubSchema.parse(clubJson)).not.toThrow();
     expect(() => SponsorsSchema.parse(sponsorsJson)).not.toThrow();
+    expect(() => VenuesSchema.parse(venuesJson)).not.toThrow();
   });
 
   it("player slugs and shirt numbers are unique", () => {
@@ -35,6 +37,17 @@ describe("content data", () => {
     for (const season of seasons) {
       const ids = season.matches.map((m) => m.id);
       expect(new Set(ids).size, `duplicate match id in season ${season.id}`).toBe(ids.length);
+    }
+  });
+
+  // Venues are keyed by the exact `stadium` string a match uses, so a typo on
+  // either side silently drops the directions rather than erroring. A venue
+  // matching no fixture is the detectable half of that.
+  it("every venue is actually used by a fixture", () => {
+    const seasons = SeasonsSchema.parse(seasonsJson);
+    const played = new Set(seasons.flatMap((s) => s.matches.map((m) => m.stadium)));
+    for (const stadium of Object.keys(VenuesSchema.parse(venuesJson))) {
+      expect(played.has(stadium), `no fixture is at "${stadium}" — check the spelling`).toBe(true);
     }
   });
 

@@ -3,6 +3,7 @@
 // calendar follow the site rather than be maintained separately.
 import type { Match, Season } from "./types";
 import { matchSides } from "./matches";
+import { getVenue } from "./data";
 
 const TIME_ZONE = "Europe/Rome";
 
@@ -155,6 +156,11 @@ function fold(line: string): string {
   return out.join("\r\n ");
 }
 
+function venueLine(stadium: string): string {
+  const venue = getVenue(stadium);
+  return venue ? `${stadium}, ${venue.address}` : stadium;
+}
+
 function summary(match: Match): string {
   const { home, away, homeScore, awayScore } = matchSides(match);
   // A played fixture carries its result, so the calendar doubles as a record.
@@ -186,7 +192,11 @@ function event(season: Season, match: Match, base: string, stamp: string): strin
     `DTSTAMP:${stamp}`,
     ...when,
     `SUMMARY:${escapeText(summary(match))}`,
-    ...(match.stadium ? [`LOCATION:${escapeText(match.stadium)}`] : []),
+    // A bare venue name is only a label; with the street address the calendar
+    // app turns it into directions, which is the point of having it here.
+    ...(match.stadium
+      ? [`LOCATION:${escapeText(venueLine(match.stadium))}`]
+      : []),
     `DESCRIPTION:${escapeText(`${details}\n${url}`)}`,
     // Struck through in the subscriber's calendar rather than vanishing, which
     // is what deleting the fixture outright would do.

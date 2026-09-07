@@ -1,14 +1,14 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { GiSoccerField, GiSoccerBall } from "react-icons/gi";
-import { getSeasons, getMatch } from "@/lib/data";
+import { getSeasons, getMatch, getVenue } from "@/lib/data";
 import { matchResult, matchSides } from "@/lib/matches";
 import type { MatchResult } from "@/lib/types";
 import WinCelebration from "@/components/WinCelebration";
 import LossReaction from "@/components/LossReaction";
 import JsonLd from "@/components/JsonLd";
 import { matchLd, breadcrumbLd } from "@/lib/structured-data";
-import { matchDateLong, resultNames } from "@/lib/format";
+import { matchDateLong, mapsUrl, resultNames } from "@/lib/format";
 import Scoreline from "@/components/Scoreline";
 import Eyebrow from "@/components/Eyebrow";
 
@@ -64,6 +64,7 @@ export default async function MatchDetailPage({ params }: { params: Params }) {
   const { season, match } = found;
   const result = matchResult(match);
   const { home, away } = matchSides(match);
+  const venue = getVenue(match.stadium);
   const dateStr = matchDateLong(match.date);
 
   const rsaScorers = match.scorers?.rsa ?? [];
@@ -184,6 +185,18 @@ export default async function MatchDetailPage({ params }: { params: Params }) {
                 </div>
                 <div className="border-t border-white/10 px-5 py-4 text-center">
                   <p className="font-bold">{match.stadium}</p>
+                  {/* Only grounds we have an address for get directions; the
+                      rest still show their name. */}
+                  {venue && (
+                    <a
+                      href={mapsUrl(`${match.stadium} ${venue.address}`)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-1 inline-block text-sm text-muted underline decoration-white/20 underline-offset-4 transition hover:text-accent hover:decoration-accent"
+                    >
+                      {venue.address} ↗
+                    </a>
+                  )}
                   {/* A postponed fixture has no kick-off to announce; the venue
                       is still worth showing for when it is replayed. */}
                   {match.kickoff && match.status !== "postponed" && (
