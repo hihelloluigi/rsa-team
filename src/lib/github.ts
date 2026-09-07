@@ -6,6 +6,11 @@ const REPO = process.env.ADMIN_GITHUB_REPO ?? "hihelloluigi/rsa-team";
 const BRANCH = process.env.ADMIN_GITHUB_BRANCH ?? "main";
 const API = "https://api.github.com";
 
+// The OAuth app issues expiring tokens, and the sign-in session outlives them.
+// Without this the page looks signed in and saving fails with a bare 401, so
+// the one thing that fixes it — signing in again — is said plainly.
+export const EXPIRED = "L'accesso è scaduto. Esci e rientra con GitHub.";
+
 const headers = (token: string) => ({
   Authorization: `Bearer ${token}`,
   Accept: "application/vnd.github+json",
@@ -20,6 +25,7 @@ export async function readFileFromRepo(
     headers: headers(token),
     cache: "no-store",
   });
+  if (res.status === 401) throw new Error(EXPIRED);
   if (!res.ok) throw new Error(`GitHub read failed: ${res.status}`);
   const body = await res.json();
   return { text: Buffer.from(body.content, "base64").toString("utf8"), sha: body.sha };
@@ -42,6 +48,7 @@ export async function commitFileToRepo(
       branch: BRANCH,
     }),
   });
+  if (res.status === 401) throw new Error(EXPIRED);
   if (res.status === 409) {
     throw new Error("The file changed on GitHub since this page loaded. Reload and try again.");
   }

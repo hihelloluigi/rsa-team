@@ -2,7 +2,7 @@ import { z } from "zod";
 import { auth } from "@/auth";
 import { SeasonsSchema } from "@/lib/types";
 import { serializeSeasons } from "@/lib/seasons-file";
-import { commitFileToRepo, readFileFromRepo } from "@/lib/github";
+import { EXPIRED, commitFileToRepo, readFileFromRepo } from "@/lib/github";
 
 const PATH = "src/data/seasons.json";
 
@@ -63,6 +63,8 @@ export async function POST(request: Request) {
     return Response.json({ ok: true, commit: url });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Something went wrong.";
-    return Response.json({ error: message }, { status: 500 });
+    // An expired GitHub token is the user's problem to fix, not a server fault.
+    const status = message === EXPIRED ? 401 : 500;
+    return Response.json({ error: message }, { status });
   }
 }
