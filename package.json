@@ -14,6 +14,7 @@
     "import:standings": "node scripts/import-standings.ts"
   },
   "dependencies": {
+    "@google/model-viewer": "^4.3.1",
     "@vercel/analytics": "^2.0.1",
     "@vercel/speed-insights": "^2.0.0",
     "canvas-confetti": "^1.9.4",
