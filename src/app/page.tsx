@@ -29,7 +29,7 @@ export default function Home() {
       <Hero tagline={club.tagline} />
 
       <section className="mx-auto max-w-6xl px-5 py-16">
-        <SectionHeading label="La situazione" title="Come stiamo messi" />
+        <SectionHeading label="La situazione" title="Come stiamo messi" anchor="situazione" />
         <Reveal>
           {season.matches.length === 0 ? (
             /* A season whose fixtures haven't been drawn yet. */
@@ -86,7 +86,7 @@ export default function Home() {
 
       <section className="border-t border-white/10">
         <div className="mx-auto max-w-6xl px-5 py-16">
-          <SectionHeading label="La maglia" title="Vestiti da squadra vera" />
+          <SectionHeading label="La maglia" title="Vestiti da squadra vera" anchor="maglia" />
           <Reveal>
             <div className="border border-white/10 bg-surface">
               <ShirtViewer />
