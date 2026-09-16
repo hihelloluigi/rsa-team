@@ -40,7 +40,15 @@ A content-driven, statically-generated site (Italian-language) for an amateur fo
 - `format.ts` — the display layer: date formatting, `initials`, `instagramHandle`, and `positionLabels` (GK/DEF/MID/FWD → Italian POR/DIF/CEN/ATT — data keeps the English codes).
 - `site.ts` — resolves the canonical origin for `metadataBase`/sitemap/robots (`NEXT_PUBLIC_SITE_URL` → Vercel production URL → localhost).
 
-**Routes (`src/app/`, App Router):** `/`, `/squad` + `/squad/[slug]`, `/matches` + `/matches/[seasonId]/[matchId]`, `/club`. Player and match detail pages are SSG via `generateStaticParams`; `/matches` is dynamic (reads `?season=` from `searchParams`). Components are **server components by default** — only `Navbar`, `Reveal`, `SeasonSelect`, and `WinCelebration` are `"use client"`.
+**Routes (`src/app/`, App Router):** `/`, `/squad` + `/squad/[slug]`, `/matches` + `/matches/[seasonId]/[matchId]`, `/club`. Player and match detail pages are SSG via `generateStaticParams`; `/matches` is dynamic (reads `?season=` from `searchParams`). Components are **server components by default** — only `Navbar`, `Reveal`, `SeasonSelect`, `ShirtViewer`, and `WinCelebration` are `"use client"`.
+
+**3D shirt (`ShirtViewer`):** a `<model-viewer>` web component over `public/shirt/rsa-team-shirt.glb`
+(3 MB). The viewer bundles three.js, so the component imports it only once the section scrolls
+near; until then the tag is an unknown element showing the poster child. The poster is the GLB
+rendered at the opening orbit on a transparent background — it is not a photo, so regenerate it
+if the model or the opening `camera-orbit` changes. Its JSX attributes are declared in
+`src/types/model-viewer.d.ts`; the element's own `:host` style fixes `height: 150px`, so the
+`h-auto` in its class list is what lets the aspect ratio apply.
 
 **Calendar feed:** `app/calendario.ics/route.ts` is a `force-static` route handler that
 serves **every** season as iCalendar, built by `lib/calendar.ts`. A subscription mirrors

@@ -31,6 +31,16 @@ html, body {
   animation: marquee 20s linear infinite;
 }
 
+/* The "drag to turn" hint over the 3D shirt sways to suggest the gesture. */
+@keyframes nudge {
+  from, to { transform: translateX(-4px); }
+  50% { transform: translateX(4px); }
+}
+
+.hint__nudge {
+  animation: nudge 1.6s ease-in-out infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   * { animation: none !important; transition: none !important; }
 }

@@ -6,6 +6,7 @@ import PlayerCard from "@/components/PlayerCard";
 import EmptyState from "@/components/EmptyState";
 import MatchRow from "@/components/MatchRow";
 import NextMatch from "@/components/NextMatch";
+import ShirtViewer from "@/components/ShirtViewer";
 import { getClub, getCurrentSeason, getPlayers, getSponsors } from "@/lib/data";
 import { splitMatches } from "@/lib/matches";
 import { instagramHandle } from "@/lib/format";
@@ -85,6 +86,17 @@ export default function Home() {
 
       <section className="border-t border-white/10">
         <div className="mx-auto max-w-6xl px-5 py-16">
+          <SectionHeading label="La maglia" title="Vestiti da squadra vera" />
+          <Reveal>
+            <div className="border border-white/10 bg-surface">
+              <ShirtViewer />
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      <section className="border-t border-white/10">
+        <div className="mx-auto max-w-6xl px-5 py-16">
           <SectionHeading label="Chi ci sostiene" title="Sponsor" />
           {sponsors.length > 0 ? (
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
@@ -119,7 +131,7 @@ export default function Home() {
       {featured.length > 0 && (
         <section className="border-t border-white/10">
           <div className="mx-auto max-w-6xl px-5 py-16">
-            <SectionHeading label="La rosa" title="Hot Players"/>
+            <SectionHeading label="La rosa" title="Hot Players" />
             <div className="grid gap-5 grid-cols-2 sm:grid-cols-3">
               {featured.map((p, i) => (<Reveal key={p.slug} delay={i * 0.08}><PlayerCard player={p} /></Reveal>))}
             </div>
