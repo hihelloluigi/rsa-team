@@ -102,15 +102,17 @@ export default async function Home() {
         <div className="mx-auto max-w-6xl px-5 py-16">
           <SectionHeading label={t.home.sponsorsLabel} title={t.home.sponsorsTitle} />
           {sponsors.length > 0 && (
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
               {sponsors.map((s, i) => {
                 const inner = s.logo ? (
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img src={s.logo} alt={s.name} className="max-h-16 w-auto object-contain" />
+                  <img src={s.logo} alt={s.name} className="max-h-16 w-auto object-contain sm:max-h-24" />
                 ) : (
                   <span className="text-center font-display italic uppercase text-lg text-muted">{s.name}</span>
                 );
-                const cls = "flex h-28 items-center justify-center border border-white/10 bg-surface p-6 transition hover:border-accent";
+                // Three across from sm rather than four, and taller: a wide wordmark in a
+                // quarter-width tile came out barely legible.
+                const cls = "flex h-28 items-center justify-center border border-white/10 bg-surface p-6 transition hover:border-accent sm:h-40 sm:p-8";
                 return s.url ? (
                   <a key={i} href={s.url} target="_blank" rel="noopener noreferrer" className={cls}>{inner}</a>
                 ) : (
