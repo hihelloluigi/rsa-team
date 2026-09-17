@@ -250,7 +250,7 @@ export const en: Dictionary = {
     aria: "Cookie notice",
     title: "Legally required cookie notice",
     close: "Close the notice",
-    body: "Except we don't use any cookies: no profiling, no third parties, no data sold to anyone. The only thing we jot down is that you closed this notice.",
+    body: "The only cookies we like are the ones you can eat. No profiling here, no third parties, no data sold to anyone: the only thing we jot down is that you closed this notice.",
     aside: "(The data protection authority would be proud. The manager, less so.)",
     details: "Details",
   },

@@ -254,7 +254,7 @@ export const it = {
     aria: "Avviso sui cookie",
     title: "Avviso cookie obbligatorio per legge",
     close: "Chiudi l'avviso",
-    body: "Solo che di cookie non ne usiamo: niente profilazione, niente terze parti, nessun dato venduto a nessuno. L'unica cosa che ci segniamo è che hai chiuso questo avviso.",
+    body: "Gli unici cookie che ci piacciono sono quelli da mangiare. Qui niente profilazione, niente terze parti, nessun dato venduto a nessuno: l'unica cosa che ci segniamo è che hai chiuso questo avviso.",
     aside: "(Il Garante sarebbe fiero di noi. Il mister un po' meno.)",
     details: "Dettagli",
   },
