@@ -1,5 +1,6 @@
 import ButtonLink from "@/components/ButtonLink";
 import Hero from "@/components/Hero";
+import InstagramFeed from "@/components/InstagramFeed";
 import SectionHeading from "@/components/SectionHeading";
 import Reveal from "@/components/Reveal";
 import PlayerCard from "@/components/PlayerCard";
@@ -27,6 +28,8 @@ export default function Home() {
   return (
     <main>
       <Hero tagline={club.tagline} />
+
+      {club.instagram && <InstagramFeed profileUrl={club.instagram} />}
 
       <section className="mx-auto max-w-6xl px-5 py-16">
         <SectionHeading label="La situazione" title="Come stiamo messi" anchor="situazione" />
