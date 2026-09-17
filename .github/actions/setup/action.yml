@@ -1,0 +1,17 @@
+name: Setup
+description: Node at the repo's pinned version, with dependencies installed from the lockfile.
+
+# The four jobs that run project code all start the same way. They stay separate
+# jobs — they run in parallel, and a red X names what broke — but the preamble
+# they share lives here, so the Node version and the install step cannot drift
+# apart between them. A local action can only run after actions/checkout.
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-node@v7
+      with:
+        # .nvmrc is the one place the Node version is written down.
+        node-version-file: .nvmrc
+        cache: npm
+    - run: npm ci
+      shell: bash

@@ -1,0 +1,11 @@
+version: 2
+updates:
+  # The actions this workflow runs on. They are pinned by major version, and a
+  # major is what it takes to move them off a deprecated Node runtime — left
+  # alone, that shows up as a warning on every run and, eventually, a failure.
+  - package-ecosystem: github-actions
+    directories: ["/", "/.github/actions/setup"]
+    schedule:
+      interval: monthly
+    commit-message:
+      prefix: ci

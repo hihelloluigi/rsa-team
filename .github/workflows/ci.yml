@@ -5,6 +5,10 @@ on:
     branches: [main]
   push:
     branches: [main]
+  # Monday morning, for the audit job alone: an advisory published against a
+  # dependency should surface even in a week when nobody pushes.
+  schedule:
+    - cron: "0 6 * * 1"
 
 # A new push to the same branch supersedes the run in flight.
 concurrency:
@@ -14,38 +18,36 @@ concurrency:
 permissions:
   contents: read
 
+# Each job carries a timeout: they take seconds when healthy, and a hung one
+# should not hold a runner for the six-hour default.
 jobs:
   lint:
+    if: github.event_name != 'schedule'
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 24
-          cache: npm
-      - run: npm ci
+      - uses: actions/checkout@v7
+      - uses: ./.github/actions/setup
       - run: npm run lint:check
 
   typecheck:
+    if: github.event_name != 'schedule'
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 24
-          cache: npm
-      - run: npm ci
+      - uses: actions/checkout@v7
+      - uses: ./.github/actions/setup
+      # The script runs `next typegen` first, so the route types tsc checks
+      # against are generated here exactly as they are on a laptop.
       - run: npm run typecheck
 
   test:
+    if: github.event_name != 'schedule'
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 24
-          cache: npm
-      - run: npm ci
+      - uses: actions/checkout@v7
+      - uses: ./.github/actions/setup
       # Runners are UTC. Forcing a non-Rome timezone keeps the date helpers'
       # regression tests honest.
       - run: npm test
@@ -53,27 +55,25 @@ jobs:
           TZ: UTC
 
   build:
+    if: github.event_name != 'schedule'
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 24
-          cache: npm
-      - run: npm ci
+      - uses: actions/checkout@v7
+      - uses: ./.github/actions/setup
       # `next build` also parses every src/data/*.json through its Zod schema,
       # so invalid content fails here rather than shipping a broken page.
       - run: npm run build
 
   audit:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v7
+      # No install: `npm audit` reads the lockfile, not node_modules.
+      - uses: actions/setup-node@v7
         with:
-          node-version: 24
-          cache: npm
-      - run: npm ci
+          node-version-file: .nvmrc
       # High and critical only: a moderate advisory on a transitive dev
       # dependency is not worth blocking a fixture update over. This job can go
       # red through no change of yours, when a new advisory lands upstream —

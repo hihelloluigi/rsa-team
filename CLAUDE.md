@@ -14,16 +14,23 @@ npm run import:standings [seasonId]   # refresh the classifica from bergamotorne
 npm run build      # production build — also validates all content JSON (see below)
 npm run lint       # ESLint with --fix
 npm run lint:check # ESLint, no writes — this is what CI runs
-npm run typecheck  # tsc --noEmit
+npm run typecheck  # next typegen, then tsc --noEmit
 npm test           # Vitest, run once
 
 npx vitest run src/lib/data.test.ts          # single test file
 npx vitest run -t "sortStandings"            # single test by name
 ```
 
-CI (`.github/workflows/ci.yml`) runs `lint:check`, `typecheck`, `test` and `build`
-as four parallel jobs on every PR and push to `main`. Deploys are **not** in the
-workflow — Vercel's Git integration handles them.
+CI (`.github/workflows/ci.yml`) runs `lint:check`, `typecheck`, `test`, `build` and an
+`npm audit` as parallel jobs on every PR and push to `main`; the audit also runs alone every
+Monday. The jobs share `.github/actions/setup` (Node from `.nvmrc`, then `npm ci`), and
+Dependabot keeps the actions themselves current. Deploys are **not** in the workflow —
+Vercel's Git integration handles them, **and does not wait for CI**: a push that fails a
+check still deploys if its build passes.
+
+`typecheck` generates Next's route types first (`next typegen`) because tsc checks against
+them and they are gitignored. Without that step a stale `.next/types` makes the check lie
+locally, in either direction — it once passed on a laptop and failed on CI's clean checkout.
 
 `npm run build` parses every content file through its Zod schema at module load, so **invalid content JSON fails the build** rather than rendering broken pages.
 
