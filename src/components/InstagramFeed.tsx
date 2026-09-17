@@ -1,5 +1,5 @@
-import Image from "next/image";
-import { FaInstagram, FaPlay, FaRegClone } from "react-icons/fa";
+import { FaInstagram } from "react-icons/fa";
+import InstagramGallery from "@/components/InstagramGallery";
 import ButtonLink from "@/components/ButtonLink";
 import SectionHeading from "@/components/SectionHeading";
 import Reveal from "@/components/Reveal";
@@ -14,12 +14,6 @@ function altText(post: InstagramPost, fallback: string): string {
   if (!firstLine) return fallback;
   return firstLine.length > 120 ? `${firstLine.slice(0, 119)}…` : firstLine;
 }
-
-const KIND_BADGES = {
-  image: null,
-  video: { Icon: FaPlay, label: "video" },
-  album: { Icon: FaRegClone, label: "album" },
-} as const;
 
 // Everything the home page has to say about Instagram: the latest posts and
 // the invitation to follow. The two used to be separate sections at opposite
@@ -41,42 +35,22 @@ export default async function InstagramFeed({ profileUrl }: { profileUrl: string
         />
         <Reveal>
           {hasPosts && (
-            /* Two across on a phone: at three the tiles were thumbnails, smaller
-               than the follow card beneath them, and the pictures are the
-               point of the section. Three from sm, one row of six from lg. */
-            <ul className="mb-1 grid grid-cols-2 gap-1 sm:mb-2 sm:grid-cols-3 sm:gap-2 lg:grid-cols-6">
-              {posts.map((post) => {
-                const badge = KIND_BADGES[post.kind];
-                return (
-                  <li key={post.id}>
-                    <a
-                      href={post.permalink}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="group relative block aspect-square overflow-hidden border border-white/10 bg-surface transition hover:border-accent"
-                    >
-                      {/* Six across from lg up inside the max-w-6xl column, a
-                          third of the viewport from sm, half below that. */}
-                      <Image
-                        src={post.image}
-                        alt={altText(post, t.instagram.postAlt(matchDateShort(post.timestamp, lang)))}
-                        fill
-                        sizes="(min-width: 1024px) 180px, (min-width: 640px) 33vw, 50vw"
-                        className="object-cover transition duration-300 group-hover:scale-105"
-                      />
-                      {badge && (
-                        <span className="absolute right-2 top-2 text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
-                          <badge.Icon size={14} aria-hidden="true" />
-                          <span className="sr-only">{t.instagram[badge.label]}</span>
-                        </span>
-                      )}
-                    </a>
-                  </li>
-                );
+            <InstagramGallery
+              posts={posts.map((post) => {
+                const date = matchDateShort(post.timestamp, lang);
+                return { ...post, date, alt: altText(post, t.instagram.postAlt(date)) };
               })}
-            </ul>
+              labels={{
+                video: t.instagram.video,
+                album: t.instagram.album,
+                open: t.instagram.open,
+                close: t.instagram.close,
+                previous: t.instagram.previous,
+                next: t.instagram.next,
+                openOnInstagram: t.instagram.openOnInstagram,
+              }}
+            />
           )}
-          {/* Sits a grid gap below the tiles so the two read as one block. */}
           {/* Kept short on a phone — smaller type, tighter padding, no big icon
               (the button carries one) — so it reads as the caption to the
               pictures rather than outweighing them. */}

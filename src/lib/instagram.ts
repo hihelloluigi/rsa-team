@@ -17,6 +17,14 @@ const API = "https://graph.instagram.com";
 // and costs a few hundred transformations a month.
 const REVALIDATE_SECONDS = 21600;
 
+// One picture or clip inside a carousel. It has no caption or permalink of its
+// own — those belong to the post.
+const ChildSchema = z.object({
+  media_type: z.enum(["IMAGE", "VIDEO"]),
+  media_url: z.url().optional(),
+  thumbnail_url: z.url().optional(),
+});
+
 const MediaSchema = z.object({
   id: z.string(),
   media_type: z.enum(["IMAGE", "VIDEO", "CAROUSEL_ALBUM"]),
@@ -27,21 +35,38 @@ const MediaSchema = z.object({
   permalink: z.url(),
   caption: z.string().optional(),
   timestamp: z.string(),
+  // Carousels only. Parsed leniently, one by one, in toPosts.
+  children: z.object({ data: z.array(z.unknown()) }).optional(),
 });
 
 const MediaListSchema = z.object({ data: z.array(z.unknown()) });
 
+// What the on-site preview shows, one at a time: a still, and for a clip the
+// file to play over it. A post that is not a carousel is a single slide.
+export type InstagramSlide = { image: string; video?: string };
+
 export type InstagramPost = {
   id: string;
   kind: "image" | "video" | "album";
-  // Always a still image, whatever the kind.
+  // Always a still image, whatever the kind: the tile in the grid.
   image: string;
+  slides: InstagramSlide[];
   permalink: string;
   caption: string;
   timestamp: string;
 };
 
 const KINDS = { IMAGE: "image", VIDEO: "video", CAROUSEL_ALBUM: "album" } as const;
+
+// A still and, for a video, its file. A video's media_url is the mp4, which an
+// <img> cannot show, so its still is the thumbnail; with no thumbnail there is
+// nothing to draw and the entry is dropped.
+function toSlide(m: { media_type: string; media_url?: string; thumbnail_url?: string }): InstagramSlide | null {
+  if (m.media_type === "VIDEO") {
+    return m.thumbnail_url ? { image: m.thumbnail_url, video: m.media_url } : null;
+  }
+  return m.media_url ? { image: m.media_url } : null;
+}
 
 // Maps the API's list to what the grid draws. Entries are parsed one by one so
 // that a single post in a shape we don't know (a new media type, say) drops out
@@ -56,13 +81,20 @@ export function toPosts(payload: unknown, limit: number): InstagramPost[] {
     const media = MediaSchema.safeParse(entry);
     if (!media.success) continue;
     const m = media.data;
-    // A video's media_url is the mp4, which an <img> cannot show.
-    const image = m.media_type === "VIDEO" ? m.thumbnail_url : m.media_url;
-    if (!image) continue;
+    const cover = toSlide(m);
+    if (!cover) continue;
+    // A carousel's own media_url is only its first picture; the rest come as
+    // children. A child in an unknown shape drops out alone, and a carousel
+    // whose children cannot be read still previews as its cover.
+    const children = (m.children?.data ?? [])
+      .map((child) => ChildSchema.safeParse(child))
+      .flatMap((child) => (child.success ? [toSlide(child.data)] : []))
+      .filter((slide): slide is InstagramSlide => slide !== null);
     posts.push({
       id: m.id,
       kind: KINDS[m.media_type],
-      image,
+      image: cover.image,
+      slides: children.length > 0 ? children : [cover],
       permalink: m.permalink,
       caption: m.caption ?? "",
       timestamp: m.timestamp,
@@ -79,7 +111,7 @@ export async function getInstagramPosts(limit = 6): Promise<InstagramPost[]> {
   const url = new URL(`${API}/me/media`);
   url.searchParams.set(
     "fields",
-    "id,media_type,media_url,thumbnail_url,permalink,caption,timestamp",
+    "id,media_type,media_url,thumbnail_url,permalink,caption,timestamp,children{media_type,media_url,thumbnail_url}",
   );
   // Ask for more than we show: some posts are dropped for having no still.
   url.searchParams.set("limit", String(limit * 2));

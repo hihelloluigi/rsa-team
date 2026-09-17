@@ -101,6 +101,11 @@ export const en: Dictionary = {
     postAlt: (date: string) => `Instagram post from ${date}`,
     video: "Video",
     album: "Gallery",
+    open: "Open preview",
+    close: "Close preview",
+    previous: "Previous",
+    next: "Next",
+    openOnInstagram: "Open on Instagram",
     pitchTitle: "Don't miss a second of our “preparation”",
     pitchBody:
       "Training (when we turn up), the terzo tempo — the post-match drinks, which we have never once skipped — and behind-the-scenes footage nobody asked for. More aperitivo than tactics: it's the only way you'll ever see us run.",

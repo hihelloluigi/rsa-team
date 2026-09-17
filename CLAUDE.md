@@ -40,7 +40,7 @@ A content-driven, statically-generated site for an amateur football club, in Ita
 - `format.ts` — the display layer: date formatting (takes the language), `initials`, `instagramHandle`, `countryName`. Labels such as POR/DIF or V/N/P are not here: they are words, so they live in the dictionaries (data keeps the English codes).
 - `site.ts` — resolves the canonical origin for `metadataBase`/sitemap/robots (`NEXT_PUBLIC_SITE_URL` → Vercel production URL → localhost).
 
-**Routes (`src/app/[lang]/`, App Router — see *Languages* below for the prefix):** `/`, `/squad` + `/squad/[slug]`, `/matches` + `/matches/[seasonId]/[matchId]`, `/club`, `/contact`, `/sponsor`, `/privacy`, `/terms`. Player and match detail pages are SSG via `generateStaticParams`; `/matches` is dynamic (reads `?season=` from `searchParams`). Components are **server components by default** — only `ContactForm`, `CookieNotice`, `Navbar`, `Reveal`, `SeasonSelect`, `ShareButton`, `ShirtViewer`, and `WinCelebration` are `"use client"`.
+**Routes (`src/app/[lang]/`, App Router — see *Languages* below for the prefix):** `/`, `/squad` + `/squad/[slug]`, `/matches` + `/matches/[seasonId]/[matchId]`, `/club`, `/contact`, `/sponsor`, `/privacy`, `/terms`. Player and match detail pages are SSG via `generateStaticParams`; `/matches` is dynamic (reads `?season=` from `searchParams`). Components are **server components by default** — only `ContactForm`, `CookieNotice`, `InstagramGallery`, `LanguageLink`, `Navbar`, `Reveal`, `SeasonSelect`, `ShareButton`, `ShirtViewer`, and `WinCelebration` are `"use client"`.
 
 **Languages (`src/i18n/`):** Italian keeps the unprefixed URLs it always had (`/squad`);
 English lives under `/en` (`/en/squad`). Internally every page is a route under
@@ -103,6 +103,11 @@ don't shorten it casually: Instagram's CDN URLs are signed and expire in about f
 (the page must never be cached that long), but every API read returns freshly signed URLs
 and each one is a new, billed `next/image` transformation. The optimiser is not optional —
 Instagram serves originals, and one tile was a 4.6 MB JPEG.
+A tile opens `InstagramGallery`'s preview (a native `<dialog>`) rather than Instagram:
+the photo large, a carousel slide by slide, a video playing in place. Stills stay proxied
+through `next/image`, but a **video streams straight from Instagram's CDN** — proxying mp4s
+would be our bandwidth — which only happens on the visitor's click and is disclosed on
+`/privacy`; keep that sentence true if this changes.
 Every failure, a missing token included, yields an empty list, and the section falls back
 to the follow invitation alone (it owns that too — there is no separate "follow us"
 section). The token dies 60 days after its last refresh, so `vercel.json` schedules

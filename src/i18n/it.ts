@@ -103,6 +103,11 @@ export const it = {
     postAlt: (date: string) => `Post Instagram del ${date}`,
     video: "Video",
     album: "Galleria",
+    open: "Apri l'anteprima",
+    close: "Chiudi l'anteprima",
+    previous: "Precedente",
+    next: "Successiva",
+    openOnInstagram: "Apri su Instagram",
     pitchTitle: "Non perderti un attimo della nostra «preparazione»",
     pitchBody:
       "Allenamenti (quando ci andiamo), terzi tempi (quelli mai saltati) e dietro le quinte che nessuno ci ha chiesto. C'è più aperitivo che tattica: è l'unico modo per vederci correre.",

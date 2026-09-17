@@ -97,9 +97,12 @@ export default function PrivacyIt({ club, contactHref }: LegalContentProps) {
           standard).
         </p>
         <p>
-          Le foto e i video in home page vengono dal nostro profilo Instagram, ma te li serviamo
-          noi: finché non clicchi su un post, Instagram non sa che sei passato di qui. Una volta
-          su Instagram, o su qualunque altro sito a cui rimandiamo, vale la loro informativa.
+          Le foto in home page vengono dal nostro profilo Instagram, ma te le serviamo noi: finché
+          guardi le foto, Instagram non sa che sei passato di qui. I video invece, se ne apri uno,
+          vengono riprodotti direttamente dai server di Instagram (Meta), che in quel momento
+          riceve il tuo indirizzo IP come per qualunque contenuto scaricato; nessun cookie viene
+          salvato. Una volta su Instagram, o su qualunque altro sito a cui rimandiamo, vale la loro
+          informativa.
         </p>
       </LegalSection>
 

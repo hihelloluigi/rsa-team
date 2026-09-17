@@ -96,10 +96,12 @@ export default function PrivacyEn({ club, contactHref }: LegalContentProps) {
           contractual clauses).
         </p>
         <p>
-          The photos and videos on the home page come from our Instagram profile, but we serve
-          them to you ourselves: until you click on a post, Instagram doesn&apos;t know you were
-          here. Once you are on Instagram, or on any other site we link to, their own notice
-          applies.
+          The photos on the home page come from our Instagram profile, but we serve them to you
+          ourselves: as long as you are looking at photos, Instagram doesn&apos;t know you were
+          here. Videos are different: if you open one, it is played directly from Instagram&apos;s
+          (Meta&apos;s) servers, which at that moment receive your IP address, as with any content
+          you download; no cookie is saved. Once you are on Instagram, or on any other site we
+          link to, their own notice applies.
         </p>
       </LegalSection>
 

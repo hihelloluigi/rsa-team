@@ -30,6 +30,37 @@ describe("toPosts", () => {
     expect(post).toMatchObject({ kind: "video", image: video.thumbnail_url, caption: "" });
   });
 
+  it("previews a video as one slide: the thumbnail, with the mp4 to play over it", () => {
+    const [post] = toPosts({ data: [video] }, 6);
+    expect(post.slides).toEqual([{ image: video.thumbnail_url, video: video.media_url }]);
+  });
+
+  it("previews a carousel slide by slide, skipping a child it cannot draw", () => {
+    const album = {
+      ...image,
+      id: "5",
+      media_type: "CAROUSEL_ALBUM",
+      children: {
+        data: [
+          { media_type: "IMAGE", media_url: "https://scontent.cdninstagram.com/a.jpg" },
+          { media_type: "VIDEO", media_url: "https://scontent.cdninstagram.com/b.mp4" },
+          { media_type: "VIDEO", media_url: "https://scontent.cdninstagram.com/c.mp4", thumbnail_url: "https://scontent.cdninstagram.com/c.jpg" },
+        ],
+      },
+    };
+    const [post] = toPosts({ data: [album] }, 6);
+    expect(post.kind).toBe("album");
+    expect(post.slides).toEqual([
+      { image: "https://scontent.cdninstagram.com/a.jpg" },
+      { image: "https://scontent.cdninstagram.com/c.jpg", video: "https://scontent.cdninstagram.com/c.mp4" },
+    ]);
+  });
+
+  it("falls back to the cover when a carousel comes without children", () => {
+    const [post] = toPosts({ data: [{ ...image, media_type: "CAROUSEL_ALBUM" }] }, 6);
+    expect(post.slides).toEqual([{ image: image.media_url }]);
+  });
+
   it("drops a post with no still to show", () => {
     const reel = { ...video, id: "3", thumbnail_url: undefined, media_url: undefined };
     expect(toPosts({ data: [reel, image] }, 6).map((p) => p.id)).toEqual(["1"]);
