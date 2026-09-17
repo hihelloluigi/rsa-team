@@ -7,15 +7,17 @@ import { FaChevronDown } from "react-icons/fa";
 export default function SeasonSelect({
   seasons,
   selected,
+  label,
 }: {
   seasons: { label: string; href: string }[];
   selected: string;
+  label: string;
 }) {
   const router = useRouter();
   return (
     <div className="flex items-center gap-3">
       <label htmlFor="season" className="text-xs font-extrabold uppercase tracking-widest text-muted">
-        Stagione
+        {label}
       </label>
       <div className="relative">
         <select

@@ -1,16 +1,18 @@
 import Link from "next/link";
 import type { Match, MatchResult } from "@/lib/types";
 import { matchResult, matchSides } from "@/lib/matches";
-import { matchDateShort, resultLabels, resultNames } from "@/lib/format";
+import { matchDateShort } from "@/lib/format";
+import { getI18n } from "@/i18n/server";
 
 const badge: Record<MatchResult, string> = {
   W: "bg-accent text-white", D: "bg-white/20 text-white", L: "bg-white/5 text-muted",
 };
 
-export default function MatchRow({ match, href }: { match: Match; href?: string }) {
+export default async function MatchRow({ match, href }: { match: Match; href?: string }) {
+  const { t, lang } = await getI18n();
   const result = matchResult(match);
   const { home, away, homeScore, awayScore } = matchSides(match);
-  const dateStr = matchDateShort(match.date);
+  const dateStr = matchDateShort(match.date, lang);
 
   // Played matches show their result and postponed ones say so; the rest show
   // their kickoff time. `match.date` only carries the day (the time part is a
@@ -18,11 +20,11 @@ export default function MatchRow({ match, href }: { match: Match; href?: string 
   const resultBadge = result ? (
     <span className={`inline-block w-7 text-center text-xs font-extrabold py-1 ${badge[result]}`}>
       {/* The letter alone is meaningless read aloud, so the word goes with it. */}
-      <span aria-hidden="true">{resultLabels[result]}</span>
-      <span className="sr-only">{resultNames[result]}</span>
+      <span aria-hidden="true">{t.results.short[result]}</span>
+      <span className="sr-only">{t.results.long[result]}</span>
     </span>
   ) : match.status === "postponed" ? (
-    <span className="text-[11px] uppercase tracking-widest text-accent">Rinviata</span>
+    <span className="text-[11px] uppercase tracking-widest text-accent">{t.common.postponed}</span>
   ) : match.kickoff ? (
     <span className="text-[11px] text-muted uppercase">{match.kickoff}</span>
   ) : null;

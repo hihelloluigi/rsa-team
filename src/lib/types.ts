@@ -94,6 +94,11 @@ export const ClubSchema = z.object({
   dataController: z.string().min(1),
   tagline: z.string().min(1),
   about: z.string().min(1),
+  // The club's prose in other languages. Italian is the top-level original;
+  // a language with no entry here falls back to it (see clubText in data.ts).
+  translations: z
+    .record(z.string(), z.object({ tagline: z.string().min(1), about: z.string().min(1) }))
+    .optional(),
   staff: z.array(z.object({ name: z.string().min(1), role: z.string().min(1) })),
 });
 export type Club = z.infer<typeof ClubSchema>;

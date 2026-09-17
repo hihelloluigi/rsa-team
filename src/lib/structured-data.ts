@@ -2,26 +2,33 @@
 // via <JsonLd>. URLs are absolute (resolved against the canonical origin) so
 // search engines can dereference the @id graph across pages.
 import type { Club, Match, Player, Season } from "./types";
-import { getClub } from "./data";
+import { clubText, getClub } from "./data";
 import { matchSides } from "./matches";
-import { positionNames } from "./format";
+import { countryName } from "./format";
 import { siteUrl } from "./site";
+import { localePath, type Locale } from "@/i18n/config";
+import { getDictionary } from "@/i18n/dictionaries";
+
+// Entity ids (#team, #person, #event) are the same in every language: they
+// name the thing, and the English page describes the same team. Page URLs are
+// the ones that differ.
+const pageUrl = (lang: Locale, path: string) => `${siteUrl()}${localePath(lang, path)}`;
 
 const teamId = () => `${siteUrl()}/#team`;
 
-export function websiteLd() {
+export function websiteLd(lang: Locale) {
   const base = siteUrl();
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
     "@id": `${base}/#website`,
     name: getClub().name,
-    url: base,
-    inLanguage: "it",
+    url: pageUrl(lang, "/"),
+    inLanguage: lang,
   };
 }
 
-export function sportsTeamLd(club: Club) {
+export function sportsTeamLd(club: Club, lang: Locale) {
   const base = siteUrl();
   return {
     "@context": "https://schema.org",
@@ -34,7 +41,7 @@ export function sportsTeamLd(club: Club) {
     url: base,
     logo: `${base}/icon.svg`,
     image: `${base}/opengraph-image`,
-    slogan: club.tagline,
+    slogan: clubText(lang).tagline,
     ...(club.instagram && { sameAs: [club.instagram] }),
     ...(club.ground && {
       location: {
@@ -48,24 +55,25 @@ export function sportsTeamLd(club: Club) {
   };
 }
 
-export function playerLd(player: Player) {
+export function playerLd(player: Player, lang: Locale) {
   const base = siteUrl();
+  const nationality = countryName(player.nationalityCode, player.nationality, lang);
   return {
     "@context": "https://schema.org",
     "@type": "Person",
     "@id": `${base}/squad/${player.slug}#person`,
     name: player.name,
     ...(player.nickname && { alternateName: player.nickname }),
-    url: `${base}/squad/${player.slug}`,
+    url: pageUrl(lang, `/squad/${player.slug}`),
     ...(player.photo && { image: `${base}${player.photo}` }),
-    ...(player.nationality && { nationality: player.nationality }),
-    jobTitle: positionNames[player.position],
+    ...(nationality && { nationality }),
+    jobTitle: getDictionary(lang).positions.long[player.position],
     memberOf: { "@type": "SportsTeam", "@id": teamId(), name: getClub().name },
     ...(player.bio && { description: player.bio }),
   };
 }
 
-export function matchLd(season: Season, match: Match) {
+export function matchLd(season: Season, match: Match, lang: Locale) {
   const base = siteUrl();
   const { home, away } = matchSides(match);
   return {
@@ -75,7 +83,7 @@ export function matchLd(season: Season, match: Match) {
     name: `${home} - ${away}`,
     sport: "Soccer",
     startDate: match.date,
-    url: `${base}/matches/${season.id}/${match.id}`,
+    url: pageUrl(lang, `/matches/${season.id}/${match.id}`),
     homeTeam: { "@type": "SportsTeam", name: home },
     awayTeam: { "@type": "SportsTeam", name: away },
     ...(season.league && {
@@ -85,8 +93,7 @@ export function matchLd(season: Season, match: Match) {
   };
 }
 
-export function breadcrumbLd(trail: { name: string; path: string }[]) {
-  const base = siteUrl();
+export function breadcrumbLd(trail: { name: string; path: string }[], lang: Locale) {
   return {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -94,7 +101,7 @@ export function breadcrumbLd(trail: { name: string; path: string }[]) {
       "@type": "ListItem",
       position: i + 1,
       name: item.name,
-      item: `${base}${item.path}`,
+      item: pageUrl(lang, item.path),
     })),
   };
 }

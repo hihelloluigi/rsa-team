@@ -2,12 +2,13 @@ import Link from "next/link";
 import type { Player } from "@/lib/types";
 import PositionIcon from "@/components/PositionIcon";
 import PlayerPortrait from "@/components/PlayerPortrait";
-import { positionLabels } from "@/lib/format";
+import { getI18n } from "@/i18n/server";
 
-export default function PlayerCard({ player }: { player: Player }) {
+export default async function PlayerCard({ player }: { player: Player }) {
+  const { t, href } = await getI18n();
   return (
     <Link
-      href={`/squad/${player.slug}`}
+      href={href(`/squad/${player.slug}`)}
       className="group relative block overflow-hidden bg-surface border border-white/10 hover:border-accent transition"
     >
       <PlayerPortrait
@@ -18,7 +19,7 @@ export default function PlayerCard({ player }: { player: Player }) {
         <span className="absolute top-3 left-3 font-display text-3xl text-white drop-shadow-lg">{player.number}</span>
         <span className="absolute top-3 right-3 flex items-center gap-1 text-[10px] font-extrabold uppercase tracking-widest bg-accent px-2 py-1">
           <PositionIcon position={player.position} size={10} />
-          {positionLabels[player.position]}
+          {t.positions.short[player.position]}
         </span>
       </PlayerPortrait>
       <div className="p-4">

@@ -9,10 +9,12 @@ export default function ShareButton({
   anchor,
   title,
   className = "",
+  labels,
 }: {
   anchor: string;
   title: string;
   className?: string;
+  labels: { share: string; copied: string; aria: string };
 }) {
   const [copied, setCopied] = useState(false);
 
@@ -47,7 +49,7 @@ export default function ShareButton({
     <button
       type="button"
       onClick={share}
-      aria-label={`Condividi: ${title}`}
+      aria-label={labels.aria}
       className={`inline-flex shrink-0 items-center gap-2 border border-white/20 px-3 py-2 text-xs font-extrabold uppercase tracking-widest text-muted transition hover:border-accent hover:text-fg ${className}`.trimEnd()}
     >
       {copied ? (
@@ -56,7 +58,7 @@ export default function ShareButton({
         <FaShareNodes aria-hidden="true" />
       )}
       <span className={copied ? "" : "sr-only sm:not-sr-only"} aria-live="polite">
-        {copied ? "Link copiato" : "Condividi"}
+        {copied ? labels.copied : labels.share}
       </span>
     </button>
   );

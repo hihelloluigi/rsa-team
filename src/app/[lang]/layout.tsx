@@ -1,0 +1,99 @@
+import type { Metadata, Viewport } from "next";
+import { notFound } from "next/navigation";
+import { Inter, Anton } from "next/font/google";
+import CookieNotice from "@/components/CookieNotice";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import "../globals.css";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import JsonLd from "@/components/JsonLd";
+import { siteUrl } from "@/lib/site";
+import { getClub } from "@/lib/data";
+import { sportsTeamLd, websiteLd } from "@/lib/structured-data";
+import { LOCALES, OG_LOCALES, hasLocale, localePath, pageAlternates } from "@/i18n/config";
+import { getDictionary } from "@/i18n/dictionaries";
+
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const anton = Anton({ weight: "400", subsets: ["latin"], variable: "--font-anton" });
+
+// Both languages are prerendered. Anything else in this segment is refused
+// below with a 404 rather than rendered in a language we do not have.
+export function generateStaticParams() {
+  return LOCALES.map((lang) => ({ lang }));
+}
+
+export async function generateMetadata({ params }: LayoutProps<"/[lang]">): Promise<Metadata> {
+  const { lang } = await params;
+  if (!hasLocale(lang)) return {};
+  const t = getDictionary(lang);
+  const club = getClub();
+  return {
+    metadataBase: new URL(siteUrl()),
+    title: { default: t.meta.siteTitle, template: `%s — ${club.name}` },
+    description: t.meta.siteDescription,
+    // The feed link lets tools discover the fixtures without the button.
+    alternates: pageAlternates(lang, "/", { "text/calendar": "/calendar.ics" }),
+    // No title/description here on purpose: Next derives og:/twitter: title and
+    // description from each page's own title/description. The opengraph-image
+    // file convention supplies the image site-wide.
+    openGraph: {
+      type: "website",
+      locale: OG_LOCALES[lang],
+      alternateLocale: LOCALES.filter((l) => l !== lang).map((l) => OG_LOCALES[l]),
+      siteName: club.name,
+    },
+    twitter: { card: "summary_large_image" },
+    // Home-screen label on iOS; icons/manifest are wired via app/ file conventions.
+    appleWebApp: { title: "RSA" },
+  };
+}
+
+export const viewport: Viewport = {
+  themeColor: "#0a0a0a",
+};
+
+export default async function RootLayout({ children, params }: LayoutProps<"/[lang]">) {
+  const { lang } = await params;
+  if (!hasLocale(lang)) notFound();
+  const t = getDictionary(lang);
+  const club = getClub();
+
+  // The navbar and the cookie notice are client components: they get finished
+  // strings, never the dictionary (it holds functions, which cannot cross over).
+  const nav = [
+    { path: "/", label: t.nav.home },
+    { path: "/squad", label: t.nav.squad },
+    { path: "/matches", label: t.nav.matches },
+    { path: "/club", label: t.nav.club },
+    { path: "/contact", label: t.nav.contact },
+  ];
+
+  return (
+    <html lang={lang} className={`${inter.variable} ${anton.variable}`}>
+      <body className="bg-bg text-fg font-sans min-h-screen flex flex-col">
+        <JsonLd data={[sportsTeamLd(club, lang), websiteLd(lang)]} />
+        <Navbar
+          lang={lang}
+          links={nav}
+          clubName={club.name}
+          labels={{
+            openMenu: t.nav.openMenu,
+            closeMenu: t.nav.closeMenu,
+            language: t.nav.language,
+            switchLabel: t.nav.switchLabel,
+            switchAria: t.nav.switchAria,
+          }}
+        />
+        <div className="flex-1">{children}</div>
+        <Footer />
+        <CookieNotice
+          detailsHref={`${localePath(lang, "/privacy")}#cookie`}
+          labels={t.cookie}
+        />
+        <Analytics />
+        <SpeedInsights />
+      </body>
+    </html>
+  );
+}

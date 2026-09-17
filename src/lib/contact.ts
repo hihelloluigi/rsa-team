@@ -1,5 +1,7 @@
 import { z } from "zod";
 import { getClub } from "./data";
+import { it } from "@/i18n/it";
+import type { Dictionary } from "@/i18n/dictionaries";
 
 // A message from the contact form, delivered as an email through Resend's REST
 // API — called with fetch like the other two services here, so no SDK comes
@@ -13,7 +15,9 @@ const defaultFrom = () => `${getClub().name} <onboarding@resend.dev>`;
 
 // Why someone is writing. It leads the email's subject, so whoever opens the
 // inbox can tell a sponsor from a request for a friendly without reading on.
-// The order here is the order of the form's menu.
+// The order here is the order of the form's menu. These Italian labels are the
+// ones used in the email, which goes to the club whatever language the visitor
+// wrote from; the form's own labels come from the dictionary.
 export const CONTACT_TOPICS = {
   sponsor: "Diventare sponsor",
   amichevole: "Organizzare un'amichevole",
@@ -29,18 +33,19 @@ const SUBJECT_TAGS: Record<ContactTopic, string> = {
   altro: "Contatto",
 };
 
-export const ContactRequestSchema = z.object({
-  topic: z.enum(Object.keys(CONTACT_TOPICS) as [ContactTopic, ...ContactTopic[]]),
-  name: z.string().trim().min(2, "Dicci almeno come ti chiami.").max(80),
-  // A company for a sponsor, a team for a friendly, nothing for most people.
-  organization: z.string().trim().max(120).optional(),
-  email: z.email("Questa email non sembra valida.").max(200),
-  message: z
-    .string()
-    .trim()
-    .min(10, "Scrivici due righe in più.")
-    .max(2000, "Bello l'entusiasmo, ma stai sotto i 2000 caratteri."),
-});
+// A factory because the messages are shown to the visitor, so they have to be
+// in the visitor's language.
+export const contactRequestSchema = (errors: Dictionary["form"]["errors"]) =>
+  z.object({
+    topic: z.enum(Object.keys(CONTACT_TOPICS) as [ContactTopic, ...ContactTopic[]], errors.invalid),
+    name: z.string().trim().min(2, errors.name).max(80, errors.invalid),
+    // A company for a sponsor, a team for a friendly, nothing for most people.
+    organization: z.string().trim().max(120, errors.invalid).optional(),
+    email: z.email(errors.email).max(200, errors.invalid),
+    message: z.string().trim().min(10, errors.messageShort).max(2000, errors.messageLong),
+  });
+
+export const ContactRequestSchema = contactRequestSchema(it.form.errors);
 export type ContactRequest = z.infer<typeof ContactRequestSchema>;
 
 // CONTACT_INBOX is one address or several, comma-separated — a message should

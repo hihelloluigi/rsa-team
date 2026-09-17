@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { getPlayers, getSeasons } from "@/lib/data";
 import { siteUrl } from "@/lib/site";
+import { DEFAULT_LOCALE, LOCALES, localePath } from "@/i18n/config";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = siteUrl();
@@ -24,8 +25,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
     .map((m) => new Date(m.date))
     .sort((a, b) => b.getTime() - a.getTime())[0];
 
+  // One entry per page, at its Italian (unprefixed) URL, carrying the hreflang
+  // set. That is how the English pages are listed: as alternates of the same
+  // page rather than as separate entries that would compete with it.
+  const localized = (path: string) => ({
+    url: `${base}${localePath(DEFAULT_LOCALE, path)}`,
+    alternates: {
+      languages: Object.fromEntries(LOCALES.map((l) => [l, `${base}${localePath(l, path)}`])),
+    },
+  });
+
   const staticRoutes = ["/", "/squad", "/matches", "/club", "/contact", "/sponsor", "/privacy", "/terms"].map((path) => ({
-    url: `${base}${path}`,
+    ...localized(path),
     changeFrequency: "weekly" as const,
     priority: path === "/" ? 1 : 0.8,
     // The home and fixture pages move with the calendar; the squad and club
@@ -40,21 +51,21 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const seasonRoutes = seasons
     .filter((s) => !s.current)
     .map((s) => ({
-      url: `${base}/matches/${s.id}`,
+      ...localized(`/matches/${s.id}`),
       ...(lastPlayed ? { lastModified: lastPlayed } : {}),
       changeFrequency: "monthly" as const,
       priority: 0.6,
     }));
 
   const playerRoutes = getPlayers().map((p) => ({
-    url: `${base}/squad/${p.slug}`,
+    ...localized(`/squad/${p.slug}`),
     changeFrequency: "monthly" as const,
     priority: 0.5,
   }));
 
   const matchRoutes = seasons.flatMap((s) =>
     s.matches.map((m) => ({
-      url: `${base}/matches/${s.id}/${m.id}`,
+      ...localized(`/matches/${s.id}/${m.id}`),
       ...(past(m.date) ? { lastModified: past(m.date) } : {}),
       changeFrequency: "monthly" as const,
       priority: 0.5,

@@ -3,6 +3,8 @@ import { FaRegCalendarPlus } from "react-icons/fa6";
 import ButtonLink from "@/components/ButtonLink";
 import Eyebrow from "@/components/Eyebrow";
 import { siteUrl } from "@/lib/site";
+import { getClub } from "@/lib/data";
+import { getI18n } from "@/i18n/server";
 
 // Offers the season's fixtures as a subscribable feed. Both buttons point at
 // the same /calendar.ics: Google takes it through its add-by-URL screen,
@@ -10,22 +12,19 @@ import { siteUrl } from "@/lib/site";
 const LINK =
   "underline decoration-white/20 underline-offset-4 transition hover:text-accent hover:decoration-accent";
 
-export default function CalendarSubscribe({ season }: { season: { id: string; label: string } }) {
+export default async function CalendarSubscribe({ season }: { season: { id: string; label: string } }) {
+  const { t } = await getI18n();
   const ics = `${siteUrl()}/calendar.ics`;
   const webcal = ics.replace(/^https?:/, "webcal:");
   const google = `https://calendar.google.com/calendar/render?cid=${encodeURIComponent(webcal)}`;
 
   return (
     <div className="border border-white/10 bg-surface px-6 py-10 text-center">
-      <Eyebrow>Non perdertene una</Eyebrow>
+      <Eyebrow>{t.calendar.eyebrow}</Eyebrow>
       <h2 className="mt-3 font-display italic uppercase text-2xl sm:text-3xl leading-tight">
-        Porta il calendario con te
+        {t.calendar.title}
       </h2>
-      <p className="mx-auto mt-3 max-w-md text-muted">
-        Aggiungi le partite dell&apos;RSA TEAM al tuo calendario — questa stagione e
-        quelle passate. Si aggiorna da solo: se cambia un orario, salta una partita
-        o arriva un risultato, lo trovi lì senza rifare nulla.
-      </p>
+      <p className="mx-auto mt-3 max-w-md text-muted">{t.calendar.body(getClub().name)}</p>
       <div className="mt-6 flex flex-wrap justify-center gap-3">
         <ButtonLink href={google} external>
           <SiGooglecalendar size={16} aria-hidden="true" /> Google Calendar
@@ -34,16 +33,19 @@ export default function CalendarSubscribe({ season }: { season: { id: string; la
           <FaRegCalendarPlus size={16} aria-hidden="true" /> Apple · Outlook
         </ButtonLink>
       </div>
+      {/* The feed and its files are language-neutral URLs: one calendar, in
+          Italian, whatever language this page is in. */}
       <p className="mt-5 text-xs text-muted">
-        Preferisci un file? Scarica{" "}
+        {t.calendar.preferFile}{" "}
         <a href="/calendar.ics" className={LINK}>
-          tutte le stagioni
+          {t.calendar.allSeasons}
         </a>{" "}
-        o{" "}
+        {t.calendar.or}{" "}
         <a href={`/matches/${season.id}/calendar.ics`} className={LINK}>
-          solo la {season.label}
+          {t.calendar.onlySeason(season.label)}
         </a>
-        . Google ricontrolla i calendari esterni ogni tanto, non all&apos;istante.
+        . {t.calendar.googleNote}
+        {t.calendar.languageNote && ` ${t.calendar.languageNote}`}
       </p>
     </div>
   );

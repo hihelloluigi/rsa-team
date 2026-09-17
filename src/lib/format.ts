@@ -1,4 +1,4 @@
-import type { MatchResult, Position } from "./types";
+import { DEFAULT_LOCALE, INTL_LOCALES, type Locale } from "@/i18n/config";
 
 // Up-to-two-letter initials for a name, used as a photo fallback.
 export function initials(name: string): string {
@@ -12,13 +12,13 @@ export function initials(name: string): string {
 
 // Match dates are formatted on the server at build time, so the timezone has to
 // be pinned: a Vercel build (UTC) and a local build (CET) would otherwise
-// disagree about which day a fixture falls on.
-const LOCALE = "it-IT";
+// disagree about which day a fixture falls on. The zone is Rome's in every
+// language — it is where the match is played, not where the reader is.
 const TIME_ZONE = "Europe/Rome";
 
-// "03 ott 2025" — compact form for fixture lists.
-export function matchDateShort(iso: string): string {
-  return new Date(iso).toLocaleDateString(LOCALE, {
+// "03 ott 2025" / "03 Oct 2025" — compact form for fixture lists.
+export function matchDateShort(iso: string, lang: Locale = DEFAULT_LOCALE): string {
+  return new Date(iso).toLocaleDateString(INTL_LOCALES[lang], {
     day: "2-digit",
     month: "short",
     year: "numeric",
@@ -26,9 +26,10 @@ export function matchDateShort(iso: string): string {
   });
 }
 
-// "venerdì 03 ottobre 2025" — long form for the match detail page.
-export function matchDateLong(iso: string): string {
-  return new Date(iso).toLocaleDateString(LOCALE, {
+// "venerdì 03 ottobre 2025" / "Friday, 03 October 2025" — long form for the
+// match detail page.
+export function matchDateLong(iso: string, lang: Locale = DEFAULT_LOCALE): string {
+  return new Date(iso).toLocaleDateString(INTL_LOCALES[lang], {
     weekday: "long",
     day: "2-digit",
     month: "long",
@@ -37,41 +38,23 @@ export function matchDateLong(iso: string): string {
   });
 }
 
-// Italian abbreviations shown on player badges (data keeps the GK/DEF/MID/FWD
-// codes). A display mapping, so it lives here rather than in the data layer.
-export const positionLabels: Record<Position, string> = {
-  GK: "POR",
-  DEF: "DIF",
-  MID: "CEN",
-  FWD: "ATT",
-};
-
 // "https://www.instagram.com/rsafussball" -> "rsafussball". Keeps the handle
 // derived from the one URL in club.json rather than written out beside it.
 export function instagramHandle(url: string): string {
   return url.replace(/\/+$/, "").split("/").pop() ?? "";
 }
 
-// Full Italian role names. The badge abbreviations above are for the UI; these
-// are for anywhere a word is wanted — notably schema.org, where "POR" means
-// nothing to a search engine.
-export const positionNames: Record<Position, string> = {
-  GK: "Portiere",
-  DEF: "Difensore",
-  MID: "Centrocampista",
-  FWD: "Attaccante",
-};
-
-// Vittoria / Nullo / Perso, as shown on a result badge.
-export const resultLabels: Record<MatchResult, string> = { W: "V", D: "N", L: "P" };
-
-// The same three spelled out — read aloud by screen readers in place of the
-// bare letter, and used wherever the result is stated in full.
-export const resultNames: Record<MatchResult, string> = {
-  W: "Vittoria",
-  D: "Pareggio",
-  L: "Sconfitta",
-};
+// A country's name in the reader's language, from the ISO code the content
+// already carries for the flag — so "Italia" in players.json never has to be
+// translated by hand. Falls back to the written name for a missing or odd code.
+export function countryName(code: string | undefined, fallback: string | undefined, lang: Locale): string | undefined {
+  if (!code) return fallback;
+  try {
+    return new Intl.DisplayNames([INTL_LOCALES[lang]], { type: "region" }).of(code.toUpperCase()) ?? fallback;
+  } catch {
+    return fallback;
+  }
+}
 
 // A Google Maps search for an address, rather than a stored link per venue:
 // one fewer field to keep in step, and it opens the native maps app on a phone.

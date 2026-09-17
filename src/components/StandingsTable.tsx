@@ -1,14 +1,15 @@
 import type { StandingRow } from "@/lib/types";
 import { GiTrophyCup } from "react-icons/gi";
-
-const cols = ["Pti", "G", "V", "N", "P", "GF", "GS", "DR"];
+import { getI18n } from "@/i18n/server";
 
 function goalDiff(r: StandingRow): string {
   const d = r.goalsFor - r.goalsAgainst;
   return d > 0 ? `+${d}` : `${d}`;
 }
 
-export default function StandingsTable({ rows }: { rows: StandingRow[] }) {
+export default async function StandingsTable({ rows }: { rows: StandingRow[] }) {
+  const { t } = await getI18n();
+  const cols = t.standings.columns;
   // Before a ball is kicked every row is zero, so first place is just
   // alphabetical — crowning it would be misleading.
   const started = rows.some((r) => r.played > 0);
@@ -18,7 +19,7 @@ export default function StandingsTable({ rows }: { rows: StandingRow[] }) {
         <thead>
           <tr className="text-muted text-xs uppercase tracking-widest border-b border-white/10">
             <th className="text-left px-2 sm:px-3 py-3 w-8">#</th>
-            <th className="text-left px-2 sm:px-3 py-3">Squadra</th>
+            <th className="text-left px-2 sm:px-3 py-3">{t.standings.team}</th>
             {cols.map((c) => <th key={c} className="px-2 sm:px-3 py-3 w-9 sm:w-12 text-center">{c}</th>)}
           </tr>
         </thead>

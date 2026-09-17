@@ -1,8 +1,11 @@
 import ButtonLink from "@/components/ButtonLink";
 import { GiSoccerBall } from "react-icons/gi";
 import Eyebrow from "@/components/Eyebrow";
+import { getClub } from "@/lib/data";
+import { getI18n } from "@/i18n/server";
 
-export default function Hero({ tagline }: { tagline: string }) {
+export default async function Hero({ tagline }: { tagline: string }) {
+  const { t, href } = await getI18n();
   return (
     <section className="relative overflow-hidden border-b border-white/10">
       {/* Pink ball accent — replaces the old rotated square */}
@@ -22,15 +25,15 @@ export default function Hero({ tagline }: { tagline: string }) {
         <img src="/madonna.svg" alt="" className="h-[26rem] w-auto opacity-[0.12] sm:h-[36rem] sm:opacity-[0.1]" />
       </div>
       <div className="relative mx-auto max-w-6xl px-5 py-24 sm:py-32">
-        <Eyebrow className="mb-4">Dal 2025</Eyebrow>
+        <Eyebrow className="mb-4">{t.hero.since(getClub().founded)}</Eyebrow>
         <h1 className="font-display italic uppercase leading-[0.8] text-7xl sm:text-9xl">
           <span className="block">RSA</span>
           <span className="block text-accent">TEAM</span>
         </h1>
         <p className="mt-6 max-w-md text-lg sm:text-xl text-fg">{tagline}</p>
         <div className="mt-8 flex flex-wrap gap-3">
-          <ButtonLink href="/squad">Conosci la rosa</ButtonLink>
-          <ButtonLink href="/matches" variant="outline">Le partite</ButtonLink>
+          <ButtonLink href={href("/squad")}>{t.hero.squadCta}</ButtonLink>
+          <ButtonLink href={href("/matches")} variant="outline">{t.hero.matchesCta}</ButtonLink>
         </div>
       </div>
       {/* SIAMO MATTI marquee band */}

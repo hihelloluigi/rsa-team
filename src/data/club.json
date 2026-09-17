@@ -8,6 +8,12 @@
   "dataController": "Luigi Aiello",
   "tagline": "Più cuore che tattica, da sempre.",
   "about": "Ci conosciamo dall'asilo e da allora giochiamo a pallone insieme. All'inizio al campetto sotto casa, adesso un po' dove capita. Più che altro è una scusa per vederci.\n\nDa anni dicevamo di farci una squadra vera, con un nome e le maglie. Alla fine l'abbiamo fatto, ed è nato l'RSA TEAM.\n\nCorriamo poco e vinciamo quando capita, però a noi sta bene così. L'importante è esserci, fare due tiri e finire tutti insieme a mangiare qualcosa.",
+  "translations": {
+    "en": {
+      "tagline": "More heart than tactics, as ever.",
+      "about": "We've known each other since nursery school and have been kicking a ball around together ever since. First on the pitch below our flats, these days wherever we can find one. Mostly, it's an excuse to see each other.\n\nFor years we said we'd start a proper team, with a name and shirts. In the end we did, and RSA TEAM was born.\n\nWe don't run much and we win when it happens, but that suits us fine. What matters is turning up, having a kickabout and all ending up eating something together."
+    }
+  },
   "staff": [
     { "name": "Giuliano Feoli", "role": "Allenatore" },
     { "name": "Jacopo Panseri", "role": "Assistente Allenatore" },

@@ -29,7 +29,7 @@ workflow — Vercel's Git integration handles them.
 
 ## Architecture
 
-A content-driven, statically-generated site (Italian-language) for an amateur football club. The defining pattern is a **strict data pipeline**: JSON content → Zod validation → typed accessors → server components.
+A content-driven, statically-generated site for an amateur football club, in Italian (the default) and English. The defining pattern is a **strict data pipeline**: JSON content → Zod validation → typed accessors → server components.
 
 **Content lives in `src/data/*.json`** (`players`, `seasons`, `club`, `sponsors`, `venues`) and is the only thing that changes for routine updates — there is no CMS or database.
 
@@ -37,10 +37,44 @@ A content-driven, statically-generated site (Italian-language) for an amateur fo
 - `types.ts` — Zod schemas are the single source of truth for content shape; all TS types are `z.infer` of them.
 - `data.ts` — content access only: validates every JSON file **once at module load** (`Schema.parse(...)` throws at build time on bad data) and exposes the typed accessors.
 - `matches.ts` — the pure helpers that compute over a season (`matchResult`, `matchSides`, `splitMatches`, `sortStandings`, `withRests`). Depends on `data.ts`, never the reverse.
-- `format.ts` — the display layer: date formatting, `initials`, `instagramHandle`, and `positionLabels` (GK/DEF/MID/FWD → Italian POR/DIF/CEN/ATT — data keeps the English codes).
+- `format.ts` — the display layer: date formatting (takes the language), `initials`, `instagramHandle`, `countryName`. Labels such as POR/DIF or V/N/P are not here: they are words, so they live in the dictionaries (data keeps the English codes).
 - `site.ts` — resolves the canonical origin for `metadataBase`/sitemap/robots (`NEXT_PUBLIC_SITE_URL` → Vercel production URL → localhost).
 
-**Routes (`src/app/`, App Router):** `/`, `/squad` + `/squad/[slug]`, `/matches` + `/matches/[seasonId]/[matchId]`, `/club`, `/contact`, `/sponsor`, `/privacy`, `/terms`. Player and match detail pages are SSG via `generateStaticParams`; `/matches` is dynamic (reads `?season=` from `searchParams`). Components are **server components by default** — only `ContactForm`, `CookieNotice`, `Navbar`, `Reveal`, `SeasonSelect`, `ShareButton`, `ShirtViewer`, and `WinCelebration` are `"use client"`.
+**Routes (`src/app/[lang]/`, App Router — see *Languages* below for the prefix):** `/`, `/squad` + `/squad/[slug]`, `/matches` + `/matches/[seasonId]/[matchId]`, `/club`, `/contact`, `/sponsor`, `/privacy`, `/terms`. Player and match detail pages are SSG via `generateStaticParams`; `/matches` is dynamic (reads `?season=` from `searchParams`). Components are **server components by default** — only `ContactForm`, `CookieNotice`, `Navbar`, `Reveal`, `SeasonSelect`, `ShareButton`, `ShirtViewer`, and `WinCelebration` are `"use client"`.
+
+**Languages (`src/i18n/`):** Italian keeps the unprefixed URLs it always had (`/squad`);
+English lives under `/en` (`/en/squad`). Internally every page is a route under
+`app/[lang]`, and `next.config.ts` rewrites an unprefixed path to `/it` — a router rewrite
+rather than a proxy, so pages stay static files with no function in front of them — while
+`/it/...` itself redirects to the unprefixed URL so it is never a duplicate. Nobody is
+redirected by browser language: the navbar switch and `hreflang` do that job. What stays
+outside `[lang]` is language-neutral: `/api`, `/admin` (which therefore has its own root
+layout), the calendar feeds, sitemap, robots and icons.
+- `config.ts` — the locales and the three URL helpers. **Every internal link goes through
+  `localePath`** (server components get it bound as `href()` from `getI18n()`); a bare
+  `href="/squad"` silently drops an English visitor back into Italian. `pageAlternates`
+  builds a page's canonical + hreflang set.
+- `it.ts` / `en.ts` — the dictionaries. `it.ts` is the original and defines the shape;
+  `en.ts` is type-checked against it, so a missing key is a compile error. Strings with a
+  hole are functions. English is *adapted*, not translated word for word — the jokes are
+  rewritten to land; "SIAMO MATTI" stays Italian everywhere.
+- `server.ts` — `getI18n()` reads the language from the `[lang]` root parameter
+  (`next/root-params`), so server components call it with no prop drilling and become
+  `async`. Root parameters do not exist in **client components, server actions or image
+  routes**: clients are handed finished strings as props (never the dictionary — it holds
+  functions), the contact action reads a hidden `lang` field, and the OG image reads its
+  own `params`. Those import `dictionaries.ts`, which is free of `next/root-params`.
+- Content stays Italian in the JSON. The club's prose has `translations.en` in `club.json`
+  (`clubText(lang)`); the few content values that are words — staff roles, Andata/Ritorno —
+  map through `t.content`, falling back to the Italian, and `content.test.ts` fails when
+  one lacks an English entry. Country names come from `Intl.DisplayNames` off the ISO code.
+  Player bios, match notes, Instagram captions, the calendar feed and the emails the form
+  sends are **not** translated.
+- The legal pages are whole per-language components (`content-it.tsx`, `content-en.tsx`)
+  rather than dictionary entries: a legal text is read and checked as a whole. Italian is
+  the original and prevails; change both, and bump `UPDATED`.
+- A miss under a language reaches `[lang]/[...rest]`, which calls `notFound()` so the
+  site's own 404 renders in that language instead of Next's bare default.
 
 **3D shirt (`ShirtViewer`):** a `<model-viewer>` web component over `public/shirt/rsa-team-shirt.glb`
 (3 MB). The viewer bundles three.js, so the component imports it only once the section scrolls
@@ -135,10 +169,13 @@ routes and are disallowed in `robots.ts`.
   table does not balance or a club appears under an unknown spelling, and reproduces
   the file's one-object-per-line formatting so the diff stays readable.
 - **Content invariants the schemas can't express** (unique player slugs/numbers, unique match ids, ≤1 current season) are guarded by `src/lib/content.test.ts`, not Zod. Run the tests after editing content.
+- **No literal copy in components.** Any visible string, `aria-label` or `alt` goes in both
+  dictionaries. A string typed straight into JSX ships in Italian on the English pages and
+  nothing fails.
 - **Never format a match date inline.** Pages are prerendered, so `toLocaleDateString`
   without an explicit `timeZone` renders in the *build machine's* zone — UTC on
   Vercel, CET locally. Use `matchDateShort`/`matchDateLong` from `lib/format.ts`,
-  which pin `Europe/Rome`.
+  which pin `Europe/Rome` and take the page's language.
 - **A match's kickoff hour lives in `kickoff`, not `date`.** The time component of
   `date` is a placeholder (`T12:00:00+00:00`); only the day is meaningful.
 - **Club identity comes from `club.json`, never a literal.** The club name and

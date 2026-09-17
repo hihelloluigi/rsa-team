@@ -22,10 +22,20 @@ const ZOOM_STEP = 1.25;
 const FRONT = 0;
 const BACK = 180;
 
-const ALT =
-  "Maglia dell'RSA TEAM: blu notte con banda bianca e rosa, colletto rosa e SIAMO MATTI sulla schiena";
-
-export default function ShirtViewer() {
+export default function ShirtViewer({
+  labels,
+}: {
+  labels: {
+    alt: string;
+    dragHint: string;
+    viewsLabel: string;
+    front: string;
+    back: string;
+    rotate: string;
+    zoomOut: string;
+    zoomIn: string;
+  };
+}) {
   const wrap = useRef<HTMLDivElement>(null);
   const viewer = useRef<ModelViewerElement>(null);
   const reduce = useReducedMotion();
@@ -56,7 +66,7 @@ export default function ShirtViewer() {
     return () => io.disconnect();
   }, []);
 
-  // "Trascina per girarla" appears once the model is in AND the viewer is
+  // The drag hint appears once the model is in AND the viewer is
   // actually on screen (the model preloads well before that), and slips away
   // on its own a few seconds later — sooner if the shirt is dragged
   // (camera-change from the user) or a button is pressed.
@@ -129,7 +139,7 @@ export default function ShirtViewer() {
         <model-viewer
           ref={viewer}
           src={MODEL}
-          alt={ALT}
+          alt={labels.alt}
           loading="eager"
           camera-controls
           auto-rotate={spin}
@@ -166,7 +176,7 @@ export default function ShirtViewer() {
         >
           <div className="hint__nudge flex items-center gap-2 text-[11px] font-extrabold uppercase tracking-eyebrow text-muted">
             <FaHandPointer className="text-accent/80" aria-hidden="true" />
-            Trascina per girarla
+            {labels.dragHint}
           </div>
         </div>
       </div>
@@ -174,13 +184,13 @@ export default function ShirtViewer() {
       <div
         className="flex flex-wrap justify-center gap-2 border-t border-white/10 px-5 py-4"
         role="group"
-        aria-label="Viste della maglia"
+        aria-label={labels.viewsLabel}
       >
         <ViewButton disabled={!ready} onClick={() => look(FRONT)}>
-          Fronte
+          {labels.front}
         </ViewButton>
         <ViewButton disabled={!ready} onClick={() => look(BACK)}>
-          Retro
+          {labels.back}
         </ViewButton>
         <ViewButton
           disabled={!ready}
@@ -190,7 +200,7 @@ export default function ShirtViewer() {
             setSpinning((s) => !s);
           }}
         >
-          Ruota
+          {labels.rotate}
         </ViewButton>
         <span
           className="mx-1 hidden self-stretch border-l border-white/10 sm:block"
@@ -198,14 +208,14 @@ export default function ShirtViewer() {
         />
         <ViewButton
           disabled={!ready}
-          label="Riduci"
+          label={labels.zoomOut}
           onClick={() => zoom(ZOOM_STEP)}
         >
           <FaMinus aria-hidden="true" />
         </ViewButton>
         <ViewButton
           disabled={!ready}
-          label="Ingrandisci"
+          label={labels.zoomIn}
           onClick={() => zoom(1 / ZOOM_STEP)}
         >
           <FaPlus aria-hidden="true" />

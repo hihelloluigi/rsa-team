@@ -5,19 +5,20 @@ import SectionHeading from "@/components/SectionHeading";
 import Reveal from "@/components/Reveal";
 import { getInstagramPosts, type InstagramPost } from "@/lib/instagram";
 import { instagramHandle, matchDateShort } from "@/lib/format";
+import { getI18n } from "@/i18n/server";
 
 // Captions run to paragraphs of hashtags; the first line is the part that
-// describes the picture.
-function altText(post: InstagramPost): string {
+// describes the picture. Captions are the club's own words and stay as posted.
+function altText(post: InstagramPost, fallback: string): string {
   const firstLine = post.caption.split("\n")[0].trim();
-  if (!firstLine) return `Post Instagram del ${matchDateShort(post.timestamp)}`;
+  if (!firstLine) return fallback;
   return firstLine.length > 120 ? `${firstLine.slice(0, 119)}…` : firstLine;
 }
 
 const KIND_BADGES = {
   image: null,
-  video: { Icon: FaPlay, label: "Video" },
-  album: { Icon: FaRegClone, label: "Galleria" },
+  video: { Icon: FaPlay, label: "video" },
+  album: { Icon: FaRegClone, label: "album" },
 } as const;
 
 // Everything the home page has to say about Instagram: the latest posts and
@@ -26,6 +27,7 @@ const KIND_BADGES = {
 // — no token, an API failure, an empty profile — the section falls back to the
 // invitation alone, under a title that no longer promises pictures.
 export default async function InstagramFeed({ profileUrl }: { profileUrl: string }) {
+  const { t, lang } = await getI18n();
   const posts = await getInstagramPosts(6);
   const hasPosts = posts.length > 0;
 
@@ -33,8 +35,8 @@ export default async function InstagramFeed({ profileUrl }: { profileUrl: string
     <section className="border-b border-white/10">
       <div className="mx-auto max-w-6xl px-5 py-16">
         <SectionHeading
-          label="Dietro le quinte"
-          title={hasPosts ? "Prove fotografiche" : "Seguici su Instagram"}
+          label={t.instagram.label}
+          title={hasPosts ? t.instagram.titleWithPosts : t.instagram.titleWithoutPosts}
           anchor="instagram"
         />
         <Reveal>
@@ -55,7 +57,7 @@ export default async function InstagramFeed({ profileUrl }: { profileUrl: string
                           third of the viewport below that. */}
                       <Image
                         src={post.image}
-                        alt={altText(post)}
+                        alt={altText(post, t.instagram.postAlt(matchDateShort(post.timestamp, lang)))}
                         fill
                         sizes="(min-width: 1024px) 180px, 33vw"
                         className="object-cover transition duration-300 group-hover:scale-105"
@@ -63,7 +65,7 @@ export default async function InstagramFeed({ profileUrl }: { profileUrl: string
                       {badge && (
                         <span className="absolute right-2 top-2 text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
                           <badge.Icon size={14} aria-hidden="true" />
-                          <span className="sr-only">{badge.label}</span>
+                          <span className="sr-only">{t.instagram[badge.label]}</span>
                         </span>
                       )}
                     </a>
@@ -78,16 +80,13 @@ export default async function InstagramFeed({ profileUrl }: { profileUrl: string
               <FaInstagram className="shrink-0 text-accent" size={56} aria-hidden="true" />
               <div>
                 <h3 className="font-display italic uppercase text-2xl sm:text-3xl leading-tight">
-                  Non perderti un attimo della nostra «preparazione»
+                  {t.instagram.pitchTitle}
                 </h3>
-                <p className="mx-auto mt-3 max-w-xl text-muted sm:mx-0">
-                  Allenamenti (quando ci andiamo), terzi tempi (quelli mai saltati) e dietro le quinte
-                  che nessuno ci ha chiesto. C&apos;è più aperitivo che tattica: è l&apos;unico modo per vederci correre.
-                </p>
+                <p className="mx-auto mt-3 max-w-xl text-muted sm:mx-0">{t.instagram.pitchBody}</p>
               </div>
             </div>
             <ButtonLink href={profileUrl} external>
-              <FaInstagram size={18} aria-hidden="true" /> Seguici @{instagramHandle(profileUrl)}
+              <FaInstagram size={18} aria-hidden="true" /> {t.instagram.follow(instagramHandle(profileUrl))}
             </ButtonLink>
           </div>
         </Reveal>

@@ -5,6 +5,8 @@ import seasonsJson from "@/data/seasons.json";
 import clubJson from "@/data/club.json";
 import sponsorsJson from "@/data/sponsors.json";
 import venuesJson from "@/data/venues.json";
+import { LOCALES, DEFAULT_LOCALE } from "@/i18n/config";
+import { getDictionary } from "@/i18n/dictionaries";
 
 // Content is hand-edited (see README). These guard the invariants the Zod
 // schemas can't express, so a bad edit fails fast in CI rather than in prod.
@@ -154,6 +156,30 @@ describe("content data", () => {
       for (const opponent of new Set(season.matches.map((m) => m.opponent))) {
         expect(table.has(opponent), `${opponent} missing from ${season.id} standings`).toBe(true);
       }
+    }
+  });
+
+  // Content is written in Italian. The few values that are words rather than
+  // names are translated through the dictionaries, which fall back to the
+  // Italian when an entry is missing — so a new staff role or competition
+  // would quietly show up untranslated on the English pages. This is the
+  // reminder to add it to src/i18n.
+  it("every staff role and competition has a label in each language", () => {
+    const club = ClubSchema.parse(clubJson);
+    const seasons = SeasonsSchema.parse(seasonsJson);
+    const roles = new Set(club.staff.map((s) => s.role));
+    const competitions = new Set(seasons.flatMap((s) => s.matches.map((m) => m.competition)));
+    for (const lang of LOCALES) {
+      const { content } = getDictionary(lang);
+      for (const role of roles) expect(content.staffRoles, `${lang}: ${role}`).toHaveProperty([role]);
+      for (const c of competitions) expect(content.competitions, `${lang}: ${c}`).toHaveProperty([c]);
+    }
+  });
+
+  it("the club's prose is translated into every language but the default", () => {
+    const club = ClubSchema.parse(clubJson);
+    for (const lang of LOCALES.filter((l) => l !== DEFAULT_LOCALE)) {
+      expect(club.translations, lang).toHaveProperty([lang]);
     }
   });
 });

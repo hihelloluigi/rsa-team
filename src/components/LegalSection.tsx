@@ -1,4 +1,14 @@
 import type { ReactNode } from "react";
+import type { Club, Season } from "@/lib/types";
+
+// What a legal page hands its per-language body: the content it quotes, and
+// links already in the page's language.
+export type LegalContentProps = {
+  club: Club;
+  season?: Season;
+  contactHref: string;
+  privacyHref: string;
+};
 
 // One titled block of a legal page (/privacy, /terms). The prose styling —
 // paragraph rhythm, lists, links — is set here once for both pages.

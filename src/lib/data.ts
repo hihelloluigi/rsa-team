@@ -49,6 +49,12 @@ export function getClub(): Club {
   return club;
 }
 
+// The club's prose in a language, falling back to the Italian original. Takes a
+// plain string so this layer stays free of the i18n one.
+export function clubText(lang: string): { tagline: string; about: string } {
+  return club.translations?.[lang] ?? { tagline: club.tagline, about: club.about };
+}
+
 export function getSponsors(): Sponsor[] {
   return sponsors;
 }

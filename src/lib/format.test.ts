@@ -32,6 +32,11 @@ describe("matchDateLong", () => {
   it("uses Rome time, not the host timezone", () => {
     expect(matchDateLong("2025-10-03T23:30:00+00:00")).toBe("sabato 04 ottobre 2025");
   });
+
+  it("follows the page's language, still on Rome's clock", () => {
+    expect(matchDateLong("2025-10-03T23:30:00+00:00", "en")).toBe("Saturday, 04 October 2025");
+    expect(matchDateShort("2025-10-03T12:00:00+00:00", "en")).toBe("03 Oct 2025");
+  });
 });
 
 describe("instagramHandle", () => {
