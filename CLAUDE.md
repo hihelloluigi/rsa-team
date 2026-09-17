@@ -67,8 +67,9 @@ don't shorten it casually: Instagram's CDN URLs are signed and expire in about f
 (the page must never be cached that long), but every API read returns freshly signed URLs
 and each one is a new, billed `next/image` transformation. The optimiser is not optional —
 Instagram serves originals, and one tile was a 4.6 MB JPEG.
-Every failure, a missing token included, yields an empty list and the section is not
-rendered at all. The token dies 60 days after its last refresh, so `vercel.json` schedules
+Every failure, a missing token included, yields an empty list, and the section falls back
+to the follow invitation alone (it owns that too — there is no separate "follow us"
+section). The token dies 60 days after its last refresh, so `vercel.json` schedules
 a weekly cron to `/api/cron/instagram-token`, which fails closed without `CRON_SECRET`.
 With no token at build time `/` has no fetch and is fully static, so adding the token
 needs a redeploy to take effect.

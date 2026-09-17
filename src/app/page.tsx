@@ -10,8 +10,6 @@ import NextMatch from "@/components/NextMatch";
 import ShirtViewer from "@/components/ShirtViewer";
 import { getClub, getCurrentSeason, getPlayers, getSponsors } from "@/lib/data";
 import { splitMatches } from "@/lib/matches";
-import { instagramHandle } from "@/lib/format";
-import { FaInstagram } from "react-icons/fa";
 import Eyebrow from "@/components/Eyebrow";
 
 export default function Home() {
@@ -138,33 +136,6 @@ export default function Home() {
             <div className="grid gap-5 grid-cols-2 sm:grid-cols-3">
               {featured.map((p, i) => (<Reveal key={p.slug} delay={i * 0.08}><PlayerCard player={p} /></Reveal>))}
             </div>
-          </div>
-        </section>
-      )}
-
-      {club.instagram && (
-        <section className="border-t border-white/10">
-          <div className="mx-auto max-w-6xl px-5 py-16">
-            <SectionHeading label="Dietro le quinte" title="Seguici su Instagram" />
-            <Reveal>
-              <div className="flex flex-col items-center gap-8 border border-white/10 bg-surface px-6 py-12 text-center sm:flex-row sm:justify-between sm:gap-6 sm:text-left">
-                <div className="flex flex-col items-center gap-5 sm:flex-row">
-                  <FaInstagram className="shrink-0 text-accent" size={56} aria-hidden="true" />
-                  <div>
-                    <h3 className="font-display italic uppercase text-2xl sm:text-3xl leading-tight">
-                      Non perderti un attimo della nostra «preparazione»
-                    </h3>
-                    <p className="mx-auto mt-3 max-w-xl text-muted sm:mx-0">
-                      Allenamenti (quando ci andiamo), terzi tempi (quelli mai saltati) e dietro le quinte
-                      che nessuno ci ha chiesto. C&apos;è più aperitivo che tattica: è l&apos;unico modo per vederci correre.
-                    </p>
-                  </div>
-                </div>
-                <ButtonLink href={club.instagram} external>
-                  <FaInstagram size={18} aria-hidden="true" /> Seguici @{instagramHandle(club.instagram)}
-                </ButtonLink>
-              </div>
-            </Reveal>
           </div>
         </section>
       )}
