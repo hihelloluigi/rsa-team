@@ -3,7 +3,7 @@ import { fixturesCalendar } from "@/lib/calendar";
 import { siteUrl } from "@/lib/site";
 
 // A one-off export of a single season, offered alongside the whole-archive
-// subscription at /calendario.ics. This is a download rather than a feed: an
+// subscription at /calendar.ics. This is a download rather than a feed: an
 // import is additive and permanent, so unlike a narrowed subscription it can
 // never later remove the events it added.
 export const dynamic = "force-static";

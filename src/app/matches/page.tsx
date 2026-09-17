@@ -11,7 +11,7 @@ export const metadata = {
   // so the feed link has to be repeated here — this is the page it belongs on.
   alternates: {
     canonical: "/matches",
-    types: { "text/calendar": "/calendario.ics" },
+    types: { "text/calendar": "/calendar.ics" },
   },
 };
 

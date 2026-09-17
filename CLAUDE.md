@@ -50,15 +50,17 @@ if the model or the opening `camera-orbit` changes. Its JSX attributes are decla
 `src/types/model-viewer.d.ts`; the element's own `:host` style fixes `height: 150px`, so the
 `h-auto` in its class list is what lets the aspect ratio apply.
 
-**Calendar feed:** `app/calendario.ics/route.ts` is a `force-static` route handler that
+**Calendar feed:** `app/calendar.ics/route.ts` is a `force-static` route handler that
 serves **every** season as iCalendar, built by `lib/calendar.ts`. A subscription mirrors
 its feed — clients delete any event the feed stops listing — so never narrow this to the
 current season: that would erase past fixtures from subscribers' calendars. For the same
 reason event UIDs are namespaced to a constant, never the deploy URL, so a preview and
 production mint the same UID for a fixture instead of duplicating it.
-`matches/[seasonId]/calendario.ics` is the one-season variant, deliberately a **download**
+`matches/[seasonId]/calendar.ics` is the one-season variant, deliberately a **download**
 rather than a second subscription — an import is additive, so it cannot later remove what
-it added the way a narrowed feed would.
+it added the way a narrowed feed would. The feed was first published as `/calendario.ics`,
+which lives on in subscribers' calendar apps: `next.config.ts` rewrites (not redirects) it
+to the feed, so never remove that rewrite.
 
 **Instagram feed (`InstagramFeed`, `lib/instagram.ts`):** the one piece of the home page
 that is not repo content. It reads the club's latest posts from the Instagram API with

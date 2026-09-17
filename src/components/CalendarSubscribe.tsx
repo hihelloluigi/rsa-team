@@ -5,13 +5,13 @@ import Eyebrow from "@/components/Eyebrow";
 import { siteUrl } from "@/lib/site";
 
 // Offers the season's fixtures as a subscribable feed. Both buttons point at
-// the same /calendario.ics: Google takes it through its add-by-URL screen,
+// the same /calendar.ics: Google takes it through its add-by-URL screen,
 // while a webcal: link is what Apple Calendar and Outlook subscribe to directly.
 const LINK =
   "underline decoration-white/20 underline-offset-4 transition hover:text-accent hover:decoration-accent";
 
 export default function CalendarSubscribe({ season }: { season: { id: string; label: string } }) {
-  const ics = `${siteUrl()}/calendario.ics`;
+  const ics = `${siteUrl()}/calendar.ics`;
   const webcal = ics.replace(/^https?:/, "webcal:");
   const google = `https://calendar.google.com/calendar/render?cid=${encodeURIComponent(webcal)}`;
 
@@ -36,11 +36,11 @@ export default function CalendarSubscribe({ season }: { season: { id: string; la
       </div>
       <p className="mt-5 text-xs text-muted">
         Preferisci un file? Scarica{" "}
-        <a href="/calendario.ics" className={LINK}>
+        <a href="/calendar.ics" className={LINK}>
           tutte le stagioni
         </a>{" "}
         o{" "}
-        <a href={`/matches/${season.id}/calendario.ics`} className={LINK}>
+        <a href={`/matches/${season.id}/calendar.ics`} className={LINK}>
           solo la {season.label}
         </a>
         . Google ricontrolla i calendari esterni ogni tanto, non all&apos;istante.

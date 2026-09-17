@@ -22,7 +22,22 @@ const nextConfig: NextConfig = {
         destination: "/matches/:seasonId",
         permanent: true,
       },
+      // The one-season calendar is a download reached from a link on the site,
+      // so a redirect is enough for any copy of the old Italian URL.
+      {
+        source: "/matches/:seasonId/calendario.ics",
+        destination: "/matches/:seasonId/calendar.ics",
+        permanent: true,
+      },
     ];
+  },
+  // The calendar feed was first published as /calendario.ics, and that URL is
+  // stored inside subscribers' calendar apps, where nobody will ever update it.
+  // A rewrite, not a redirect: the old address keeps answering with the feed
+  // itself, so nothing depends on how a given calendar client treats a 301 — a
+  // client that drops the subscription would take every fixture with it.
+  async rewrites() {
+    return [{ source: "/calendario.ics", destination: "/calendar.ics" }];
   },
   allowedDevOrigins: process.env.ALLOWED_DEV_ORIGINS
   ? process.env.ALLOWED_DEV_ORIGINS.split(",")

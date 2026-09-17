@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: { params: Params }) {
       // The current season is also served at /matches, which is where it is
       // linked from; point there so the two URLs are not read as duplicates.
       canonical: season.current ? "/matches" : `/matches/${season.id}`,
-      types: { "text/calendar": `/matches/${season.id}/calendario.ics` },
+      types: { "text/calendar": `/matches/${season.id}/calendar.ics` },
     },
   };
 }

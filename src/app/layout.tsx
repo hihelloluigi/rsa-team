@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "/",
     // Lets tools discover the fixture feed without going through the button.
-    types: { "text/calendar": "/calendario.ics" },
+    types: { "text/calendar": "/calendar.ics" },
   },
   // No title/description here on purpose: Next derives og:/twitter: title and
   // description from each page's own title/description. The opengraph-image

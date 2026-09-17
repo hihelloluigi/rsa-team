@@ -31,7 +31,7 @@ export default function Home() {
       {club.instagram && <InstagramFeed profileUrl={club.instagram} />}
 
       <section className="mx-auto max-w-6xl px-5 py-16">
-        <SectionHeading label="La situazione" title="Come stiamo messi" anchor="situazione" />
+        <SectionHeading label="La situazione" title="Come stiamo messi" anchor="situation" />
         <Reveal>
           {season.matches.length === 0 ? (
             /* A season whose fixtures haven't been drawn yet. */
@@ -88,7 +88,7 @@ export default function Home() {
 
       <section className="border-t border-white/10">
         <div className="mx-auto max-w-6xl px-5 py-16">
-          <SectionHeading label="La maglia" title="Vestiti da squadra vera" anchor="maglia" />
+          <SectionHeading label="La maglia" title="Vestiti da squadra vera" anchor="shirt" />
           <Reveal>
             <div className="border border-white/10 bg-surface">
               <ShirtViewer />
