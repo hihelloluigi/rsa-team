@@ -41,8 +41,10 @@ export default async function InstagramFeed({ profileUrl }: { profileUrl: string
         />
         <Reveal>
           {hasPosts && (
-            /* Three across, like the profile grid this is a window onto. */
-            <ul className="mb-1 grid grid-cols-3 gap-1 sm:mb-2 sm:gap-2 lg:grid-cols-6">
+            /* Two across on a phone: at three the tiles were thumbnails, smaller
+               than the follow card beneath them, and the pictures are the
+               point of the section. Three from sm, one row of six from lg. */
+            <ul className="mb-1 grid grid-cols-2 gap-1 sm:mb-2 sm:grid-cols-3 sm:gap-2 lg:grid-cols-6">
               {posts.map((post) => {
                 const badge = KIND_BADGES[post.kind];
                 return (
@@ -54,12 +56,12 @@ export default async function InstagramFeed({ profileUrl }: { profileUrl: string
                       className="group relative block aspect-square overflow-hidden border border-white/10 bg-surface transition hover:border-accent"
                     >
                       {/* Six across from lg up inside the max-w-6xl column, a
-                          third of the viewport below that. */}
+                          third of the viewport from sm, half below that. */}
                       <Image
                         src={post.image}
                         alt={altText(post, t.instagram.postAlt(matchDateShort(post.timestamp, lang)))}
                         fill
-                        sizes="(min-width: 1024px) 180px, 33vw"
+                        sizes="(min-width: 1024px) 180px, (min-width: 640px) 33vw, 50vw"
                         className="object-cover transition duration-300 group-hover:scale-105"
                       />
                       {badge && (
@@ -75,14 +77,17 @@ export default async function InstagramFeed({ profileUrl }: { profileUrl: string
             </ul>
           )}
           {/* Sits a grid gap below the tiles so the two read as one block. */}
-          <div className="flex flex-col items-center gap-8 border border-white/10 bg-surface px-6 py-10 text-center sm:flex-row sm:justify-between sm:gap-6 sm:text-left">
+          {/* Kept short on a phone — smaller type, tighter padding, no big icon
+              (the button carries one) — so it reads as the caption to the
+              pictures rather than outweighing them. */}
+          <div className="flex flex-col items-center gap-5 border border-white/10 bg-surface px-5 py-6 text-center sm:flex-row sm:justify-between sm:gap-6 sm:px-6 sm:py-10 sm:text-left">
             <div className="flex flex-col items-center gap-5 sm:flex-row">
-              <FaInstagram className="shrink-0 text-accent" size={56} aria-hidden="true" />
+              <FaInstagram className="hidden shrink-0 text-accent sm:block" size={56} aria-hidden="true" />
               <div>
-                <h3 className="font-display italic uppercase text-2xl sm:text-3xl leading-tight">
+                <h3 className="font-display italic uppercase text-xl sm:text-3xl leading-tight">
                   {t.instagram.pitchTitle}
                 </h3>
-                <p className="mx-auto mt-3 max-w-xl text-muted sm:mx-0">{t.instagram.pitchBody}</p>
+                <p className="mx-auto mt-2 max-w-xl text-sm text-muted sm:mx-0 sm:mt-3 sm:text-base">{t.instagram.pitchBody}</p>
               </div>
             </div>
             <ButtonLink href={profileUrl} external>
