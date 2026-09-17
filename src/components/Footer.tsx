@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { FaInstagram } from "react-icons/fa";
 import { getClub } from "@/lib/data";
 import { instagramHandle } from "@/lib/format";
@@ -11,9 +12,14 @@ export default function Footer() {
           <span className="font-black italic text-fg text-lg">RSA <span className="text-accent">TEAM</span></span>
           <span className="font-display italic uppercase text-white/50 tracking-widest text-xs">SIAMO MATTI</span>
         </div>
-        <span className="text-xs">
-          © {new Date().getFullYear()} {club.name} · Tutti i diritti riservati
-        </span>
+        <div className="flex flex-col items-center gap-2 text-xs">
+          <span>© {new Date().getFullYear()} {club.name} · Tutti i diritti riservati</span>
+          <nav aria-label="Note legali e contatti" className="flex gap-4">
+            <Link href="/contact" className="transition hover:text-accent">Contatti</Link>
+            <Link href="/privacy" className="transition hover:text-accent">Privacy</Link>
+            <Link href="/terms" className="transition hover:text-accent">Note legali</Link>
+          </nav>
+        </div>
         {club.instagram && (
           <a
             href={club.instagram}

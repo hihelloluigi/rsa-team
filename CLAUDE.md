@@ -40,7 +40,7 @@ A content-driven, statically-generated site (Italian-language) for an amateur fo
 - `format.ts` — the display layer: date formatting, `initials`, `instagramHandle`, and `positionLabels` (GK/DEF/MID/FWD → Italian POR/DIF/CEN/ATT — data keeps the English codes).
 - `site.ts` — resolves the canonical origin for `metadataBase`/sitemap/robots (`NEXT_PUBLIC_SITE_URL` → Vercel production URL → localhost).
 
-**Routes (`src/app/`, App Router):** `/`, `/squad` + `/squad/[slug]`, `/matches` + `/matches/[seasonId]/[matchId]`, `/club`, `/contact`, `/sponsor`. Player and match detail pages are SSG via `generateStaticParams`; `/matches` is dynamic (reads `?season=` from `searchParams`). Components are **server components by default** — only `ContactForm`, `Navbar`, `Reveal`, `SeasonSelect`, `ShareButton`, `ShirtViewer`, and `WinCelebration` are `"use client"`.
+**Routes (`src/app/`, App Router):** `/`, `/squad` + `/squad/[slug]`, `/matches` + `/matches/[seasonId]/[matchId]`, `/club`, `/contact`, `/sponsor`, `/privacy`, `/terms`. Player and match detail pages are SSG via `generateStaticParams`; `/matches` is dynamic (reads `?season=` from `searchParams`). Components are **server components by default** — only `ContactForm`, `CookieNotice`, `Navbar`, `Reveal`, `SeasonSelect`, `ShareButton`, `ShirtViewer`, and `WinCelebration` are `"use client"`.
 
 **3D shirt (`ShirtViewer`):** a `<model-viewer>` web component over `public/shirt/rsa-team-shirt.glb`
 (3 MB). The viewer bundles three.js, so the component imports it only once the section scrolls
@@ -89,6 +89,17 @@ delivers to the Resend account's own address; set `CONTACT_FROM` once a domain i
 Spam is held off by a honeypot field only. The home page's pitch is `SponsorInvite`: the
 whole sponsor section while `sponsors.json` is empty, a quieter strip under the logos once
 it is not.
+
+**Legal pages and the cookie notice (`/privacy`, `/terms`, `CookieNotice`):** the privacy
+notice exists because the contact form collects names and emails (GDPR art. 13), and names
+`club.dataController` — a person, since the club is not a legal entity. `CookieNotice` is a
+notice, **not a consent banner**: the public site sets no cookie or storage that needs
+consent (cookieless analytics, self-hosted fonts, Instagram stills proxied through
+`next/image`), so there is nothing to accept. Its own dismissal flag in `localStorage` is the
+only thing stored, and `/privacy#cookie` says so. Anything that changes this — a third-party
+embed, an ad or analytics script that sets cookies, an iframe — needs a real consent banner
+and a rewrite of that section first, and any new processor (a service that sees visitors'
+data) has to be added to the list on `/privacy`.
 
 **Admin (`/admin`):** a signed-in editor for match results that commits to
 `seasons.json` through the GitHub Contents API — so an edit made from a phone lands

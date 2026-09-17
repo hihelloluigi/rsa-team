@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Anton } from "next/font/google";
+import CookieNotice from "@/components/CookieNotice";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
@@ -48,6 +49,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Navbar />
         <div className="flex-1">{children}</div>
         <Footer />
+        <CookieNotice />
         <Analytics />
         <SpeedInsights />
       </body>

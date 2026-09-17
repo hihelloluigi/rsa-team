@@ -89,6 +89,9 @@ export const ClubSchema = z.object({
   groundAddress: z.string().min(1).optional(),
   groundMapUrl: z.url().optional(),
   instagram: z.url().optional(),
+  // Who answers for personal data under the GDPR, named on /privacy. The club
+  // is not a legal entity, so this is a person rather than the club's name.
+  dataController: z.string().min(1),
   tagline: z.string().min(1),
   about: z.string().min(1),
   staff: z.array(z.object({ name: z.string().min(1), role: z.string().min(1) })),

@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useActionState } from "react";
 import { submitContactRequest, type ContactFormState } from "@/app/contact/actions";
 import { CONTACT_TOPICS, type ContactTopic } from "@/lib/contact";
@@ -103,6 +104,15 @@ export default function ContactForm({ defaultTopic = "altro" }: { defaultTopic?:
         <label htmlFor="contact-website">Sito web</label>
         <input id="contact-website" name="website" tabIndex={-1} autoComplete="off" />
       </div>
+
+      {/* Art. 13 GDPR: the notice has to be within reach where the data is given. */}
+      <p className="text-xs text-muted">
+        Usiamo questi dati solo per risponderti. I dettagli sono nell&apos;
+        <Link href="/privacy" className="text-fg underline decoration-accent underline-offset-4 hover:text-accent">
+          informativa privacy
+        </Link>
+        .
+      </p>
 
       <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center">
         <button
