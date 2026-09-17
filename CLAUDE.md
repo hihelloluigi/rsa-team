@@ -60,6 +60,19 @@ production mint the same UID for a fixture instead of duplicating it.
 rather than a second subscription — an import is additive, so it cannot later remove what
 it added the way a narrowed feed would.
 
+**Instagram feed (`InstagramFeed`, `lib/instagram.ts`):** the one piece of the home page
+that is not repo content. It reads the club's latest posts from the Instagram API with
+`INSTAGRAM_ACCESS_TOKEN` and revalidates every six hours. That interval is a balance, so
+don't shorten it casually: Instagram's CDN URLs are signed and expire in about four days
+(the page must never be cached that long), but every API read returns freshly signed URLs
+and each one is a new, billed `next/image` transformation. The optimiser is not optional —
+Instagram serves originals, and one tile was a 4.6 MB JPEG.
+Every failure, a missing token included, yields an empty list and the section is not
+rendered at all. The token dies 60 days after its last refresh, so `vercel.json` schedules
+a weekly cron to `/api/cron/instagram-token`, which fails closed without `CRON_SECRET`.
+With no token at build time `/` has no fetch and is fully static, so adding the token
+needs a redeploy to take effect.
+
 **Admin (`/admin`):** a signed-in editor for match results that commits to
 `seasons.json` through the GitHub Contents API — so an edit made from a phone lands
 in git history, runs CI, and redeploys exactly like a hand edit. Sign-in is GitHub
