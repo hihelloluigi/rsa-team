@@ -40,7 +40,7 @@ A content-driven, statically-generated site (Italian-language) for an amateur fo
 - `format.ts` — the display layer: date formatting, `initials`, `instagramHandle`, and `positionLabels` (GK/DEF/MID/FWD → Italian POR/DIF/CEN/ATT — data keeps the English codes).
 - `site.ts` — resolves the canonical origin for `metadataBase`/sitemap/robots (`NEXT_PUBLIC_SITE_URL` → Vercel production URL → localhost).
 
-**Routes (`src/app/`, App Router):** `/`, `/squad` + `/squad/[slug]`, `/matches` + `/matches/[seasonId]/[matchId]`, `/club`. Player and match detail pages are SSG via `generateStaticParams`; `/matches` is dynamic (reads `?season=` from `searchParams`). Components are **server components by default** — only `Navbar`, `Reveal`, `SeasonSelect`, `ShareButton`, `ShirtViewer`, and `WinCelebration` are `"use client"`.
+**Routes (`src/app/`, App Router):** `/`, `/squad` + `/squad/[slug]`, `/matches` + `/matches/[seasonId]/[matchId]`, `/club`, `/contact`, `/sponsor`. Player and match detail pages are SSG via `generateStaticParams`; `/matches` is dynamic (reads `?season=` from `searchParams`). Components are **server components by default** — only `ContactForm`, `Navbar`, `Reveal`, `SeasonSelect`, `ShareButton`, `ShirtViewer`, and `WinCelebration` are `"use client"`.
 
 **3D shirt (`ShirtViewer`):** a `<model-viewer>` web component over `public/shirt/rsa-team-shirt.glb`
 (3 MB). The viewer bundles three.js, so the component imports it only once the section scrolls
@@ -74,15 +74,19 @@ a weekly cron to `/api/cron/instagram-token`, which fails closed without `CRON_S
 With no token at build time `/` has no fetch and is fully static, so adding the token
 needs a redeploy to take effect.
 
-**Sponsor requests (`/sponsor`, `lib/sponsor-request.ts`):** a contact form whose server
-action emails the club through Resend's REST API (plain `fetch`, no SDK), plus a button
-that opens an Instagram DM. The form needs `RESEND_API_KEY` and `SPONSOR_INBOX` (one
-address or several, comma-separated); the page is prerendered, so without them it ships
-with the DM button alone, and setting them needs a redeploy. The default sender is Resend's shared `onboarding@resend.dev`, which only
-delivers to the Resend account's own address — fine while `SPONSOR_INBOX` is that address;
-set `SPONSOR_FROM` once a domain is verified. Spam is held off by a honeypot field only.
-The home page's pitch is `SponsorInvite`: the whole sponsor section while `sponsors.json`
-is empty, a quieter strip under the logos once it is not.
+**Contact form (`/contact`, `/sponsor`, `lib/contact.ts`):** one form, two doors.
+`/contact` is the general page; `/sponsor` is the sponsors' way in — the home page's pitch
+above the same form, opened on the sponsor topic. Both render `ContactOptions`: the form,
+plus a button that opens an Instagram DM. The topic (`CONTACT_TOPICS`) leads the email's
+subject, so the inbox can be triaged at a glance. The server action emails the club through
+Resend's REST API (plain `fetch`, no SDK) with the writer as `reply_to`. The form needs
+`RESEND_API_KEY` and `CONTACT_INBOX` (one address or several, comma-separated); the pages
+are prerendered, so without them they ship with the DM button alone, and setting them
+needs a redeploy. The default sender is Resend's shared `onboarding@resend.dev`, which only
+delivers to the Resend account's own address; set `CONTACT_FROM` once a domain is verified.
+Spam is held off by a honeypot field only. The home page's pitch is `SponsorInvite`: the
+whole sponsor section while `sponsors.json` is empty, a quieter strip under the logos once
+it is not.
 
 **Admin (`/admin`):** a signed-in editor for match results that commits to
 `seasons.json` through the GitHub Contents API — so an edit made from a phone lands

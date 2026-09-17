@@ -9,6 +9,7 @@ const links = [
   { href: "/squad", label: "Squadra" },
   { href: "/matches", label: "Partite" },
   { href: "/club", label: "Il Club" },
+  { href: "/contact", label: "Contatti" },
 ];
 
 export default function Navbar() {

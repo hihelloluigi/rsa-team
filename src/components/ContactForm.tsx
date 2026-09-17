@@ -1,16 +1,19 @@
 "use client";
 
 import { useActionState } from "react";
-import { submitSponsorRequest, type SponsorFormState } from "@/app/sponsor/actions";
+import { submitContactRequest, type ContactFormState } from "@/app/contact/actions";
+import { CONTACT_TOPICS, type ContactTopic } from "@/lib/contact";
 
-const INITIAL: SponsorFormState = { status: "idle", message: "" };
+const INITIAL: ContactFormState = { status: "idle", message: "" };
 
 const LABEL = "block text-xs font-extrabold uppercase tracking-eyebrow text-muted";
 const FIELD =
   "mt-2 w-full border border-white/20 bg-bg px-4 py-3 text-base outline-none transition focus:border-accent";
 
-export default function SponsorForm() {
-  const [state, formAction, pending] = useActionState(submitSponsorRequest, INITIAL);
+// `defaultTopic` is how a page says why its visitor is probably here: /sponsor
+// opens the form already set to "Diventare sponsor".
+export default function ContactForm({ defaultTopic = "altro" }: { defaultTopic?: ContactTopic }) {
+  const [state, formAction, pending] = useActionState(submitContactRequest, INITIAL);
 
   if (state.status === "sent") {
     return (
@@ -25,11 +28,27 @@ export default function SponsorForm() {
 
   return (
     <form action={formAction} className="space-y-5 border border-white/10 bg-surface p-5 sm:p-8">
+      <div>
+        <label htmlFor="contact-topic" className={LABEL}>Perché ci scrivi</label>
+        <select
+          id="contact-topic"
+          name="topic"
+          // Keyed so an error's handed-back value is applied: a select ignores
+          // a defaultValue that changes after it has mounted.
+          key={state.values?.topic ?? defaultTopic}
+          defaultValue={state.values?.topic ?? defaultTopic}
+          className={FIELD}
+        >
+          {Object.entries(CONTACT_TOPICS).map(([value, label]) => (
+            <option key={value} value={value}>{label}</option>
+          ))}
+        </select>
+      </div>
       <div className="grid gap-5 sm:grid-cols-2">
         <div>
-          <label htmlFor="sponsor-name" className={LABEL}>Come ti chiami</label>
+          <label htmlFor="contact-name" className={LABEL}>Come ti chiami</label>
           <input
-            id="sponsor-name"
+            id="contact-name"
             name="name"
             required
             maxLength={80}
@@ -39,23 +58,23 @@ export default function SponsorForm() {
           />
         </div>
         <div>
-          <label htmlFor="sponsor-company" className={LABEL}>
-            Azienda <span className="font-normal normal-case tracking-normal">(se c&apos;è)</span>
+          <label htmlFor="contact-company" className={LABEL}>
+            Azienda o squadra <span className="font-normal normal-case tracking-normal">(se c&apos;è)</span>
           </label>
           <input
-            id="sponsor-company"
-            name="company"
+            id="contact-company"
+            name="organization"
             maxLength={120}
             autoComplete="organization"
-            defaultValue={state.values?.company}
+            defaultValue={state.values?.organization}
             className={FIELD}
           />
         </div>
       </div>
       <div>
-        <label htmlFor="sponsor-email" className={LABEL}>La tua email</label>
+        <label htmlFor="contact-email" className={LABEL}>La tua email</label>
         <input
-          id="sponsor-email"
+          id="contact-email"
           name="email"
           type="email"
           required
@@ -66,9 +85,9 @@ export default function SponsorForm() {
         />
       </div>
       <div>
-        <label htmlFor="sponsor-message" className={LABEL}>Cosa avevi in mente</label>
+        <label htmlFor="contact-message" className={LABEL}>Cosa avevi in mente</label>
         <textarea
-          id="sponsor-message"
+          id="contact-message"
           name="message"
           required
           minLength={10}
@@ -81,8 +100,8 @@ export default function SponsorForm() {
 
       {/* The honeypot: off-screen rather than display:none, which bots skip. */}
       <div aria-hidden="true" className="absolute -left-[9999px] h-0 w-0 overflow-hidden">
-        <label htmlFor="sponsor-website">Sito web</label>
-        <input id="sponsor-website" name="website" tabIndex={-1} autoComplete="off" />
+        <label htmlFor="contact-website">Sito web</label>
+        <input id="contact-website" name="website" tabIndex={-1} autoComplete="off" />
       </div>
 
       <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center">

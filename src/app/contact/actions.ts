@@ -1,20 +1,19 @@
 "use server";
 
-import { getClub } from "@/lib/data";
-import { SponsorRequestSchema, sendSponsorRequest } from "@/lib/sponsor-request";
+import { ContactRequestSchema, sendContactRequest } from "@/lib/contact";
 
-export type SponsorFormState = {
+export type ContactFormState = {
   status: "idle" | "sent" | "error";
   message: string;
   // What was typed, handed back on an error: React resets a form once its
-  // action settles, and nobody retypes a pitch because of a typo in an email.
+  // action settles, and nobody retypes a message because of a typo in an email.
   values?: Record<string, string>;
 };
 
-export async function submitSponsorRequest(
-  _previous: SponsorFormState,
+export async function submitContactRequest(
+  _previous: ContactFormState,
   formData: FormData,
-): Promise<SponsorFormState> {
+): Promise<ContactFormState> {
   const field = (name: string) => String(formData.get(name) ?? "");
 
   // A field no person sees or fills. A bot that completes every input gives
@@ -22,19 +21,20 @@ export async function submitSponsorRequest(
   if (field("website")) return { status: "sent", message: "" };
 
   const values = {
+    topic: field("topic"),
     name: field("name"),
-    company: field("company"),
+    organization: field("organization"),
     email: field("email"),
     message: field("message"),
   };
 
-  const parsed = SponsorRequestSchema.safeParse(values);
+  const parsed = ContactRequestSchema.safeParse(values);
   if (!parsed.success) {
     return { status: "error", message: parsed.error.issues[0].message, values };
   }
 
   try {
-    await sendSponsorRequest(parsed.data, getClub().name);
+    await sendContactRequest(parsed.data);
     return { status: "sent", message: "" };
   } catch (error) {
     console.error(error);
