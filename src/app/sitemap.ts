@@ -24,7 +24,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     .map((m) => new Date(m.date))
     .sort((a, b) => b.getTime() - a.getTime())[0];
 
-  const staticRoutes = ["/", "/squad", "/matches", "/club"].map((path) => ({
+  const staticRoutes = ["/", "/squad", "/matches", "/club", "/sponsor"].map((path) => ({
     url: `${base}${path}`,
     changeFrequency: "weekly" as const,
     priority: path === "/" ? 1 : 0.8,

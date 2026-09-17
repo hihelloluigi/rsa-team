@@ -8,6 +8,7 @@ import EmptyState from "@/components/EmptyState";
 import MatchRow from "@/components/MatchRow";
 import NextMatch from "@/components/NextMatch";
 import ShirtViewer from "@/components/ShirtViewer";
+import SponsorInvite from "@/components/SponsorInvite";
 import { getClub, getCurrentSeason, getPlayers, getSponsors } from "@/lib/data";
 import { splitMatches } from "@/lib/matches";
 import Eyebrow from "@/components/Eyebrow";
@@ -99,7 +100,7 @@ export default function Home() {
       <section className="border-t border-white/10">
         <div className="mx-auto max-w-6xl px-5 py-16">
           <SectionHeading label="Chi ci sostiene" title="Sponsor" />
-          {sponsors.length > 0 ? (
+          {sponsors.length > 0 && (
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               {sponsors.map((s, i) => {
                 const inner = s.logo ? (
@@ -116,16 +117,10 @@ export default function Home() {
                 );
               })}
             </div>
-          ) : (
-            <Reveal>
-              <div className="border border-dashed border-white/20 bg-surface px-6 py-14 text-center">
-                <p className="font-display italic uppercase text-2xl sm:text-3xl">Questo spazio può essere tuo</p>
-                <p className="mx-auto mt-3 max-w-md text-muted">
-                  Vuoi sostenere l&apos;RSA TEAM? Diventa nostro sponsor: il tuo logo qui, sotto gli occhi di tutti (anche di chi non corre).
-                </p>
-              </div>
-            </Reveal>
           )}
+          <Reveal>
+            <SponsorInvite clubName={club.name} compact={sponsors.length > 0} />
+          </Reveal>
         </div>
       </section>
 

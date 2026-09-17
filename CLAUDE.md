@@ -74,6 +74,16 @@ a weekly cron to `/api/cron/instagram-token`, which fails closed without `CRON_S
 With no token at build time `/` has no fetch and is fully static, so adding the token
 needs a redeploy to take effect.
 
+**Sponsor requests (`/sponsor`, `lib/sponsor-request.ts`):** a contact form whose server
+action emails the club through Resend's REST API (plain `fetch`, no SDK), plus a button
+that opens an Instagram DM. The form needs `RESEND_API_KEY` and `SPONSOR_INBOX` (one
+address or several, comma-separated); the page is prerendered, so without them it ships
+with the DM button alone, and setting them needs a redeploy. The default sender is Resend's shared `onboarding@resend.dev`, which only
+delivers to the Resend account's own address — fine while `SPONSOR_INBOX` is that address;
+set `SPONSOR_FROM` once a domain is verified. Spam is held off by a honeypot field only.
+The home page's pitch is `SponsorInvite`: the whole sponsor section while `sponsors.json`
+is empty, a quieter strip under the logos once it is not.
+
 **Admin (`/admin`):** a signed-in editor for match results that commits to
 `seasons.json` through the GitHub Contents API — so an edit made from a phone lands
 in git history, runs CI, and redeploys exactly like a hand edit. Sign-in is GitHub
