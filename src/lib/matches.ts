@@ -67,3 +67,41 @@ export function withRests(matches: Match[], rests: Rest[]): Fixture[] {
   for (const rest of pending) out.push({ kind: "rest", round: rest.round });
   return out;
 }
+
+// A season's fixtures as one list, the way the league prints them: giornata by
+// giornata, played and upcoming together, byes in their place, split into the
+// competition's halves. Ordered by round so a recovered match stays in its
+// giornata; a season entered without rounds falls back to the date.
+export function seasonCalendar(
+  matches: Match[],
+  rests: Rest[],
+): { competition: string; fixtures: Fixture[] }[] {
+  const byRound = matches.every((m) => m.round !== undefined);
+  const ordered = [...matches].sort((a, b) =>
+    byRound ? a.round! - b.round! : new Date(a.date).getTime() - new Date(b.date).getTime(),
+  );
+  const fixtures = withRests(ordered, rests);
+  const lastRound = Math.max(0, ...fixtures.map((f) => (f.kind === "match" ? f.match.round ?? 0 : f.round)));
+
+  // A bye has no competition of its own. Between two matches of the same half
+  // it takes theirs; on the seam between halves, the round decides — a double
+  // round-robin gives each half the same number of giornate.
+  const competitionOf = (i: number): string => {
+    const f = fixtures[i];
+    if (f.kind === "match") return f.match.competition;
+    const before = fixtures.slice(0, i).findLast((x) => x.kind === "match");
+    const after = fixtures.slice(i + 1).find((x) => x.kind === "match");
+    if (!before || !after) return (before ?? after)?.match.competition ?? "";
+    if (before.match.competition === after.match.competition) return before.match.competition;
+    return f.round <= lastRound / 2 ? before.match.competition : after.match.competition;
+  };
+
+  const groups: { competition: string; fixtures: Fixture[] }[] = [];
+  fixtures.forEach((f, i) => {
+    const competition = competitionOf(i);
+    const last = groups.at(-1);
+    if (last?.competition === competition) last.fixtures.push(f);
+    else groups.push({ competition, fixtures: [f] });
+  });
+  return groups;
+}

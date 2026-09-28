@@ -7,7 +7,7 @@ import SeasonSelect from "@/components/SeasonSelect";
 import EmptyState from "@/components/EmptyState";
 import CalendarSubscribe from "@/components/CalendarSubscribe";
 import type { Season } from "@/lib/types";
-import { splitMatches, sortStandings, withRests } from "@/lib/matches";
+import { seasonCalendar, splitMatches, sortStandings } from "@/lib/matches";
 import { GiWhistle, GiTrophyCup } from "react-icons/gi";
 import { getClub } from "@/lib/data";
 import { getI18n } from "@/i18n/server";
@@ -19,7 +19,7 @@ export function seasonPath(season: Season): string {
   return season.current ? "/matches" : `/matches/${season.id}`;
 }
 
-// One season's calendar, results, table and calendar feed. Rendered by both
+// One season's fixtures and results, table and calendar feed. Rendered by both
 // /matches and /matches/[seasonId], which differ only in which season they pick.
 export default async function SeasonFixtures({
   season,
@@ -29,10 +29,10 @@ export default async function SeasonFixtures({
   seasons: Season[];
 }) {
   const { t, href } = await getI18n();
-  const { played, upcoming } = splitMatches(season.matches);
-  // Byes are woven into the calendar only. Once a giornata is behind us the
-  // results list is about scores, and a turno di riposo has none.
-  const calendar = withRests(upcoming, season.rests);
+  // One list, results and fixtures together; the next game is marked in place.
+  // splitMatches gives upcoming soonest-first, the same pick as the home page.
+  const calendar = seasonCalendar(season.matches, season.rests);
+  const [next] = splitMatches(season.matches).upcoming;
   const standings = sortStandings(season.standings);
 
   return (
@@ -81,40 +81,33 @@ export default async function SeasonFixtures({
         </Reveal>
       ) : (
         <div className="space-y-14">
-          {calendar.length > 0 && (
-            <section>
-              <SectionHeading label={t.matches.calendarLabel} title={t.matches.calendarTitle} icon={<GiWhistle size={32} />} />
-              <div>
-                {calendar.map((f) =>
-                  f.kind === "rest" ? (
-                    <RestRow key={`rest-${f.round}`} round={f.round} />
-                  ) : (
-                    <MatchRow
-                      key={f.match.id}
-                      match={f.match}
-                      href={href(`/matches/${season.id}/${f.match.id}`)}
-                    />
-                  ),
-                )}
-              </div>
-            </section>
-          )}
-
-          {/* A season that has only been drawn has no results yet — showing the
-              heading over an empty list would read as a bug. */}
-          {played.length > 0 && (
-            <section>
-              <p className="mb-8 border-l-2 border-accent pl-4 text-base sm:text-lg italic text-muted">
-                {t.matches.playedQuote}
-              </p>
-              <SectionHeading label={t.matches.resultsLabel} title={t.matches.resultsTitle} />
-              <div>
-                {played.map((m) => (
-                  <MatchRow key={m.id} match={m} href={href(`/matches/${season.id}/${m.id}`)} />
-                ))}
-              </div>
-            </section>
-          )}
+          <section>
+            <SectionHeading label={t.matches.calendarLabel} title={t.matches.calendarTitle} icon={<GiWhistle size={32} />} />
+            <div className="space-y-10">
+              {calendar.map((group) => (
+                <div key={group.competition}>
+                  {/* Only worth a heading when the season has halves to tell apart. */}
+                  {calendar.length > 1 && (
+                    <h3 className="mb-2 text-sm font-extrabold uppercase tracking-subhead text-muted">
+                      {t.content.competitions[group.competition] ?? group.competition}
+                    </h3>
+                  )}
+                  {group.fixtures.map((f) =>
+                    f.kind === "rest" ? (
+                      <RestRow key={`rest-${f.round}`} round={f.round} />
+                    ) : (
+                      <MatchRow
+                        key={f.match.id}
+                        match={f.match}
+                        href={href(`/matches/${season.id}/${f.match.id}`)}
+                        next={f.match.id === next?.id}
+                      />
+                    ),
+                  )}
+                </div>
+              ))}
+            </div>
+          </section>
 
           {standings.length > 0 && (
             <section>

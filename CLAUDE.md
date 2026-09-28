@@ -46,7 +46,7 @@ A content-driven, statically-generated site for an amateur football club, in Ita
 **`src/lib/` is the data layer — go through it, never import JSON directly into components:**
 - `types.ts` — Zod schemas are the single source of truth for content shape; all TS types are `z.infer` of them.
 - `data.ts` — content access only: validates every JSON file **once at module load** (`Schema.parse(...)` throws at build time on bad data) and exposes the typed accessors.
-- `matches.ts` — the pure helpers that compute over a season (`matchResult`, `matchSides`, `splitMatches`, `sortStandings`, `withRests`). Depends on `data.ts`, never the reverse.
+- `matches.ts` — the pure helpers that compute over a season (`matchResult`, `matchSides`, `splitMatches`, `sortStandings`, `withRests`, `seasonCalendar`). Depends on `data.ts`, never the reverse.
 - `format.ts` — the display layer: date formatting (takes the language), `initials`, `instagramHandle`, `countryName`. Labels such as POR/DIF or V/N/P are not here: they are words, so they live in the dictionaries (data keeps the English codes).
 - `site.ts` — resolves the canonical origin for `metadataBase`/sitemap/robots (`NEXT_PUBLIC_SITE_URL` → Vercel production URL → localhost).
 
@@ -175,8 +175,8 @@ routes and are disallowed in `robots.ts`.
 - **A bye is not a match.** A giornata the team sits out lives in the season's
   `rests` array, not in `matches` — a `Match` always has an opponent, and
   weakening that would ripple through `matchResult`/`matchSides`. Rests carry
-  only a `round`; `withRests` weaves them into the calendar by giornata, and they
-  show in the upcoming list only.
+  only a `round`; `withRests` weaves them in by giornata, and `seasonCalendar` builds
+  the season page's single list from that, split into Andata and Ritorno.
 - **Within a season, `standings` is maintained independently of `matches`** — editing a fixture score does NOT recompute the league table. Update both.
   `npm run import:standings` pulls the table from the league instead of retyping it;
   it reads an undocumented endpoint the site's own pages call (`op=20&tid=&round=`),

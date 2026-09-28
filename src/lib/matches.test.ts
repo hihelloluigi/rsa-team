@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { matchResult, matchSides, splitMatches, sortStandings, withRests } from "./matches";
+import { matchResult, matchSides, seasonCalendar, splitMatches, sortStandings, withRests } from "./matches";
 import type { Match, StandingRow } from "./types";
 
 // Builders keep each test focused on the field under test.
@@ -130,5 +130,57 @@ describe("withRests", () => {
   });
   it("is a plain passthrough when a season has no byes", () => {
     expect(kinds(withRests([m(1), m(2)], []))).toEqual([1, 2]);
+  });
+});
+
+describe("seasonCalendar", () => {
+  const m = (round: number, competition: string, date: string) =>
+    match({ id: `m${round}`, round, competition, date: `${date}T12:00:00+00:00` });
+  const shape = (groups: ReturnType<typeof seasonCalendar>) =>
+    groups.map((g) => [
+      g.competition,
+      g.fixtures.map((f) => (f.kind === "match" ? f.match.id : `rest${f.round}`)),
+    ]);
+
+  it("lists played and upcoming together, in giornata order, grouped by competition", () => {
+    const groups = seasonCalendar(
+      [m(13, "Ritorno", "2027-02-12"), m(1, "Andata", "2026-09-25"), m(12, "Ritorno", "2027-02-05")],
+      [],
+    );
+    expect(shape(groups)).toEqual([
+      ["Andata", ["m1"]],
+      ["Ritorno", ["m12", "m13"]],
+    ]);
+  });
+  it("keeps a recovered match in its giornata, not on the day it was replayed", () => {
+    const groups = seasonCalendar([m(2, "Andata", "2026-12-20"), m(3, "Andata", "2026-10-05")], []);
+    expect(shape(groups)).toEqual([["Andata", ["m2", "m3"]]]);
+  });
+  it("weaves byes into their half of the season", () => {
+    const groups = seasonCalendar(
+      [m(3, "Andata", "2026-10-05"), m(5, "Andata", "2026-10-19"), m(16, "Ritorno", "2027-03-01")],
+      [{ round: 15 }, { round: 4 }],
+    );
+    expect(shape(groups)).toEqual([
+      ["Andata", ["m3", "rest4", "m5"]],
+      ["Ritorno", ["rest15", "m16"]],
+    ]);
+  });
+  it("settles a bye between the halves by the round it falls in", () => {
+    // 22 giornate: a bye in 11 closes the andata, a bye in 12 opens the ritorno.
+    const around = (bye: number) =>
+      shape(seasonCalendar([m(10, "Andata", "2026-11-27"), m(13, "Ritorno", "2027-02-12"), m(22, "Ritorno", "2027-04-16")], [{ round: bye }]));
+    expect(around(11)[0]).toEqual(["Andata", ["m10", "rest11"]]);
+    expect(around(12)[1]).toEqual(["Ritorno", ["rest12", "m13", "m22"]]);
+  });
+  it("falls back to date order when the season was entered without rounds", () => {
+    const groups = seasonCalendar(
+      [
+        match({ id: "late", date: "2026-03-01T12:00:00+00:00" }),
+        match({ id: "early", date: "2025-10-01T12:00:00+00:00" }),
+      ],
+      [],
+    );
+    expect(shape(groups)).toEqual([["League", ["early", "late"]]]);
   });
 });
