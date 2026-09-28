@@ -3,10 +3,11 @@
 // src/data/seasons.json, so the classifica does not have to be retyped after
 // every giornata — eighty-four numbers that all move when other teams play.
 //
-//   npm run import:standings              # every season listed below
+//   npm run import:standings              # every season in bergamotornei.ts
 //   npm run import:standings 2026-2027    # just one
 //
-// Nothing is committed: review the diff, run the tests, then commit as usual.
+// The script itself commits nothing: the daily sync workflow tests, builds and
+// commits what it writes; run by hand, review the diff and commit as usual.
 // This reads an undocumented endpoint the site's own pages call, so it is
 // expected to break if they change it — it fails loudly rather than writing
 // half a table.
@@ -15,15 +16,9 @@ import { readFile, writeFile } from "node:fs/promises";
 // Shared with the admin so both write the file the same way.
 import { serializeSeasons } from "../src/lib/seasons-file.ts";
 import type { Season, StandingRow } from "../src/lib/types.ts";
+import { decode, leagueHtml, SOURCES, US, type Source } from "./bergamotornei.ts";
 
-const ENDPOINT = "https://www.bergamotornei.com/system/include/ajax/public/league.php";
 const DATA = new URL("../src/data/seasons.json", import.meta.url);
-
-// Where each season's table lives upstream. `round` is the girone id, taken
-// from the value of its option in the site's own season/girone dropdown.
-const SOURCES = {
-  "2026-2027": { tid: 154, round: 1226, label: "Serie D Girone D" },
-};
 
 // The response labels its own columns, so they are matched by title rather
 // than by position — a reordering upstream then fails to match instead of
@@ -38,31 +33,13 @@ const COLUMNS: Record<Stat, string> = {
   goalsAgainst: "Gol Subiti",
 };
 
-const decode = (s: string): string =>
-  s
-    .replace(/&amp;/g, "&")
-    .replace(/&lt;/g, "<")
-    .replace(/&gt;/g, ">")
-    .replace(/&quot;/g, '"')
-    .replace(/&#0?39;/g, "'")
-    .replace(/&nbsp;/g, " ")
-    .trim();
-
-type Source = { tid: number; round: number; label: string };
 // The stats we take from upstream; the rest of its columns (fair play, goal
 // difference) are derivable or unused here.
 type Stat = "points" | "played" | "won" | "drawn" | "lost" | "goalsFor" | "goalsAgainst";
 type Fetched = { team: string } & Record<Stat, number>;
 
 async function fetchTable({ tid, round }: Source): Promise<Fetched[]> {
-  const res = await fetch(ENDPOINT, {
-    method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: `op=20&tid=${tid}&round=${round}`,
-  });
-  if (!res.ok) throw new Error(`upstream returned ${res.status}`);
-  const { html } = await res.json();
-  if (!html) throw new Error("upstream response had no html");
+  const html = await leagueHtml(`op=20&tid=${tid}&round=${round}`);
 
   const headers = [...html.matchAll(/col-data text-center' title="([^"]+)"/g)].map((m) => m[1]);
   const names = [...html.matchAll(/participant-name[^>]*>([^<]+)</g)].map((m) => decode(m[1]));
@@ -148,12 +125,12 @@ for (const [id, source] of targets) {
     goalsAgainst: r.goalsAgainst,
     points: r.points,
     // The site marks its own row; carry that over rather than re-deriving it.
-    ...(r.team === "RSA Team" ? { isRSA: true } : {}),
+    ...(r.team === US ? { isRSA: true } : {}),
   }));
 
   const same = before === JSON.stringify(season.standings);
   if (!same) changed += 1;
-  const us = fetched.findIndex((r) => r.team === "RSA Team");
+  const us = fetched.findIndex((r) => r.team === US);
   console.log(
     `${id} (${source.label}): ${fetched.length} teams` +
       (us >= 0 ? `, RSA ${us + 1}${us === 0 ? "st" : "th"} on ${fetched[us].points} pts` : "") +
