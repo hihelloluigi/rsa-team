@@ -10,6 +10,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ```bash
 npm run dev        # dev server on port 3002 (Turbopack)
+npm run import:matches [seasonId]     # pull our results, scorers and date moves from bergamotornei
 npm run import:standings [seasonId]   # refresh the classifica from bergamotornei
 npm run build      # production build — also validates all content JSON (see below)
 npm run lint       # ESLint with --fix
@@ -23,7 +24,9 @@ npx vitest run -t "sortStandings"            # single test by name
 
 CI (`.github/workflows/ci.yml`) runs `lint:check`, `typecheck`, `test`, `build` and an
 `npm audit` as parallel jobs on every PR and push to `main`; the audit also runs alone every
-Monday. The jobs share `.github/actions/setup` (Node from `.nvmrc`, then `npm ci`), and
+Monday. Separately, `.github/workflows/sync-league.yml` runs both league importers every
+morning and, when `seasons.json` changed, tests, builds and commits it straight to `main`
+(a push with the workflow's token starts no CI, hence the checks inside it). The jobs share `.github/actions/setup` (Node from `.nvmrc`, then `npm ci`), and
 Dependabot keeps the actions themselves current. Deploys are **not** in the workflow —
 Vercel's Git integration handles them, **and does not wait for CI**: a push that fails a
 check still deploys if its build passes.
@@ -180,6 +183,13 @@ routes and are disallowed in `robots.ts`.
   maps columns by their header titles rather than position, refuses to write if the
   table does not balance or a club appears under an unknown spelling, and reproduces
   the file's one-object-per-line formatting so the diff stays readable.
+  `npm run import:matches` does the same for our fixtures (`op=22`, one call per
+  giornata, plus each played match's page for scorers). It only ever *adds*:
+  score, status, scorers, and the day/kickoff when a game moves — never the
+  stadium (ours is keyed into `venues.json`), the note, or a result upstream lacks.
+  It throws if upstream disagrees about the opponent or home/away. Both run every
+  morning in `sync-league.yml`; the endpoint, season ids and parsers they share are
+  in `scripts/bergamotornei.ts`, where a new season's `tid`/`round` must be added.
 - **Content invariants the schemas can't express** (unique player slugs/numbers, unique match ids, ≤1 current season) are guarded by `src/lib/content.test.ts`, not Zod. Run the tests after editing content.
 - **No literal copy in components.** Any visible string, `aria-label` or `alt` goes in both
   dictionaries. A string typed straight into JSX ships in Italian on the English pages and

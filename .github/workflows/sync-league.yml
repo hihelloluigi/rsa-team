@@ -1,0 +1,75 @@
+name: Sync league
+
+# Every morning, pull our results and the league table from bergamotornei and
+# commit them to main, where Vercel deploys them like any hand edit. Games end
+# late in the evening and the league enters results overnight, so the run
+# waits for the morning: 05:00 UTC is 07:00 in Rome in summer, 06:00 in winter.
+on:
+  schedule:
+    - cron: "0 5 * * *"
+  # To pull a result in straight after it is entered, from the Actions tab.
+  workflow_dispatch:
+
+# Two runs at once would race to push the same file.
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ./.github/actions/setup
+
+      # Either importer fails loudly when upstream's markup changes or a club
+      # shows up under an unknown name. That turns this run red (GitHub emails
+      # about it) and leaves the site on the last good data.
+      - name: Import results
+        run: npm run import:matches | tee -a "$RUNNER_TEMP/sync.log"
+      - name: Import standings
+        run: npm run import:standings | tee -a "$RUNNER_TEMP/sync.log"
+
+      - name: Check for changes
+        id: diff
+        run: |
+          if git diff --quiet -- src/data/seasons.json; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            git diff -- src/data/seasons.json
+          fi
+
+      # A push made with the workflow's own token does not start CI, and
+      # Vercel deploys main whatever CI says — so the checks that guard a hand
+      # edit run here, before anything is pushed.
+      - name: Test
+        if: steps.diff.outputs.changed == 'true'
+        run: npm test
+        env:
+          TZ: UTC
+      - name: Build
+        if: steps.diff.outputs.changed == 'true'
+        run: npm run build
+
+      - name: Commit and push
+        if: steps.diff.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/data/seasons.json
+          {
+            echo "content(matches): sync results and standings from bergamotornei"
+            echo
+            grep -E '^(  m[0-9]+ vs |[0-9]{4}-[0-9]{4} \()' "$RUNNER_TEMP/sync.log"
+          } > "$RUNNER_TEMP/message.txt"
+          git commit -F "$RUNNER_TEMP/message.txt"
+          # Someone may have pushed while this ran; a conflict fails the run
+          # rather than overwriting their edit, and tomorrow's run retries.
+          # Autostash: the build may have touched generated files.
+          git pull --rebase --autostash
+          git push
