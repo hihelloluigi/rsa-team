@@ -94,15 +94,24 @@ export function parseCalendar(html: string): Fixture[] {
   });
 }
 
-// A match page's scorers, home side first, in our spelling of a brace:
-// upstream writes "(2) Rossi Mario", the file has always said "Rossi Mario (x2)".
+// A match page's scorers, home side first, in our spelling of a brace: the file
+// has always said "Rossi Mario (x2)". Upstream mirrors its two columns, so the
+// count sits on the inner side of the name — "(2) Rossi Mario" for the away
+// team, "Rossi Mario (2)" for the home team — and is looked for on either.
 export function parseScorers(html: string): { home: string[]; away: string[] } {
   const side = (cls: string): string[] => {
     const block = html.match(new RegExp(`<div class="${cls}">([\\s\\S]*?)</div>`))?.[1];
     if (block === undefined) throw new Error(`no ${cls} block — the markup has probably changed`);
-    return [...block.matchAll(/(?:\((\d+)\)\s*)?<a [^>]*>([^<]+)<\/a>/g)].map(([, n, name]) =>
-      n && Number(n) > 1 ? `${decode(name)} (x${n})` : decode(name),
-    );
+    return block.split(/<br\s*\/?>/).flatMap((entry) => {
+      const name = entry.match(/<a [^>]*>([^<]+)<\/a>/)?.[1];
+      if (!name) return [];
+      const n = Number(entry.replace(/<a [^>]*>[^<]*<\/a>/, "").match(/\((\d+)\)/)?.[1] ?? 1);
+      return [n > 1 ? `${decode(name)} (x${n})` : decode(name)];
+    });
   };
   return { home: side("scorer_a"), away: side("scorer_b") };
 }
+
+// Goals a scorer list accounts for: "Rossi Mario (x3)" counts three.
+export const goalsListed = (scorers: string[]): number =>
+  scorers.reduce((n, s) => n + Number(s.match(/\(x(\d+)\)$/)?.[1] ?? 1), 0);

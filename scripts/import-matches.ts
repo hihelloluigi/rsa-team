@@ -18,6 +18,7 @@ import { readFile, writeFile } from "node:fs/promises";
 import { serializeSeasons } from "../src/lib/seasons-file.ts";
 import type { Match, Season } from "../src/lib/types.ts";
 import {
+  goalsListed,
   leagueHtml,
   pageHtml,
   parseCalendar,
@@ -64,6 +65,13 @@ async function update(match: Match, fixture: Fixture): Promise<Match> {
   const scorers = parseScorers(await pageHtml(fixture.url));
   const rsa = match.home ? scorers.home : scorers.away;
   const opponent = match.home ? scorers.away : scorers.home;
+  // Fewer goals listed than scored is normal — own goals, scorers never
+  // entered — but more means the page was misread, so nothing is written.
+  for (const [who, list, goals] of [[US, rsa, ours], [match.opponent, opponent, theirs]] as const) {
+    if (goalsListed(list) > goals) {
+      throw new Error(`${match.id}: ${list.length} scorers account for ${goalsListed(list)} goals, but ${who} scored ${goals}`);
+    }
+  }
   if (rsa.length || opponent.length) {
     next.scorers = {
       ...match.scorers,

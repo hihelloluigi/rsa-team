@@ -86,6 +86,19 @@ describe("parseScorers", () => {
     });
   });
 
+  it("reads a brace written after the name, as the home side lists them", () => {
+    // From My-bg 12-3 RSA Team: the count trails the link on the home side.
+    const html = `<div class="scorer_a">
+                <a href="/it/player/82963/lhousain-daha/">Daha Lhousain</a> (2)<br /><a href="/it/player/82966/yassine-el-idrissi/">El Idrissi Yassine</a> (6)<br /><a href="/it/player/82971/jamal-ouchikh/">Ouchikh Jamal</a><br />
+            </div><div class="scorer_b">
+                <a href="/it/player/83542/giacomo-colombo/">Colombo Giacomo</a><br />
+            </div>`;
+    expect(parseScorers(html)).toEqual({
+      home: ["Daha Lhousain (x2)", "El Idrissi Yassine (x6)", "Ouchikh Jamal"],
+      away: ["Colombo Giacomo"],
+    });
+  });
+
   it("returns empty sides for a result with no scorers entered", () => {
     const html = `<div class="scorer_a">
             </div><div class="scorer_b">
