@@ -34,12 +34,12 @@
     "standings": [
       { "team": "My-bg", "played": 2, "won": 2, "drawn": 0, "lost": 0, "goalsFor": 17, "goalsAgainst": 5, "points": 6 },
       { "team": "Sita' Olta", "played": 2, "won": 2, "drawn": 0, "lost": 0, "goalsFor": 11, "goalsAgainst": 3, "points": 6 },
-      { "team": "Hakuna Matata", "played": 1, "won": 1, "drawn": 0, "lost": 0, "goalsFor": 5, "goalsAgainst": 1, "points": 3 },
+      { "team": "Hakuna Matata", "played": 2, "won": 1, "drawn": 1, "lost": 0, "goalsFor": 8, "goalsAgainst": 4, "points": 4 },
       { "team": "FenaOmeni F.C.", "played": 1, "won": 1, "drawn": 0, "lost": 0, "goalsFor": 5, "goalsAgainst": 2, "points": 3 },
       { "team": "Vecchia Guardia Berghem", "played": 1, "won": 1, "drawn": 0, "lost": 0, "goalsFor": 4, "goalsAgainst": 3, "points": 3 },
+      { "team": "Asd Comun Nuovo Calcio", "played": 2, "won": 0, "drawn": 1, "lost": 1, "goalsFor": 5, "goalsAgainst": 9, "points": 1 },
       { "team": "Amici Ponteranica", "played": 0, "won": 0, "drawn": 0, "lost": 0, "goalsFor": 0, "goalsAgainst": 0, "points": 0 },
       { "team": "San Sebastian Soccer", "played": 1, "won": 0, "drawn": 0, "lost": 1, "goalsFor": 2, "goalsAgainst": 5, "points": 0 },
-      { "team": "Asd Comun Nuovo Calcio", "played": 1, "won": 0, "drawn": 0, "lost": 1, "goalsFor": 2, "goalsAgainst": 6, "points": 0 },
       { "team": "Asd Carvico", "played": 1, "won": 0, "drawn": 0, "lost": 1, "goalsFor": 1, "goalsAgainst": 5, "points": 0 },
       { "team": "Newsari", "played": 2, "won": 0, "drawn": 0, "lost": 2, "goalsFor": 3, "goalsAgainst": 10, "points": 0 },
       { "team": "RSA Team", "played": 2, "won": 0, "drawn": 0, "lost": 2, "goalsFor": 6, "goalsAgainst": 16, "points": 0, "isRSA": true }
